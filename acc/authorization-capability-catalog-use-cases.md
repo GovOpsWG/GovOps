@@ -788,12 +788,12 @@ phantom ids.
 
 | Use Case                            | Primary Persona            | Toolchain                  | Design §§ |
 | ----------------------------------- | -------------------------- | -------------------------- | --------- |
-| UC-01: Capability Catalog Authoring | Platform Security Engineer | `govops lint`              | §6, §10   |
-| UC-02: Compliance Mapping and Audit | Compliance Auditor         | Trestle (OSCAL projection) | §8–9      |
-| UC-03: Lint tool                    | Platform Security Engineer | `govops lint`              | §6.2, §10 |
-| UC-04: Policy Drift Detection       | Platform Security Engineer | `govops drift`             | §7.1, §10 |
+| UC-01: Capability Catalog Authoring | Platform Security Engineer | `govops lint`              | §5–6, §8.1, §10 |
+| UC-02: Compliance Mapping and Audit | Compliance Auditor         | Trestle (OSCAL projection) | §8.2–8.3, §9    |
+| UC-03: Lint tool                    | Platform Security Engineer | `govops lint`              | §6.2, §8.4, §10 |
+| UC-04: Policy Drift Detection       | Platform Security Engineer | `govops drift`             | §7.1, §8.5, §10 |
 
 
 ---
 
-*Companion to [Authorization Capability Catalog: Design](./authorization-capability-catalog-design.md). Tool outputs in each section are consistent with the catalog excerpt and **catalog state** row for that use case (design §8).*
+*Companion to [Authorization Capability Catalog: Design](./authorization-capability-catalog-design.md). Tool outputs in each section are consistent with the catalog excerpt and **catalog state** row for that use case (design §8, §12).*
