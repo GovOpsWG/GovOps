@@ -1,47 +1,41 @@
-## Introduction: What is Governance?
+## Table of Contents
 
-It is de rigour to proclaim that AI needs governance, or AI needs guardrails. But
-what does it mean to govern? Why do enterprises even need to govern? Who governs? What are the key activities and responsibilities of governors? Without agreement on these questions, conversations at conferences quickly go off the rails.
+1. [Architecture at a Glance](#architecture-at-a-glance)
+2. [What is Governance?](#what-is-governance)
+3. [Big Picture: Where does governance fit in the IT landscape](#big-picture-where-does-governance-fit-in-the-it-landscape)
+4. [GovOps Services](#govops-services)
+   1. [Reference Architecture](#reference-architecture)
+   2. [Capability Catalog](#capability-catalog)
+   3. [Centralized Policy Management](#centralized-policy-management)
+   4. [Schema Management](#schema-management)
+   5. [Federation Management](#federation-management)
+   6. [Continuous Compliance](#continuous-compliance)
+   7. [Runtime Authorization Context](#runtime-authorization-context)
+   8. [Governance Metrics](#governance-metrics)
+   9. [Kernel Observability](#kernel-observability)
+   10. [Event Handling and Response](#event-handling-and-response)
+5. [Summary](#summary)
 
-Enteprises need to govern because they need "security". The word "security" has a latin derivation: *se*- → a prefix meaning without, and *cura* → a noun meaning care, concern or worry. So literally, “securus” means without care → free from worry → safe. So enterprises need to govern to achieve security so the people responsible for them can sleep soundly at night!
+## Architecture at a Glance
 
-"Govern" is derived from the ancient Greek root κυβερνᾶν (kybernan) which meant to steer a ship. Metaphorically, the governors are the ones responsible to steer the ship around the rocks. Because we're talking about IT, and not sailing, GovOps defines three essential responsibilities of governors: (1) risk management--prioritize the most likely risks with the biggest business impact; (2) accountability--when things go wrong, you need to know who to call; (3) observability--tools to see enterprise risk, governors are "flying blind."
+GovOps is an architecture for **authorization governance** at enterprise scale: manage governance artifacts centrally, authorize locally next to the resource, and join everything with a stable `capability_id` from catalog to kernel.
 
-Who governs? Humans. AI cannot govern--that is called abdication. AI can help humans govern. But fundamentally, only humans bear responsibility for steering something as big and expensive as an enterprise. In a corporation, the Board of Directors is ultimately responsible. So they are the defacto governors, although they may delegate to management.
+The continuous **GovOps loop**:
 
-What are the key activities of governors? That is the purpose of GovOps -- it's a new gameplan for what governors need to do to effectively manage risk, hold the right entities accountable, and to build a transparent authorization system. This document proposes an architecture to best accomplish this task given the agentic transformation enterprises are facing.
+```text
+Govern → Authorize → Execute → Observe → Detect → Respond → Govern
+```
 
-Google's July, 2026 whitepaper [Beyond Zero: Enterprise security for the AI era](https://spawn-queue.acm.org/doi/10.1145/3819083) calls for "open architectures that can enhance transparency into access" and standardized approaches to realtime risk analysis. GovOps is a new approach to authorization governance which aligns with the Beyond Zero first principle that security must move to local resource/action-based authorization decisions.
+| Step | Meaning |
+|---|---|
+| **Govern** | Define and classify capabilities; manage policy, schema, federation, and control mappings; improve those artifacts from evidence. |
+| **Authorize** | Evaluate a PARC-shaped request at a local Policy Decision Point (Allow, Deny, or Challenge). |
+| **Execute** | Perform the protected action only after Allow. |
+| **Observe** | Collect authorization context, application telemetry, and kernel observability joined by `capability_id`. |
+| **Detect** | Identify conditions that require action (unexpected exercise, drift, revoked credentials, missing telemetry, threshold breach). |
+| **Respond** | Act on the detection (revoke, quarantine, re-authorize, notify owner, open incident) and feed outcomes back into **Govern**. |
 
-## Big Picture: Where does governance fit in the IT landscape
-
-Our society is in the midst of a multi-generational digital transformation. Enterprises are all expanding their digital footprints, especially to gain recent productivity advances unocked by autonomous software agents using large language models ("LLM") for planning actions to acheive goals. Effective authorization governance relies on four layers: governance, observability, identity, and event handling.
-
-Using the nautical metaphor, "observability" is the layer that helps governors to see what's going on. For ships, observability is the result of charts and instruments. For authorization governance, observability may means that the enterprise is using threat detection,  SIEM, or kernel observability tools. LLMs may enhance observability by  analyzing the data to make it more comprehensible by humans.
-
-One of the most important layers is "identity." This is the layer that insures that each entity has an identifier. The identity layer also typical stores public keys or shared secrets, so the identity can prove its authenticity. While human identity management is well trodden technology, especially with regard to workforce, software and organizational identity standards are developing and in various stages of adoption.
-
-The final layer is Event handling. When an enteprise detects that something actionable has happened, how do they respond? In the event layer, this may mean executing a workflow stored in a graph. Or it may mean triggering an AI agent to react. Or it may require a human in the loop. The Event layer coordinates these reactions to events.
-
-See [Figure 1.1](./images/figure_1_1.jpg) for a visualization of the four layers.
-
-### GovOps Services
-
-GovOps defines a set of shared services that enable governors to manage authorization across many applications, APIs, workloads, infrastructure components, and AI agents. These services provide the connection between business governance and distributed enforcement.
-
-The key architectural principle is that the enterprise should be able to trace a governed capability from its definition in the catalog, through authorization policy, into the application and ultimately down to runtime execution. In other words, the `capability_id` should be able to travel from the catalog to the kernel.
-
-This does not mean authorization decisions need to be centralized. In fact, GovOps favors local authorization decisions close to the application, resource, or action being protected. What should be centralized are the governance artifacts necessary to understand and manage those decisions across the enterprise.
-
-The core GovOps services are the Capability Catalog, Policy Management, Schema Management, Federation Management, and Continuous Compliance.
-
-#### Reference Architecture
-
-GovOps separates the architecture into two planes: a **Governance Plane** and a **Runtime Plane**.
-
-The Governance Plane manages the shared artifacts required to govern authorization across the enterprise. These include the Authorization Capability Catalog, Policy Stores, authorization schemas, federation configuration, compliance mappings, and governance evidence. These artifacts are centrally managed so governors can understand and measure authorization consistently across many systems.
-
-The Runtime Plane performs authorization close to the resource or action being protected. Applications, APIs, workloads, infrastructure, and AI agents use local or embedded Policy Decision Points to evaluate policy. Each authorization decision references the governed `capability_id` and the versions of the policy and evidence used to make the decision.
+The architecture separates a **Governance Plane** (centralized artifacts) from a **Runtime Plane** (local decisions and execution). The diagram below is the canonical view of that stack; later sections refer back to it rather than redrawing it.
 
 ```text
                        GOVERNANCE PLANE
@@ -94,25 +88,65 @@ The Runtime Plane performs authorization close to the resource or action being p
               Gemara / OSCAL / Compliance
 ```
 
-A `Challenge` means that the available evidence is insufficient to make a final authorization decision. The caller must obtain the required additional evidence and resubmit the authorization request before the protected capability can execute.
+A `Challenge` means available evidence is insufficient for a final decision — the caller must obtain more evidence and resubmit before the protected capability can execute. Runtime evidence flows back up the same `capability_id` join into the Governance Plane (**Observe → Detect → Respond → Govern**).
+
+Related ACC documents:
+
+* [Authorization Capability Catalog: Design](../acc/authorization-capability-catalog-design.md)
+* [Authorization Capability Catalog: Use Cases](../acc/authorization-capability-catalog-use-cases.md)
+
+Google's July 2026 whitepaper [Beyond Zero: Enterprise security for the AI era](https://spawn-queue.acm.org/doi/10.1145/3819083) calls for open architectures that enhance transparency into access. GovOps aligns with Beyond Zero's principle that security must move to distributed, local resource/action-based authorization decisions.
+
+## What is Governance?
+
+It is de rigueur to proclaim that AI needs governance, or AI needs guardrails. But what does it mean to govern? Who governs? What must governors do?
+
+Enterprises govern to achieve **security** — literally *securus*, "without care" — so accountable leaders can sleep at night. To *govern* is to steer (Greek κυβερνᾶν, *kybernan*). GovOps names three steering responsibilities: **risk management** (prioritize the most likely risks with the biggest business impact), **accountability** (know who to call when things go wrong), and **observability** (see enterprise risk, or fly blind).
+
+Who governs? Humans. AI can assist; it cannot abdicate board and management responsibility. This document proposes the architecture for that work amid agentic transformation.
+
+## Big Picture: Where does governance fit in the IT landscape
+
+Our society is in the midst of a multi-generational digital transformation. Enterprises are expanding their digital footprints, especially to capture productivity gains from autonomous software agents that use large language models ("LLMs") to plan actions and achieve goals. Effective authorization governance depends on four major layers: **governance, observability, identity, and event handling**. Each layer answers a different question: How does the enterprise manage risk? What is actually happening? Who or what is acting? And how should the enterprise respond?
+
+The **governance layer** defines the shared artifacts used to control authorization across the enterprise. The Capability Catalog identifies the actions and resources the enterprise wants to govern and assigns business context such as risk, impact, and ownership. Policy Authoring defines the rules that control those capabilities. Schema Management defines the entities, attributes, and context those policies can reference. Federation Management defines which external issuers, credentials, and claims the enterprise is willing to trust. Continuous Compliance maps capabilities and their operational evidence to control objectives and regulatory requirements. Together, these services establish the enterprise-wide rules, semantics, trust relationships, and accountability needed to govern distributed authorization decisions.
+
+The **observability layer** provides evidence about what is actually happening. Using the nautical metaphor, observability gives governors the charts and instruments needed to steer. For authorization governance, this may include authorization decision logs, SIEM, threat-detection systems, application telemetry, network observability, and kernel observability tools. Observability should connect technical events back to governed capabilities so that governors can understand activity in business terms. LLMs may help analyze and summarize this evidence, but the underlying telemetry remains the source of truth.
+
+The **identity layer** establishes identifiers and trusted evidence about the entities participating in authorization. These entities may include humans, applications, workloads, organizations, devices, and AI agents. Identity systems typically associate identifiers with cryptographic keys, credentials, attributes, or other evidence that can be verified by the authorization system. Human workforce identity is relatively mature, while software, workload, organizational, and agent identity standards continue to evolve. The identity layer therefore provides evidence about actors; governance policy determines what that evidence permits them to do.
+
+The **event-handling layer** determines what happens when the enterprise detects a condition that requires action. Events may originate from authorization decisions, identity systems, observability tools, compliance monitoring, or other governance services. A response may invoke a workflow, require additional authorization, revoke a credential, quarantine a workload, notify an accountable owner, trigger an AI agent, or require a human decision. The event layer closes the loop by converting governance evidence into operational response.
+
+See [Figure 1.1](./images/figure_1_1.jpg) for a visualization of the four layers. The GovOps loop and plane diagram are in [Architecture at a Glance](#architecture-at-a-glance).
+
+
+## GovOps Services
+
+GovOps defines a set of shared services that enable governors to manage authorization across many applications, APIs, workloads, infrastructure components, and AI agents. These services provide the connection between business governance and distributed enforcement.
+
+The key architectural principle is that the enterprise should be able to trace a governed capability from its definition in the catalog, through authorization policy, into the application and ultimately down to runtime execution. In other words, the `capability_id` should be able to travel from the catalog to the kernel.
+
+This does not mean authorization decisions need to be centralized. In fact, GovOps supports local authorization decisions close to the application, resource, or action being protected. What should be centralized are the governance artifacts necessary to understand and manage those decisions across the enterprise.
+
+The core GovOps services are the **Capability Catalog**, **Policy Management**, **Schema Management**, **Federation Management**, and **Continuous Compliance**.
+
+### Reference Architecture
+
+GovOps separates the architecture into two planes: a **Governance Plane** and a **Runtime Plane**. The canonical diagram is in [Architecture at a Glance](#architecture-at-a-glance).
+
+The Governance Plane manages the shared artifacts required to govern authorization across the enterprise. These include the Authorization Capability Catalog, Policy Stores, authorization schemas, federation configuration, compliance mappings, and governance evidence. These artifacts are centrally managed so governors can understand and measure authorization consistently across many systems.
+
+The Runtime Plane performs authorization close to the resource or action being protected. Applications, APIs, workloads, infrastructure, and AI agents use local or embedded Policy Decision Points to evaluate policy. Each authorization decision references the governed `capability_id` and the versions of the policy and evidence used to make the decision.
 
 The two planes are connected by stable identifiers rather than by a centralized runtime authorization service. Most importantly, the `capability_id` defined in the ACC is carried into the authorization decision and associated with subsequent telemetry.
 
 This architecture allows authorization to remain distributed while governance remains centralized. A mobile application, database, Kubernetes workload, or AI agent can make authorization decisions locally while still using centrally governed capabilities, policies, schemas, and federation rules.
 
-Runtime evidence flows in the opposite direction. Authorization decisions and observability data are correlated with the same `capability_id` and returned to the Governance Plane. Governors can therefore trace a capability from its business definition, through the policy that authorized it, to evidence about its actual execution.
-
-The resulting architecture forms a continuous loop:
-
-```text
-Define → Govern → Authorize → Execute → Observe → Measure
-   ↑                                                   │
-   └───────────────────────────────────────────────────┘
-```
+Runtime evidence flows in the opposite direction along the stack in Architecture at a Glance. Authorization decisions and observability data are correlated with the same `capability_id` and returned to the Governance Plane — the **Observe → Detect → Respond → Govern** half of the GovOps loop.
 
 ### Capability Catalog
 
-The Authorization Capability Catalog ("ACC") is a machine-readable inventory of what applications, APIs, infrastructure, workloads, and AI agents can actually do — the authorization surface the enterprise wants to govern.
+The Authorization Capability Catalog ("ACC") is a machine-readable inventory of what applications, APIs, infrastructure, workloads, and AI agents can actually do — the authorization surface the enterprise wants to govern. The catalog model, Authorization Capability Profile, and tooling conventions are specified in the [ACC design](../acc/authorization-capability-catalog-design.md); persona workflows are in the [ACC use cases](../acc/authorization-capability-catalog-use-cases.md).
 
 A capability is an action on a resource. Examples might include:
 
@@ -132,7 +166,7 @@ The `capability_id` in the ACC becomes the common index across policy, telemetry
 
 #### Capability Lifecycle
 
-The ACC is not just an inventory. Each capability is a governed object with a lifecycle.
+The ACC is not just an inventory. Each capability is a governed object with its own lifecycle (distinct from the enterprise GovOps loop above):
 
 ```text
 Discover → Register → Classify → Govern → Deploy → Observe → Retire
@@ -215,7 +249,7 @@ GovOps does not require that all of this evidence identify one canonical "subjec
 
 ### Continuous Compliance
 
-Compliance frameworks describe **controls**. Operational systems expose **capabilities**. The Authorization Capability Catalog connects those two worlds.
+Compliance frameworks describe **controls**. Operational systems expose **capabilities**. The Authorization Capability Catalog connects those two worlds. Abstract-control mappings, Trestle/OSCAL projection, and the Gemara export path are detailed in the [ACC design](../acc/authorization-capability-catalog-design.md) (§8–9) and walked through in [UC-02: Compliance Mapping and Audit](../acc/authorization-capability-catalog-use-cases.md#uc-02-compliance-mapping-and-audit).
 
 Traditional compliance programs frequently operate separately from runtime authorization. Controls are documented in one system, policies are implemented somewhere else, and evidence is collected manually during an audit. GovOps closes this gap by treating the ACC as the common reference point between what the enterprise can do and what it is obligated to govern.
 
@@ -241,45 +275,9 @@ Gemara defines the semantics. OSCAL defines the interchange format. Trestle mana
 
 #### Continuous evidence chain
 
-This creates a machine-readable chain from obligations to operational evidence:
+Compliance joins the same stack shown in [Architecture at a Glance](#architecture-at-a-glance): frameworks project through Trestle/OSCAL onto abstract controls, `#MappingDocument` links those controls to ACC capabilities, and policy → decision → runtime evidence flows down the Runtime Plane and back up via `capability_id`.
 
-```text
-Compliance frameworks (NIST, SOC 2, ISO, PCI, …)
-        ↓  Trestle / OSCAL projection
-Abstract control objectives (Gemara)
-        ↓  #MappingDocument
-Capability (ACC)
-        ↓
-Authorization Policy
-        ↓
-Authorization Decision
-        ↓
-Runtime Evidence
-```
-
-An auditor should eventually be able to identify the capabilities associated with a control, determine which policies govern those capabilities, verify which policy versions were active, and examine evidence showing how those capabilities were actually exercised — without treating the mapping itself as certification.
-
-The same `capability_id` used in the ACC can appear in policy metadata, authorization decision logs, application telemetry, and runtime observability. Kernel observability tools can correlate an authorization context such as a token `jti` or decision identifier with a process, thread, workload, network connection, filesystem event, or other operating-system activity:
-
-```text
-ACC capability_id
-        ↓
-Policy
-        ↓
-Authorization Decision
-        ↓
-Authorization Context / jti
-        ↓
-Application and Runtime Execution
-        ↓
-Kernel Observability
-        ↓
-Governance Evidence
-        ↓
-Gemara / OSCAL / Trestle
-```
-
-The goal is not simply to prove that the enterprise has a policy. It is to provide governors with evidence that the policy was applied to the capabilities they care about and to show what happened when those capabilities were exercised. That turns compliance from a periodic documentation exercise into a continuous governance loop.
+An auditor should eventually identify the capabilities associated with a control, which policies govern them, which policy versions were active, and evidence of how those capabilities were exercised — without treating the mapping itself as certification. That turns compliance from a periodic documentation exercise into another pass through the GovOps loop.
 
 ### Runtime Authorization Context
 
@@ -313,7 +311,7 @@ id_token.jti
 transaction_token.jti
 ```
 
-The authorization context is not a copy of the policy, token, or authorization request. It is a set of stable correlation identifiers.
+The authorization context is not a copy of the policy, token, or authorization request. It is a set of stable correlation identifiers. Only those identifiers need to cross the boundary between the application and runtime layers — not tokens, policy text, or authorization entities. Token identifiers such as `jti` can join the authorization context to evidence from the identity layer.
 
 The context should remain associated with the resulting execution for as long as practical. Depending on the platform, this association may use request context, thread-local storage, process metadata, container metadata, environment variables, or other propagation mechanisms. GovOps defines the required information, not the implementation mechanism.
 
@@ -328,29 +326,7 @@ policy_store_version = 42
 access_token.jti     = a81f...
 ```
 
-Kernel observability tools can then associate process, filesystem, network, or system-call telemetry with this authorization context.
-
-This creates a common join between the governance and observability layers:
-
-```text
-ACC
- ↓
-capability_id
- ↓
-Authorization Policy
- ↓
-Authorization Decision
- ↓
-Runtime Authorization Context
- ↓
-Application / Workload Execution
- ↓
-Kernel Observability
-```
-
-The critical field is `capability_id`. It provides the business meaning of the operation. The remaining identifiers provide provenance: which decision authorized it, which policy version governed it, and which trusted evidence contributed to the decision.
-
-This enables runtime telemetry to answer not only **what happened**, but **which governed capability was executing when it happened**.
+That context is the join point in the [Architecture at a Glance](#architecture-at-a-glance) stack between authorization decision and application execution. The critical field is `capability_id` (business meaning); the remaining identifiers provide provenance (decision, policy version, trusted evidence). Runtime telemetry can then answer not only **what happened**, but **which governed capability was executing when it happened**.
 
 #### Authorization Challenges
 
@@ -413,47 +389,13 @@ The purpose of GovOps metrics is not to prescribe a fixed dashboard. It is to es
 
 The final set of metrics, their definitions, and any recommended key performance indicators are being developed as a separate GovOps deliverable.
 
-## Kernal Observability
+### Kernel Observability
 
-Authorization proves that an operation was permitted. It does not prove what happened during execution. GovOps closes this gap by correlating authorization decisions with operating-system and kernel telemetry.
+Authorization proves that an operation was permitted. It does not prove what happened during execution. GovOps closes this gap by correlating the runtime authorization context with operating-system and kernel telemetry.
 
-The architecture is:
+The key requirement is that the `capability_id` (and related identifiers) associated with an authorization decision can be joined to the runtime activity that follows. Kernel observability tools can then associate process, filesystem, network, or system-call telemetry with that context.
 
-```text
-ACC
- ↓
-Authorization Policy
- ↓
-Authorization Decision
- ↓
-Authorization Context
- ↓
-Kernel Observability
- ↓
-Governance Evidence
-```
-
-The key requirement is that the `capability_id` associated with an authorization decision can be correlated with the runtime activity that follows.
-
-## Authorization Context
-
-When a high-risk capability is authorized, the application can retain a compact execution context such as:
-
-```text
-capability_id
-decision: (allow or deny)
-policy_store_id
-policy_store_version
-id_token jti
-```
-
-This context does not require copying tokens, policy, or authorization entities into the kernel. Only identifiers needed for correlation must cross the boundary between the application and runtime layers. Token identifiers like `jti` can be used to join information from the Identity layer.
-
-## Kernel Observability
-
-Existing observability tools already provide visibility into runtime behavior.
-
-Examples include:
+Existing observability tools already provide visibility into runtime behavior. Examples include:
 
 * **Cilium** for network and workload observability;
 * **Falco** for runtime security events and behavioral detection;
@@ -472,7 +414,7 @@ socket activity
 system calls
 ```
 
-They normally understand technical execution context such as processes, containers, namespaces, files, and network endpoints. GovOps adds business context. Making capability_id observable provides a more granular view of what is happening inside the application, and will enable a new class of tools for threat detection.
+They normally understand technical execution context such as processes, containers, namespaces, files, and network endpoints. GovOps adds business context: making `capability_id` observable provides a more granular view of what is happening inside the application and enables a new class of tools for threat detection.
 
 ### Event Handling and Response
 
@@ -518,34 +460,16 @@ notify accountable owner
 request human approval
 ```
 
-Authorization-time Challenges and event responses serve different purposes.
-
-A Challenge occurs before a capability is exercised. It obtains additional evidence required to make a final authorization decision.
-
-An event response occurs after an authorization, identity, runtime, compliance, or other governance event has been detected. Event handling may invoke the workflow needed to satisfy a Challenge, such as requesting human approval or additional authentication, but the Policy Decision Point remains responsible for the final authorization decision.
-
-This creates a feedback path from runtime evidence back into governance:
+Event handling is the **Detect → Respond** segment of the same GovOps loop, returning outcomes into **Govern**:
 
 ```text
-Govern
-  ↓
-Authorize
-  ↓
-Execute
-  ↓
-Observe
-  ↓
-Detect
-  ↓
-Respond
-  ↓
-Improve Governance
-  ↺
+Govern → Authorize → Execute → Observe → Detect → Respond → Govern
+                              └──── event handling ────┘
 ```
 
-The `capability_id` remains the common reference throughout the loop. It allows an event detected in infrastructure or runtime telemetry to be connected back to the capability owner, authorization policy, risk classification, and compliance obligations defined in the Governance Plane.
+Authorization-time Challenges and event responses serve different purposes within that loop. A Challenge occurs in **Authorize**, before **Execute**. An event response occurs after **Observe** / **Detect**. Event handling may invoke the workflow needed to satisfy a Challenge (for example, requesting human approval), but the Policy Decision Point remains responsible for the final authorization decision.
 
-GovOps therefore treats event handling as the mechanism that converts governance evidence into operational response.
+The `capability_id` remains the common reference throughout the loop. It allows an event detected in infrastructure or runtime telemetry to be connected back to the capability owner, authorization policy, risk classification, and compliance obligations defined in the Governance Plane.
 
 ## Summary
 
@@ -553,6 +477,8 @@ GovOps provides an architecture for governing authorization at enterprise scale.
 
 The architecture also extends governance beyond the authorization decision itself. By correlating `capability_id` with existing kernel observability tools, enterprises can connect what was authorized with what actually executed. That evidence can then flow back into risk management, threat detection, and continuous compliance — and, through Gemara mappings exported as OSCAL and managed in Trestle, into many compliance programs without remapping the same capabilities for each framework.
 
-The result is a closed governance loop: define capabilities, map them once to a canonical control layer, manage policy, authorize locally, observe execution, collect evidence, and reuse that governance work across frameworks.
+The result is the GovOps loop — **Govern → Authorize → Execute → Observe → Detect → Respond → Govern** — with `capability_id` as the join key. Define capabilities and map them once to a canonical control layer; authorize locally; observe execution; detect and respond; then reuse that governance work across compliance frameworks.
+
+For the ACC artifact model and worked examples, see the [ACC design](../acc/authorization-capability-catalog-design.md) and [ACC use cases](../acc/authorization-capability-catalog-use-cases.md).
 
 To follow GovOps discussions, join the [GovOps LinkedIn Group](https://gluu.co/govops-group).
