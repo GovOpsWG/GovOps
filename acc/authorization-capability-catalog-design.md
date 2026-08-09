@@ -32,7 +32,7 @@ Gemara already provides the substrate: `#CapabilityCatalog` (ADR-0019), `#Contro
 GovOps requires a shared, declarative inventory of **(action, resource) capabilities** — that is:
 
 1. **Finitely enumerable** so it can be reviewed, measured, and analyzed.
-2. **Engine neutral** compatible with any AuthZEN-conformant PDP (e.g. OPA, Cedarling, OpenFGA).
+2. **Engine neutral** compatible with any AuthZEN-conformant / PARC-shaped PDP (e.g. Cedar, Cedarling, OpenFGA).
 3. **Composable** with threats, controls, risks, and policies so a capability becomes a traceable unit of governance linking exposed operations, associated risks, and measurable enforcement outcomes.
 4. **GRC-interoperable** via a Trestle/OSCAL compliance layer: Gemara owns capability semantics; [OSCAL Compass compliance-trestle](https://github.com/oscal-compass/compliance-trestle) owns normalization, validation, and projection to specific frameworks (NIST SP 800-53, ISO 27001, SOC 2, FedRAMP, PCI, and internal accreditations).
 
@@ -444,7 +444,7 @@ Capability 0c451a4b7305a117ad7e4c874799c5982100823ef1b71db3490fffc35a63fef3
   → MappingDocument m.transfer.access-enforcement
   → govops.ac-03.access-enforcement (GovOps-ACO)
   → (Trestle) OSCAL mapping collection → NIST SP 800-53 AC-3, IA-2(1)
-  → (optional) govops drift on published Cedar policy release (UC-03)
+  → (optional) govops drift on published Cedar policy release (UC-04)
 ```
 
 
@@ -548,7 +548,7 @@ Engine-specific drift plug-ins treat policy formats as opaque. A future phase MA
 
 **Phase 3 — Engine adapters and optional proofs.** Read-only catalog emitters for common PDPs; optional provable-claim workflow against mapped controls.
 
-**Phase 4 — Continuous governance in CI/CD.** Lint and drift gates on every policy change (see use cases UC-04).
+**Phase 4 — Continuous validation.** Run `govops lint` on catalog changes (see use cases UC-03) and `govops drift` against published policy releases (see use cases UC-04).
 
 ---
 
