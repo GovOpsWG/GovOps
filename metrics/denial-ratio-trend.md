@@ -29,11 +29,16 @@ The architecture defines a three-valued decision (allow, deny, challenge), but m
 ```text
 denial_ratio(capability, window) =
     count(decisions where outcome = deny) / count(all decisions)
+
+denial_ratio_trend(capability, w1, w2) =
+    denial_ratio(capability, w2) - denial_ratio(capability, w1)
 ```
 
-Both counts are restricted to one capability, a fixed calendar window, and decisions carrying a capability identifier.
+Windows are consecutive fixed calendar periods of equal length. Both counts are restricted to one capability and to decisions carrying a capability identifier. The headline is the change between the two windows; each window's ratio and decision count travel with it as qualifiers.
 
-Reported alongside the ratio:
+A ratio computed from a finite decision count moves with sampling variation even when nothing has changed. The reported change therefore carries a check: a two-proportion comparison of the two windows at 95% confidence. Where the observed change is within the range sampling variation alone would produce, it is published as the change together with the statement "no evidence of movement". The check treats decisions as independent. Where one request produces several evaluations (see the denominator limitation below), the effective sample is smaller than the decision count and the check overstates confidence; where the evaluation-to-request multiplier is known, run the check on request counts instead.
+
+Reported alongside each window's ratio:
 
 - **the absolute decision count**, because a ratio over a handful of decisions is not meaningful
 - **the number of policy versions in force during the window**, because a ratio spanning a rule change averages the behaviour of two different rules
@@ -41,7 +46,7 @@ Reported alongside the ratio:
 
 Where the decision count falls below a stated floor, report the count and suppress the ratio. Suggested floor: 100 decisions in the window.
 
-Where the denial count is zero in a window with meaningful volume, report the upper bound on the true denial rate using the rule of three: at 95% confidence the true rate is at most 3/n, where n is the total decision count. For a capability with 13,400 decisions and zero denials, the upper bound is 0.00022. This belongs in the reported output alongside the zero, so a reader can distinguish a genuinely clean record from insufficient data.
+Where the denial count is zero in a window with meaningful volume, report the upper bound on the true denial rate using the rule of three: at 95% confidence the true rate is at most 3/n, where n is the total decision count. For a capability with 13,400 decisions and zero denials, the upper bound is 0.00022. This belongs in the reported output alongside the zero, so a reader can distinguish a genuinely clean record from insufficient data. The rule of three makes the same independence assumption as the movement check: where fan-out is present the bound is optimistic, and where the multiplier is known the bound should be computed on the request count.
 
 ## Data required
 
@@ -74,7 +79,7 @@ Meridian Finance, a fictional mid-size lender. Window: March. Capability `approv
 
 The governing rule allowed any request originating inside the corporate network. Every request in the window originated inside the corporate network.
 
-**The version split is where this gets interesting.** On 14 March the rule was tightened to require a fresh identity check. The split is not clean, because propagation was staggered: both versions were deciding until 2 April, and one legacy payments service stayed on v4 throughout.
+The version split changes the reading. On 14 March the rule was tightened to require a fresh identity check. The split is not clean, because propagation was staggered: both versions were deciding until 2 April, and one legacy payments service stayed on v4 throughout.
 
 | Period | Rule version | Decisions | Denials | Ratio |
 |---|---|---|---|---|
@@ -82,9 +87,7 @@ The governing rule allowed any request originating inside the corporate network.
 | 14 to 31 March, under v5 | v5 | 5,900 | 0 | 0.000 |
 | 14 to 31 March, still under v4 | v4 | 1,400 | 0 | 0.000 |
 
-The control was strengthened and the ratio did not move, because every requester already satisfied the new condition. On paper the control improved. In practice it still refuses nothing.
-
-Without the version split, this would read as one flat number and the strengthening would be invisible. With it, the group can see that a deliberate control improvement produced no observable change in behaviour, which is itself the finding.
+The control was strengthened and the ratio did not move, because every requester already satisfied the new condition. The tightening changed the rule text and produced no change in outcomes. Without the version split, this would read as one flat number and the strengthening would be invisible. With it, the group can see that a deliberate control improvement produced no observable change in behaviour, which is itself the finding.
 
 For contrast, in the same window, `deploy:production-service`:
 
@@ -96,15 +99,24 @@ For contrast, in the same window, `deploy:production-service`:
 
 A rule that is at least separating some requests from others.
 
-**Interpretation a governor would draw.** The payment approval control is present, versioned, referenced by the capability, and in force for the whole period. Nothing is misconfigured in a way a conventional audit would catch. It has simply never distinguished one request from another, before or after being tightened. This is a finding about a rule, not about any person or team.
+**Movement across windows.** April, the following window, gives the trend its second observation.
+
+| Capability | March | April | Change | Movement check (95%) |
+|---|---|---|---|---|
+| `approve:payment-over-threshold` | 0.000 (13,400 decisions) | 0.000 (13,100 decisions) | 0.000 | No evidence of movement |
+| `deploy:production-service` | 0.030 (4,200 decisions) | 0.022 (4,450 decisions) | -0.008 | Movement larger than chance |
+
+For the payment capability, a second clean window tightens the reading without changing it: the rule has now been observed over 26,500 decisions without refusing one, and the rule-of-three upper bound falls to 0.00011. For the deployment capability, the ratio fell by 0.008 and the check confirms the movement is larger than sampling variation would produce. No policy version changed in April. The decline traces to a batch migration that completed at the end of March and had been generating a steady stream of denied requests. The movement is real, and it is a change in the request population, not in the rule. The check establishes that something moved; attributing the movement still requires the qualifiers, starting with the policy version count and the requester mix.
+
+**Interpretation a governor would draw.** The payment approval control is present, versioned, referenced by the capability, and in force for the whole period. Nothing is misconfigured in a way a conventional audit would catch. It has simply never distinguished one request from another, before or after being tightened. This is a finding about a rule, and it says nothing about any person or team.
 
 ## Interpretation guidance
 
 - **At or near zero**, on a critical capability with real volume: the signal this metric exists to surface. The rule is not discriminating.
 - **Moderate**: the rule is separating requests. It says nothing about whether it is separating them correctly.
-- **High**: not automatically good. May indicate a rule too restrictive for the work people are trying to do, which tends to produce workarounds.
+- **High**: not automatically good. It may indicate a rule too restrictive for the work people are trying to do, which tends to produce workarounds.
 - **A change in the ratio** is more informative than its level. A ratio dropping to zero after a rule change usually means the change was more permissive than intended.
-- **A rising denial ratio on a deny-by-default estate with step-up flows** may be friction moving, not protection moving: step-ups record as denies there. Check whether the new denies are followed by allows from the same journeys before reading it as the rule biting harder.
+- **A rising denial ratio on a deny-by-default estate with step-up flows** may be friction moving rather than protection moving, because step-ups record as denies there. Check whether the new denies are followed by allows from the same journeys before reading it as the rule biting harder.
 
 ## What it does not support
 
@@ -116,11 +128,13 @@ Not a conclusion that a rule is well written. It reports only that the rule prod
 
 ## Limitations
 
-**The main one, stated plainly.** A low ratio has two possible causes this metric cannot separate: a permissive rule, or a well behaved population that never submits a request which should be refused. Distinguishing them requires reading the rule. The metric identifies where to look, not what is wrong.
+A low ratio has two possible causes this metric cannot separate: a permissive rule, or a well behaved population that never submits a request that should be refused. Separating them requires reading the rule. The metric identifies which rules to read; it does not say what is wrong with them.
 
 The ratio is undefined for capabilities never exercised and unstable for those exercised rarely. It describes rules being tested by traffic, and says nothing about rules that are not.
 
 **The denominator counts evaluations, not requests.** A single logical request can traverse multiple enforcement points and produce multiple decisions on the same capability. A capability behind a service mesh with five enforcement points in the request path has a 5x multiplied count relative to one behind a single gateway. Step-up flows add to this: whether recorded as challenge then allow or as deny then allow, one journey produces at least two evaluations. The ratio is not directly comparable across capabilities with different enforcement-point depths. Recommend reporting the evaluation-to-request multiplier as a qualifier where known.
+
+**The denominator problem carries into the trend.** If the enforcement topology changes between the windows being compared, a new enforcement point in the request path multiplies the evaluation count and moves the ratio with no change in decision behaviour. The trend is readable only across windows with stable topology. Report the enforcement point count for each window, and treat a topology change as a break in the series: the windows before and after it are not comparable.
 
 **The ratio is not comparable across engine decision models.** A deny-by-default engine records a step-up as a deny followed by a later allow, so the same user journey that a challenge-emitting engine records as challenge then allow appears in the record as a denial. Estates on deny-by-default engines read a higher ratio for identical behaviour. Report the engine decision model as a qualifier where estates are mixed, and read denial movements on such estates with step-up flows in mind.
 
@@ -132,13 +146,14 @@ Computable from any decision log carrying a capability identifier and a decision
 
 ## Gaming
 
-Easy to move without improving anything. Adding a clause that refuses obviously malformed requests lifts a capability off zero while leaving the permissive path untouched. The metric is diagnostic rather than a target. A capability moving off zero warrants looking at what is now being refused, not simply noting that something is.
+Easy to move without improving anything. Adding a clause that refuses obviously malformed requests lifts a capability off zero while leaving the permissive path untouched. The metric is a diagnostic, not a target. When a capability moves off zero, the check is to look at what is now being refused. Fixed calendar windows also remove the option of choosing window boundaries that flatter the trend.
 
 ## Qualifiers that travel with the result
 
-Instrumentation coverage, observation window as fixed dates, catalogue version, total decision count, number of policy versions in force, challenge count where the engine emits it, and engine decision model where estates are mixed.
+Instrumentation coverage, observation window as fixed dates, catalogue version, each window's ratio and total decision count, number of policy versions in force per window, enforcement point count per window, challenge count where the engine emits it, and engine decision model where estates are mixed.
 
 ## Open questions
 
 - **Challenge-aware counting is parked.** The architecture's three-valued decision would support a treatment that counts final outcomes only, with a separate challenge rate. It is unimplementable on today's deny-by-default estates, which never emit the third value, so v1 counts outcomes as recorded and the engine-model limitation carries the caveat. Revisit when challenge is commonly emitted.
-- **Whether decisions produced at token issuance**, as opposed to at the point of capability exercise, belong in the denominator. A decision record can be created at either moment, and both may be observable. Counting both materially changes the figure where issuance and exercise are each instrumented, and changes nothing where only exercise is. Unresolved.
+- **Whether decisions produced at token issuance**, as opposed to at the point of capability exercise, belong in the denominator. A decision record can be created at either moment, and both may be observable. Proposed v1 default, raised as a decision issue: the denominator counts exercise-time decisions only, and issuance-time decisions are reported as a separate count where instrumented.
+- **The movement check is a proposal.** A two-proportion comparison at 95% confidence is the lightest check that separates movement from sampling noise on two windows. Control-chart treatments over longer series are heavier and can replace it where longer histories exist.
