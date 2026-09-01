@@ -148,7 +148,6 @@ export function rewriteHref(href: string, sourcePath: string): string {
 
   const resolved = resolveRelative(sourcePath, target);
   if (!resolved.startsWith("docs/")) {
-    // A link that escapes `docs/` points at a repository file such as CONTRIBUTING.md.
     return `https://github.com/GovOpsWG/GovOps/blob/main/${resolved}${anchor ? `#${anchor}` : ""}`;
   }
 

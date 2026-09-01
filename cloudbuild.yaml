@@ -7,11 +7,17 @@
 #
 # Fill in the substitutions below (or override them on the trigger) before the first deploy.
 substitutions:
-  _AR_HOST: us-docker.pkg.dev # Artifact Registry multi-region host
+  # _AR_HOST must match the repository's location: a regional repo in us-central1 is reached at
+  # us-central1-docker.pkg.dev, a multi-region "us" repo at us-docker.pkg.dev. A mismatch fails
+  # the push with a permission error rather than a not-found one.
+  _AR_HOST: us-central1-docker.pkg.dev
   _REGION: us-central1 # Cloud Run region
-  _REPO: govops # Artifact Registry repository name
+  _REPO: cloud-run-source-deploy # Artifact Registry repository
   _SERVICE: govops-info
   _SITE_URL: https://govops.info
+  # The identity the container runs as. Holds no IAM roles: the app reads the public GitHub API
+  # and nothing else in this project. See site/README.md for how it is created.
+  _RUN_SA: govops-info-run@$PROJECT_ID.iam.gserviceaccount.com
 
 steps:
   - id: build
@@ -49,6 +55,7 @@ steps:
       - --memory=512Mi
       - --cpu=1
       - --port=8080
+      - --service-account=${_RUN_SA}
       - --set-env-vars=SITE_URL=${_SITE_URL}
 
 images:
