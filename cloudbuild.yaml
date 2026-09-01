@@ -1,18 +1,7 @@
-# Cloud Build: build the image, push it to Artifact Registry, deploy to Cloud Run.
-#
-# Wire two triggers to this file in the Google Cloud console:
-#   1. Push to `main`             — continuous deploy of documentation changes.
-#   2. Release published          — so a new GitHub release appears on /releases immediately
-#                                    rather than waiting for the one-hour server-side cache.
-#
-# Fill in the substitutions below (or override them on the trigger) before the first deploy.
 substitutions:
-  # _AR_HOST must match the repository's location: a regional repo in us-central1 is reached at
-  # us-central1-docker.pkg.dev, a multi-region "us" repo at us-docker.pkg.dev. A mismatch fails
-  # the push with a permission error rather than a not-found one.
   _AR_HOST: us-central1-docker.pkg.dev
-  _REGION: us-central1 # Cloud Run region
-  _REPO: cloud-run-source-deploy # Artifact Registry repository
+  _REGION: us-central1
+  _REPO: cloud-run-source-deploy
   _SERVICE: govops-info
   _SITE_URL: https://govops.info
   _RUN_SA_NAME: govops-info-run
@@ -45,9 +34,6 @@ steps:
       - --image=${_AR_HOST}/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA
       - --region=${_REGION}
       - --platform=managed
-      - --allow-unauthenticated
-      # Scale to zero is what keeps this near free: a working group documentation site sits idle
-      # most of the day, and a cold start is a few hundred milliseconds.
       - --min-instances=0
       - --max-instances=2
       - --memory=512Mi

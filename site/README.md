@@ -172,9 +172,19 @@ Then create the triggers and map the domain:
    immediately instead of waiting for the one-hour server-side cache.
 3. Map `govops.info` to the Cloud Run service, and set `_SITE_URL` accordingly.
 
-Public access is granted to the _service_, not to the build identity — `--allow-unauthenticated` in
-`cloudbuild.yaml` is what makes the site readable, and it needs `roles/run.invoker` for `allUsers`
-on the service. If your organisation policy blocks that binding, the deploy step will report it.
+**Make the service public — once, by a human.** The build account cannot, by design: this needs
+`run.services.setIamPolicy`, which `roles/run.developer` excludes, so a compromised build cannot
+change who may invoke a service.
+
+```bash
+gcloud run services add-iam-policy-binding "$SERVICE" --region="$REGION" \
+  --member=allUsers --role=roles/run.invoker
+```
+
+The binding is service-level and survives every subsequent deploy. Until it exists the site answers
+403, logging "The request was not authenticated". If the command reports a policy violation rather
+than a permission error, a Domain Restricted Sharing org policy is blocking `allUsers` and the
+project needs an exception.
 
 To verify the runtime account really is powerless:
 
@@ -186,6 +196,19 @@ gcloud projects get-iam-policy "$PROJECT_ID" \
 ```
 
 That should print nothing.
+
+### Editing `cloudbuild.yaml`
+
+Three things about that file are not obvious and have each broken a deploy:
+
+- **`$PROJECT_ID` is not expanded inside a substitution's default value**, only inside step `args`.
+  `_RUN_SA_NAME` is therefore the bare account name, and the deploy step composes
+  `${_RUN_SA_NAME}@$PROJECT_ID.iam.gserviceaccount.com`. Putting a full address in the default
+  yields a literal `...@$PROJECT_ID.iam...` and the deploy fails on `iam.serviceAccounts.actAs`.
+- **`_AR_HOST` must match the repository's location.** A regional repository in `us-central1` is
+  reached at `us-central1-docker.pkg.dev`, a multi-region `us` one at `us-docker.pkg.dev`. A
+  mismatch fails the push with a permission error, not a not-found.
+- **Public access is not set here.** There is no `--allow-unauthenticated`; see above.
 
 ### Environment
 

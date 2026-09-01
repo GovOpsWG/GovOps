@@ -6,9 +6,11 @@ import { TableOfContents } from "~/features/docs/table-of-contents";
 import { GITHUB_URL, SITE_NAME, absoluteUrl } from "~/lib/site";
 import type { Route } from "./+types/doc-page";
 
-export function loader({ request }: Route.LoaderArgs) {
-  const pathname = new URL(request.url).pathname.replace(/\/$/, "") || "/docs";
-  const page = findPage(pathname);
+export function loader({ params }: Route.LoaderArgs) {
+  // From the route params, never from request.url: a single-fetch navigation asks for
+  // `/docs/architecture.data`, and parsing that pathname matches no document.
+  const rest = (params["*"] ?? "").replace(/^\/+|\/+$/g, "");
+  const page = findPage(rest ? `/docs/${rest}` : "/docs");
 
   if (!page) {
     throw new Response("Not found", { status: 404 });
