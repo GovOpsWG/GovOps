@@ -1,0 +1,11 @@
+node_modules/
+.react-router/
+build/
+dist/
+test-results/
+playwright-report/
+packages/content/src/generated/
+# Copied from ../docs by the content pipeline; the originals live with the documents.
+apps/web/public/docs-assets/
+.env
+.DS_Store

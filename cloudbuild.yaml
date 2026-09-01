@@ -1,0 +1,59 @@
+# Cloud Build: build the image, push it to Artifact Registry, deploy to Cloud Run.
+#
+# Wire two triggers to this file in the Google Cloud console:
+#   1. Push to `main`             — continuous deploy of documentation changes.
+#   2. Release published          — so a new GitHub release appears on /releases immediately
+#                                    rather than waiting for the one-hour server-side cache.
+#
+# Fill in the substitutions below (or override them on the trigger) before the first deploy.
+substitutions:
+  _AR_HOST: us-docker.pkg.dev # Artifact Registry multi-region host
+  _REGION: us-central1 # Cloud Run region
+  _REPO: govops # Artifact Registry repository name
+  _SERVICE: govops-info
+  _SITE_URL: https://govops.info
+
+steps:
+  - id: build
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - ${_AR_HOST}/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA
+      - -t
+      - ${_AR_HOST}/$PROJECT_ID/${_REPO}/${_SERVICE}:latest
+      - .
+
+  - id: push
+    name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - --all-tags
+      - ${_AR_HOST}/$PROJECT_ID/${_REPO}/${_SERVICE}
+
+  - id: deploy
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - ${_SERVICE}
+      - --image=${_AR_HOST}/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA
+      - --region=${_REGION}
+      - --platform=managed
+      - --allow-unauthenticated
+      # Scale to zero is what keeps this near free: a working group documentation site sits idle
+      # most of the day, and a cold start is a few hundred milliseconds.
+      - --min-instances=0
+      - --max-instances=2
+      - --memory=512Mi
+      - --cpu=1
+      - --port=8080
+      - --set-env-vars=SITE_URL=${_SITE_URL}
+
+images:
+  - ${_AR_HOST}/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA
+  - ${_AR_HOST}/$PROJECT_ID/${_REPO}/${_SERVICE}:latest
+
+options:
+  logging: CLOUD_LOGGING_ONLY
