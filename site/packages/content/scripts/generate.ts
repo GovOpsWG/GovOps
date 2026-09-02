@@ -3,8 +3,8 @@
  * files are the single source of truth: nothing is copied into `site/`, and the generated module
  * is git-ignored.
  *
- * Navigation order follows the order documents are linked in `docs/README.md` — the contract
- * stated in CONTRIBUTING.md. An unlinked document still gets a page, appended to its section.
+ * Sections and documents are discovered from the directory tree; `docs/README.md` contributes
+ * order only. See docs/README.md, "How the menu is built".
  */
 import { existsSync } from "node:fs";
 import { copyFile, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
@@ -13,6 +13,7 @@ import { fileURLToPath } from "node:url";
 
 import { stripDocumentHeader, stripTableOfContents } from "../src/document.js";
 import { renderMarkdown } from "../src/markdown.js";
+import { buildNavigation, pagesOutsideNavigation, titleFromSlug } from "../src/navigation.js";
 import { docPathToRoute, docPathToSection } from "../src/paths.js";
 import type { DocPage, NavSection, SearchDocument, TocEntry } from "../src/types.js";
 
@@ -25,15 +26,6 @@ const publicAssetsDirectory = resolve(scriptDirectory, "../../../apps/web/public
 const ASSET_BASE = "/docs-assets";
 const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".svg", ".webp", ".gif"]);
 const WORDS_PER_MINUTE = 220;
-
-/** Fallback only: section order and titles come from `docs/README.md`. */
-const SECTION_TITLES: Record<string, string> = {
-  architecture: "Architecture",
-  acc: "Authorization Capability Catalog",
-  metrics: "Metrics",
-  owasp: "OWASP",
-  outreach: "Outreach",
-};
 
 async function main(): Promise<void> {
   if (!existsSync(docsDirectory)) {
@@ -76,7 +68,7 @@ async function main(): Promise<void> {
       id: page.route,
       route: page.route,
       title,
-      section: SECTION_TITLES[page.section] ?? "Documentation",
+      section: page.section ? titleFromSlug(page.section) : "Documentation",
       headings: toc.map((entry: TocEntry) => entry.text).join(" "),
       body: text,
     });
@@ -89,45 +81,10 @@ async function main(): Promise<void> {
   await copyImages(markdownFiles);
   await writeGenerated(pages, navigation, searchDocuments);
 
-  const linked = new Set(navigation.flatMap((s) => [s.route, ...s.children.map((c) => c.route)]));
-  const unlinked = pages.filter((p) => p.route !== "/docs" && !linked.has(p.route));
-  for (const page of unlinked) {
-    console.warn(
-      `[content] ${page.sourcePath} is not linked from docs/README.md; appended to nav.`,
-    );
+  for (const page of pagesOutsideNavigation(pages, navigation)) {
+    console.log(`[content] ${page.sourcePath} is reachable at ${page.route}, not in the sidebar.`);
   }
   console.log(`[content] ${pages.length} documents, ${navigation.length} sections.`);
-}
-
-function buildNavigation(pages: readonly DocPage[], docsIndex: string): NavSection[] {
-  const byRoute = new Map(pages.map((page) => [page.route, page]));
-  const linkOrder: string[] = [];
-  for (const match of docsIndex.matchAll(/\]\((\.\/[^)#]+\.md)(?:#[^)]*)?\)/g)) {
-    const route = docPathToRoute(`docs/${(match[1] as string).replace(/^\.\//, "")}`);
-    if (!linkOrder.includes(route)) linkOrder.push(route);
-  }
-
-  const rank = (route: string): number => {
-    const index = linkOrder.indexOf(route);
-    return index === -1 ? Number.MAX_SAFE_INTEGER : index;
-  };
-
-  const sections = [...new Set(pages.map((page) => page.section).filter(Boolean))];
-  sections.sort((a, b) => rank(`/docs/${a}`) - rank(`/docs/${b}`) || a.localeCompare(b));
-
-  return sections.map((section) => {
-    const index = byRoute.get(`/docs/${section}`);
-    const children = pages
-      .filter((page) => page.section === section && page.route !== `/docs/${section}`)
-      .sort((a, b) => rank(a.route) - rank(b.route) || a.title.localeCompare(b.title))
-      .map((page) => ({ route: page.route, title: page.title }));
-
-    return {
-      route: `/docs/${section}`,
-      title: index?.title ?? SECTION_TITLES[section] ?? section,
-      children,
-    };
-  });
 }
 
 async function copyImages(markdownFiles: readonly string[]): Promise<void> {
@@ -192,7 +149,7 @@ function extractTitle(markdown: string, sourcePath: string): string {
   if (match?.[1]) return match[1].trim();
   // architecture/README.md opens with its table of contents rather than a title.
   const section = docPathToSection(sourcePath);
-  return SECTION_TITLES[section] ?? "Documentation";
+  return section ? titleFromSlug(section) : "Documentation";
 }
 
 function extractSummary(markdown: string): string {

@@ -1,7 +1,10 @@
 # GovOps documentation
 
-Everything the working group has published, in reading order. This file drives the navigation on
-[govops.info](https://govops.info) — adding a document here adds it to the site.
+Everything the working group has published, in reading order.
+
+Documents are picked up automatically — you do not register them anywhere. This file controls the
+**order** they appear in on [govops.info](https://govops.info); see
+[How the menu is built](#how-the-menu-is-built) at the end.
 
 ## Architecture
 
@@ -43,5 +46,30 @@ plane diagram and the loop, then read the service sections in order.
   time.
 - Fenced `text` blocks hold hand-drawn diagrams. The site renders them unwrapped and
   unhighlighted — keep them under roughly 100 columns.
+
+## How the menu is built
+
+The sidebar is generated from the files on disk at build time. Nothing is registered by hand.
+
+| What you do | What appears |
+|---|---|
+| Add `docs/<section>/<name>.md` | An entry in that section's menu, titled from its first `#` heading |
+| Add a new `docs/<section>/` directory | A new section, titled from its `README.md`, or from the directory name if it has none |
+| Link a document from this file | It sorts to that position instead of alphabetically |
+| Add `docs/<name>.md` at the top level | A reachable page, but **not** a menu entry — this is how `MOVED.md` stays out of the way |
+
+The rules in full:
+
+1. **Sections are directories.** Every subdirectory of `docs/` becomes one.
+2. **Section titles come from `README.md`.** A section without one is titled from its directory
+   name (`event-handling` becomes "Event handling") and its heading links to its first document
+   rather than to a page that does not exist.
+3. **Order comes from this file.** Sections and documents appear in the order they are linked
+   above. Anything not linked sorts to the end of its section, alphabetically by title.
+4. **Nothing is hidden by omission.** A document you forget to link here still appears in the menu
+   and is still searchable — it just sorts last.
+
+So the only reason to edit this file is to change *reading order* or to describe a document. To add
+one, just add the file.
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md) to propose a change.

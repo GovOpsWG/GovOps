@@ -101,3 +101,19 @@ test("every document's data route resolves", async ({ request, baseURL }) => {
     expect(response.status(), `${path}.data`).toBe(200);
   }
 });
+
+test("the mobile section pills navigate client-side", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "the pill nav replaces the sidebar below the large breakpoint");
+
+  await page.goto("/docs");
+  await expectClientNavigation(
+    page,
+    () =>
+      page
+        .getByRole("navigation", { name: "Documentation sections" })
+        .getByRole("link", { name: "GovOps Metrics" })
+        .click(),
+    /\/docs\/metrics$/,
+    /GovOps Metrics/,
+  );
+});

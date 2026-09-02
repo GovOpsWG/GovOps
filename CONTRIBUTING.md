@@ -40,8 +40,10 @@ commit.
 - **Diagrams are fenced `text` blocks.** They are hand-drawn ASCII. The site renders them
   unwrapped and unhighlighted, so keep lines under roughly 100 columns or narrow viewports will
   scroll.
-- **Add new documents to [`docs/README.md`](./docs/README.md).** That file drives the site
-  navigation. A document not listed there will not appear in the sidebar.
+- **You do not have to register a new document anywhere.** Adding `docs/<section>/<name>.md` puts
+  it in the sidebar and the search index automatically, titled from its first `#` heading. Linking
+  it from [`docs/README.md`](./docs/README.md) controls *where* it sorts; leave it out and it goes
+  last. [How the menu is built](./docs/README.md#how-the-menu-is-built) has the rules.
 - **British or American spelling** — match the document you are editing rather than converting it.
 
 ## Proposing a metric
