@@ -1,0 +1,33 @@
+name: Links
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "*.md"
+      - ".github/workflows/links.yml"
+  schedule:
+    # External links rot without anyone touching this repository.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  markdown:
+    name: Markdown links
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: lycheeverse/lychee-action@82202e5e9c2f4ef1a55a3d02563e1cb6041e5332 # v2.4.1
+        with:
+          args: >-
+            --no-progress
+            --max-concurrency 4
+            --accept 200,206,403,429
+            --exclude-path site
+            --exclude '^https://gluu\.co/'
+            './**/*.md'
+          fail: true

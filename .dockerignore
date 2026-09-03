@@ -1,0 +1,12 @@
+**/node_modules
+site/.react-router
+site/apps/web/build
+site/packages/content/src/generated
+site/test-results
+site/playwright-report
+.git
+.github
+**/.DS_Store
+*.md
+!docs/**/*.md
+.env

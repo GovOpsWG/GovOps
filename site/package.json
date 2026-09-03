@@ -1,0 +1,59 @@
+{
+  "name": "govops-info",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The GovOps Working Group landing page and documentation site",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GovOpsWG/GovOps.git",
+    "directory": "site"
+  },
+  "homepage": "https://govops.info",
+  "bugs": {
+    "url": "https://github.com/GovOpsWG/GovOps/issues"
+  },
+  "license": "CC0-1.0",
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": ">=24.0.0 <25"
+  },
+  "scripts": {
+    "audit": "pnpm audit --audit-level=high",
+    "build": "pnpm content:generate && pnpm --filter @govops/web build",
+    "check": "pnpm quality && pnpm build && pnpm test && pnpm test:e2e",
+    "content:generate": "tsx packages/content/scripts/generate.ts",
+    "dev": "pnpm content:generate && pnpm --filter @govops/web dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "pretest:e2e": "pnpm build",
+    "quality": "pnpm typecheck && pnpm lint && pnpm format:check",
+    "start": "pnpm --filter @govops/web start",
+    "test": "pnpm content:generate && vitest run",
+    "test:e2e": "playwright test",
+    "typecheck": "pnpm content:generate && pnpm -r --if-present typecheck",
+    "smoke": "node scripts/docker-smoke.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@eslint/js": "9.39.5",
+    "@playwright/test": "1.62.1",
+    "@types/node": "24.13.3",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "eslint": "9.39.5",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "16.5.0",
+    "prettier": "3.9.6",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.69.0",
+    "vitest": "4.1.11"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

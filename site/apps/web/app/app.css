@@ -1,0 +1,419 @@
+@import "tailwindcss";
+
+/* Both faces are self-hosted latin subsets, so the policy can keep font-src at 'self'. */
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./assets/fonts/inter-latin-variable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("./assets/fonts/poppins-600-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./assets/fonts/poppins-700-latin.woff2") format("woff2");
+}
+
+/* Hexes sampled from the approved landing page design rather than eyeballed. */
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Poppins", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, monospace;
+
+  --color-ground: #09253f;
+  --color-ground-deep: #051a2d;
+  --color-surface: #0c2c48;
+  --color-surface-strong: #113554;
+
+  --color-ink: #e8eef3;
+  --color-ink-muted: #a3b6c7;
+  --color-ink-faint: #7d94a8;
+
+  --color-edge: #1a4262;
+  --color-edge-strong: #22587f;
+
+  --color-cyan: #00d5e5;
+  --color-mint: #26e18e;
+  --color-brand: #00854b;
+  --color-brand-strong: #00703e;
+
+  --radius-card: 0.875rem;
+}
+
+:root {
+  --ground: var(--color-ground);
+  --ground-deep: var(--color-ground-deep);
+  --surface: var(--color-surface);
+  --ink: var(--color-ink);
+  --ink-muted: var(--color-ink-muted);
+  --ink-faint: var(--color-ink-faint);
+  --edge: var(--color-edge);
+  --edge-strong: var(--color-edge-strong);
+  --accent-from: var(--color-cyan);
+  --accent-to: var(--color-mint);
+  --brand: var(--color-brand);
+  --brand-hover: #00703e;
+  --brand-ink: #ffffff;
+  --glow: rgb(0 165 93 / 0.3);
+  --glow-core: rgb(38 225 142 / 0.48);
+  --grid-line: rgb(0 213 229 / 0.05);
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --ground: #ffffff;
+  --ground-deep: #f2f7fb;
+  --surface: #ffffff;
+  --ink: #09253f;
+  --ink-muted: #45607a;
+  --ink-faint: #566f87;
+  --edge: #d6e3ee;
+  --edge-strong: #b9cee0;
+  /* Darkened so the gradient headings still clear 4.5:1 on white. */
+  --accent-from: #026e8b;
+  --accent-to: #0a7a49;
+  --brand: #00854b;
+  --brand-hover: #00703e;
+  --brand-ink: #ffffff;
+  --glow: rgb(0 165 93 / 0.14);
+  --glow-core: rgb(0 165 93 / 0.22);
+  --grid-line: rgb(9 37 63 / 0.05);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --ground: #ffffff;
+    --ground-deep: #f2f7fb;
+    --surface: #ffffff;
+    --ink: #09253f;
+    --ink-muted: #45607a;
+    --ink-faint: #566f87;
+    --edge: #d6e3ee;
+    --edge-strong: #b9cee0;
+    --accent-from: #026e8b;
+    --accent-to: #0a7a49;
+    --brand: #00854b;
+    --brand-hover: #00703e;
+    --brand-ink: #ffffff;
+    --glow: rgb(0 165 93 / 0.14);
+    --glow-core: rgb(0 165 93 / 0.22);
+    --grid-line: rgb(9 37 63 / 0.05);
+    color-scheme: light;
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--edge);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Anchored headings sit below the sticky header rather than under it. */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-from);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent-to) 32%, transparent);
+    color: var(--ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@utility accent-text {
+  background-image: linear-gradient(100deg, var(--accent-from), var(--accent-to));
+  background-clip: text;
+  color: transparent;
+}
+
+@utility surface-card {
+  background-color: color-mix(in srgb, var(--surface) 88%, transparent);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-card);
+}
+
+@utility band-deep {
+  background-color: var(--ground-deep);
+}
+
+/* Drawn, rather than the design's 1600px background PNGs: sharper at every viewport. */
+@utility circuit-grid {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 78%);
+}
+
+.doc-body {
+  color: var(--ink-muted);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.doc-body > * + * {
+  margin-top: 1.15rem;
+}
+
+.doc-body h2,
+.doc-body h3,
+.doc-body h4 {
+  color: var(--ink);
+  scroll-margin-top: 6rem;
+  position: relative;
+}
+
+.doc-body h2 {
+  margin-top: 3rem;
+  font-size: 1.6rem;
+  line-height: 1.25;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--edge);
+}
+
+.doc-body h3 {
+  margin-top: 2.25rem;
+  font-size: 1.2rem;
+}
+
+.doc-body h4 {
+  margin-top: 1.75rem;
+  font-size: 1.02rem;
+}
+
+.doc-body p strong,
+.doc-body li strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.doc-body a {
+  color: var(--accent-from);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--accent-from) 45%, transparent);
+}
+
+.doc-body a:hover {
+  text-decoration-color: var(--accent-from);
+}
+
+.doc-body ul,
+.doc-body ol {
+  padding-left: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.doc-body ul {
+  list-style: disc;
+}
+
+.doc-body ol {
+  list-style: decimal;
+}
+
+.doc-body li::marker {
+  color: var(--accent-to);
+}
+
+.doc-body blockquote {
+  border-left: 3px solid var(--accent-to);
+  background: color-mix(in srgb, var(--accent-to) 7%, transparent);
+  border-radius: 0 var(--radius-card) var(--radius-card) 0;
+  padding: 1rem 1.25rem;
+  color: var(--ink);
+}
+
+.doc-body blockquote > * + * {
+  margin-top: 0.75rem;
+}
+
+.doc-body code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: color-mix(in srgb, var(--accent-from) 10%, transparent);
+  border: 1px solid var(--edge);
+  border-radius: 5px;
+  padding: 0.1rem 0.35rem;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.doc-heading .doc-anchor {
+  position: absolute;
+  left: -1.15rem;
+  color: var(--ink-faint);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.doc-heading:hover .doc-anchor,
+.doc-anchor:focus-visible {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .doc-heading .doc-anchor {
+    display: none;
+  }
+}
+
+/* ASCII diagrams must scroll, never wrap: wrapping destroys the drawing. */
+.doc-diagram,
+.doc-code {
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-card);
+  background: var(--ground-deep);
+  overflow-x: auto;
+  padding: 1rem 1.1rem;
+}
+
+.doc-diagram pre,
+.doc-code pre {
+  margin: 0;
+}
+
+.doc-diagram code,
+.doc-code code {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  white-space: pre;
+  overflow-wrap: normal;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--ink-muted);
+  tab-size: 2;
+}
+
+.doc-diagram code {
+  color: color-mix(in srgb, var(--accent-to) 62%, var(--ink));
+}
+
+.doc-table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-card);
+}
+
+.doc-table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  min-width: 32rem;
+}
+
+.doc-table-scroll th,
+.doc-table-scroll td {
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--edge);
+}
+
+.doc-table-scroll th {
+  background: var(--ground-deep);
+  color: var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.doc-table-scroll tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.doc-image {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--edge);
+  max-width: 100%;
+  height: auto;
+}
+
+.doc-body hr {
+  border: none;
+  border-top: 1px solid var(--edge);
+  margin: 2.5rem 0;
+}
+
+/* The lockup is a PNG, so CSS picks the variant: <picture> cannot key off a data-theme attribute. */
+
+.light-only {
+  display: none;
+}
+
+:root[data-theme="light"] .light-only {
+  display: inline;
+}
+
+:root[data-theme="light"] .dark-only {
+  display: none;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .light-only {
+    display: inline;
+  }
+
+  :root:not([data-theme="dark"]) .dark-only {
+    display: none;
+  }
+}
