@@ -84,7 +84,7 @@ o	Pull requests can be closed by the author without merging.
 
 o	Pull requests may be closed by a Maintainer if the decision is made that it is not going to be merged.
 
-The GovOps deliverables are plain Markdown files in [`docs/`](./docs). You do not need a local
+The GovOps deliverables are plain Markdown files in [`docs/`](../docs). You do not need a local
 toolchain to change them.
 
 ## 5.	Documentation
@@ -128,22 +128,22 @@ commit.
   scroll.
 - **You do not have to register a new document anywhere.** Adding `docs/<section>/<name>.md` puts
   it in the sidebar and the search index automatically, titled from its first `#` heading. Linking
-  it from [`docs/README.md`](./docs/README.md) controls *where* it sorts; leave it out and it goes
-  last. [How the menu is built](./docs/README.md#how-the-menu-is-built) has the rules.
+  it from [`docs/README.md`](../docs/README.md) controls *where* it sorts; leave it out and it goes
+  last. [How the menu is built](../docs/README.md#how-the-menu-is-built) has the rules.
 - **British or American spelling** — match the document you are editing rather than converting it.
 
 **5.5 Proposing a metric**
 
 The metric set has an admissions rule: a GovOps metric requires at least two observation windows and
 reports the change between them. Read
-[what counts as a GovOps metric](./docs/metrics/README.md#4-what-counts-as-a-govops-metric) first,
-then use the [template](./docs/metrics/metric-definition-template.md). Open it as an issue before
+[what counts as a GovOps metric](../docs/metrics/README.md#4-what-counts-as-a-govops-metric) first,
+then use the [template](../docs/metrics/metric-definition-template.md). Open it as an issue before
 writing the full entry.
 
 **5.6 Working on the site**
 
-The [govops.info](https://govops.info) application is in [`site/`](./site). It reads the Markdown in
-`docs/` at build time — content is never duplicated. See [`site/README.md`](./site/README.md) for
+The [govops.info](https://govops.info) application is in [`site/`](../site). It reads the Markdown in
+`docs/` at build time — content is never duplicated. See [`site/README.md`](../site/README.md) for
 the development and deployment runbook.
 
 If your change is documentation only, you never need to touch `site/`.
