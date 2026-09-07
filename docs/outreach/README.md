@@ -13,7 +13,7 @@ How to find the GovOps Working Group and take part in its work.
 ## How to contribute
 
 Every deliverable in this repository is a plain Markdown file. You can edit one directly in the
-GitHub web editor, with no local toolchain. [CONTRIBUTING.md](../../CONTRIBUTING.md) has the
+GitHub web editor, with no local toolchain. [contributing.md](../../Community_Specification/contributing.md) has the
 details, including how to sign off a commit.
 
 Good first contributions:
