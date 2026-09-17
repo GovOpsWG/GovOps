@@ -46,7 +46,7 @@ The full documentation map is in [`docs/README.md`](./docs/README.md).
 ## Get involved
 
 - Join the [GovOps LinkedIn Group](https://gluu.co/govops-group)
-- Open an issue or pull request — see [CONTRIBUTING.md](../Community_Specification/contributing.md)
+- Open an issue or pull request — see [CONTRIBUTING.md](./Community_Specification/contributing.md)
 - Read the [outreach notes](./docs/outreach/README.md)
 
 ## Repository layout

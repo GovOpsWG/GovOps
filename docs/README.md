@@ -6,6 +6,26 @@ Documents are picked up automatically — you do not register them anywhere. Thi
 **order** they appear in on [govops.info](https://govops.info); see
 [How the menu is built](#how-the-menu-is-built) at the end.
 
+## Purpose of GovOps
+
+Governance Operations (GovOps) is a capability-centric governance framework designed to address the challenges of modern, highly dynamic, and automated environments, particularly those involving non-human agents and agentic software.
+
+At its core, GovOps proposes a shift from traditional identity-centric governance models to a **capability-centric** approach. In this model, the fundamental unit of governance is a **capability**, defined as an **action-resource pair**.
+
+This approach enables a more granular and effective way to manage risk and enforce policy in complex systems.
+
+## Scope
+
+| Document | What it covers |
+|---|---|
+| [Scope](./scope/README.md) | What GovOps defines and what it deliberately leaves to other systems. |
+
+## Foundations
+
+| Document | What it covers |
+|---|---|
+| [Foundations](./foundations/README.md) | Explanatory material, including the problem statement, the GovOps thesis, and its relation to other frameworks. |
+
 ## Architecture
 
 | Document | What it covers |
@@ -72,4 +92,4 @@ The rules in full:
 So the only reason to edit this file is to change *reading order* or to describe a document. To add
 one, just add the file.
 
-See [CONTRIBUTING.md](https://github.com/GovOpsWG/GovOps/Community_Specification/contributing.md) to propose a change.
+See [CONTRIBUTING.md](../Community_Specification/contributing.md) to propose a change.
