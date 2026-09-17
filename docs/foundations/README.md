@@ -14,8 +14,8 @@ GovOps relates to adjacent standards and products.
   constrain the rest of this specification.
 - [`stakeholder-goals/README.md`](./stakeholder-goals/README.md) — what Security, Audit,
   Compliance, Engineering, Finance, and Legal each get from GovOps.
-- [`illustrative-use-cases/`](./illustrative-use-cases/) — worked examples, both
+- [`illustrative-use-cases/README.md`](./illustrative-use-cases/README.md) — worked examples, both
   sector-specific (agentic workloads, financial services, healthcare) and cross-cutting
-  ([`governance-scenarios.md`](./illustrative-use-cases/governance-scenarios.md)).
+  (`governance-scenarios.md`).
 - [`positioning/README.md`](./positioning/README.md) — how GovOps relates to OPA, Zanzibar,
   AuthZen, Meta's Muse, the Shared Signals Framework, and Google's Beyond Zero.
