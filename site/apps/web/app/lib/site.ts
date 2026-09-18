@@ -19,11 +19,12 @@ export function absoluteUrl(path: string): string {
 }
 
 export const PRIMARY_NAV = [
-  { label: "Documentation", to: "/docs" },
+  { label: "Overview", to: "/docs" },
+  { label: "Scope", to: "/docs/scope" },
+  { label: "Foundations", to: "/docs/foundations" },
   { label: "Architecture", to: "/docs/architecture" },
-  { label: "Capability catalog", to: "/docs/acc" },
+  { label: "ACC", to: "/docs/acc" },
   { label: "Metrics", to: "/docs/metrics" },
-  { label: "Releases", to: "/releases" },
 ] as const;
 
 /** Projects whose maintainers contribute to the working group. */
