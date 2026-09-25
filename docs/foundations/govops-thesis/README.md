@@ -7,6 +7,5 @@ outlined in [`../problem/README.md`](../problem/README.md) and the gaps describe
 - [`solution-overview.md`](./solution-overview.md) — the capability-centric solution, why a
   capability beats identity or role as the unit of governance, and how one capability-anchored
   record serves multiple business functions at once.
-- [`../architectural-principles.md`](../architectural-principles.md) — the seven
-  architectural principles that follow from this thesis and constrain every design decision made
-  elsewhere in this specification.
+- [`../architectural-principles.md`](../architectural-principles.md) — the four
+  GovOps principles that follow from this thesis, and the design rules that apply them.

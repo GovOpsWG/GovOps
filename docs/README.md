@@ -25,6 +25,7 @@ This approach enables a more granular and effective way to manage risk and enfor
 | Document | What it covers |
 |---|---|
 | [Foundations](./foundations/README.md) | Explanatory material, including the problem statement, the GovOps thesis, and its relation to other frameworks. |
+| [Principles](./foundations/architectural-principles.md) | The four GovOps principles and the design rules that apply them. |
 
 ## Architecture
 
