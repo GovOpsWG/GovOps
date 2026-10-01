@@ -143,6 +143,7 @@ Each service has its own page.
 Governance:
 
 * [Capability Catalog](./governance/capability-inventory.md)
+* [Continuous Evidence](./governance/continuous-evidence.md) (to be added)
 * [Continuous Compliance](./governance/continuous-compliance.md)
 * [Governance Metrics](./governance/telemetry-dashboard.md)
 
@@ -156,6 +157,10 @@ Access Management:
 Observability:
 
 * [Kernel Observability](./observability/kernel-observability.md)
+
+Identity:
+
+* [Identity](./identity/identity.md) (to be added)
 
 Event handling:
 
