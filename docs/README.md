@@ -32,10 +32,10 @@ This approach enables a more granular and effective way to manage risk and enfor
 | Document | What it covers |
 |---|---|
 | [Architecture](./architecture/README.md) | The GovOps loop, the Governance and Runtime planes, the four layers, and the GovOps services. The canonical reference. |
-| [Capability Catalog](./architecture/governance/capability-inventory.md) | The inventory of governed capabilities and their lifecycle |
+| [Capability Catalog](./architecture/governance/capability-catalog.md) | The inventory of governed capabilities and their lifecycle |
 | [Continuous Evidence](./architecture/governance/continuous-evidence.md) | Runtime evidence linked to `capability_id`. To be added soon. |
 | [Continuous Compliance](./architecture/governance/continuous-compliance.md) | Capabilities to controls through Gemara, and the export path to OSCAL |
-| [Governance Metrics](./architecture/governance/telemetry-dashboard.md) | Measuring governance with `capability_id` as the unit |
+| [Governance Metrics](./architecture/governance/governance-metrics.md) | Measuring governance with `capability_id` as the unit |
 | [Centralized Policy Management](./architecture/access-management/policy-management.md) | Central administration of policy, with distributed enforcement |
 | [Schema Management](./architecture/access-management/schema-management.md) | The entities, attributes, and claims policies can reference |
 | [Federation Management](./architecture/access-management/federation-management.md) | Which external issuers, credentials, and claims the enterprise trusts |

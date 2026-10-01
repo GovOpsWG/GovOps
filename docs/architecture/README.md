@@ -167,10 +167,10 @@ Each service has its own page.
 
 Governance:
 
-* [Capability Catalog](./governance/capability-inventory.md)
+* [Capability Catalog](./governance/capability-catalog.md)
 * [Continuous Evidence](./governance/continuous-evidence.md) (to be added)
 * [Continuous Compliance](./governance/continuous-compliance.md)
-* [Governance Metrics](./governance/telemetry-dashboard.md)
+* [Governance Metrics](./governance/governance-metrics.md)
 
 Access Management:
 
