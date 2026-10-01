@@ -13,13 +13,13 @@ test("the landing page presents the working group and its deliverables", async (
   ).toBeVisible();
 });
 
-test("the control plane tabs switch the described plane", async ({ page }) => {
+test("the layer tabs switch the described layer", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: "Governance plane" })).toBeVisible();
-  await page.getByRole("tab", { name: "Event" }).click();
-  await expect(page.getByRole("heading", { name: "Event plane" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Governance plane" })).toBeHidden();
+  await expect(page.getByRole("heading", { name: "Governance layer" })).toBeVisible();
+  await page.getByRole("tab", { name: "Access Management" }).click();
+  await expect(page.getByRole("heading", { name: "Access Management layer" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Governance layer" })).toBeHidden();
 });
 
 test("a document renders with its diagrams, tables and contents intact", async ({ page }) => {

@@ -31,7 +31,7 @@ This approach enables a more granular and effective way to manage risk and enfor
 
 | Document | What it covers |
 |---|---|
-| [Architecture](./architecture/README.md) | The GovOps loop, the Governance and Runtime planes, and the nine GovOps services. The canonical reference. |
+| [Architecture](./architecture/README.md) | The GovOps loop, the Governance and Runtime planes, the four layers, and the GovOps services. The canonical reference. |
 | [Capability Catalog](./architecture/governance/capability-inventory.md) | The inventory of governed capabilities and their lifecycle |
 | [Continuous Evidence](./architecture/governance/continuous-evidence.md) | Runtime evidence linked to `capability_id`. To be added soon. |
 | [Continuous Compliance](./architecture/governance/continuous-compliance.md) | Capabilities to controls through Gemara, and the export path to OSCAL |
