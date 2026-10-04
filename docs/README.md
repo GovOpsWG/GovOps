@@ -32,9 +32,20 @@ This approach enables a more granular and effective way to manage risk and enfor
 | Document | What it covers |
 |---|---|
 | [Architecture](./architecture/README.md) | The GovOps loop, the Governance and Runtime planes, and the nine GovOps services. The canonical reference. |
+| [Capability Catalog](./architecture/governance/capability-inventory.md) | The inventory of governed capabilities and their lifecycle |
+| [Continuous Evidence](./architecture/governance/continuous-evidence.md) | Runtime evidence linked to `capability_id`. To be added soon. |
+| [Continuous Compliance](./architecture/governance/continuous-compliance.md) | Capabilities to controls through Gemara, and the export path to OSCAL |
+| [Governance Metrics](./architecture/governance/telemetry-dashboard.md) | Measuring governance with `capability_id` as the unit |
+| [Centralized Policy Management](./architecture/access-management/policy-management.md) | Central administration of policy, with distributed enforcement |
+| [Schema Management](./architecture/access-management/schema-management.md) | The entities, attributes, and claims policies can reference |
+| [Federation Management](./architecture/access-management/federation-management.md) | Which external issuers, credentials, and claims the enterprise trusts |
+| [Runtime Authorization Context](./architecture/access-management/runtime-authorization-context.md) | The context that joins a decision to what executed |
+| [Kernel Observability](./architecture/observability/kernel-observability.md) | Independent evidence of what actually ran |
+| [Identity](./architecture/identity/identity.md) | Human, software, and organization identities. To be added soon. |
+| [Event Handling and Response](./architecture/event-handling.md) | How the enterprise responds to what it detects |
 
 Start with [Architecture at a glance](./architecture/README.md#architecture-at-a-glance) for the
-plane diagram and the loop, then read the service sections in order.
+plane diagram and the loop, then read the service pages in order.
 
 ## Authorization Capability Catalog
 

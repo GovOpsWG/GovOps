@@ -229,19 +229,19 @@ const SERVICES = [
     icon: ScrollText,
     title: "Policy and schema management",
     body: "Centralized administration of the rules and of the entities, attributes, and claims those rules reference. Enforcement stays distributed.",
-    to: "/docs/architecture#centralized-policy-management",
+    to: "/docs/architecture/access-management/policy-management",
   },
   {
     icon: ShieldCheck,
     title: "Federation management",
     body: "Which issuers, credentials, algorithms, and claims the enterprise is willing to trust — an explicit governance decision, not an implicit one.",
-    to: "/docs/architecture#federation-management",
+    to: "/docs/architecture/access-management/federation-management",
   },
   {
     icon: Activity,
     title: "Continuous compliance",
     body: "Capabilities map once to a canonical control layer, then project through OSCAL and Trestle into NIST, ISO 27001, SOC 2, or an internal framework.",
-    to: "/docs/architecture#continuous-compliance",
+    to: "/docs/architecture/governance/continuous-compliance",
   },
 ] as const;
 
