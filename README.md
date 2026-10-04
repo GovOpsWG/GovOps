@@ -53,4 +53,4 @@ The rules in full:
 So the only reason to edit this file is to change *reading order* or to describe a document. To add
 one, just add the file.
 
-See [CONTRIBUTING.md](../Community_Specification/contributing.md) to propose a change.
+See [CONTRIBUTING.md](./Community_Specification/contributing.md) to propose a change.
