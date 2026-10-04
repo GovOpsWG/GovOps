@@ -5,7 +5,7 @@ Welcome! All the GovOps standards, artifacts, and content to generate the [websi
 
 ## Purpose of GovOps
 
-Governance Operations (GovOps) is a OWASP WG whose goal is to defines a new scalable operational architecture for governing authorization risk across modern software systems, infrastructure, and endpoints. It's designed to address the challenges of modern, highly dynamic, and automated environments, particularly those involving agentic software. [Here](./owasp/project_proposal.md) is the accepted OWASP proposal which also describes the three project deliverables: Standards, Architecture and Metrics.
+Governance Operations (GovOps) is a OWASP WG whose goal is to defines a new scalable operational architecture for governing authorization risk across modern software systems, infrastructure, and endpoints. It's designed to address the challenges of modern, highly dynamic, and automated environments, particularly those involving agentic software. [Here](./docs/owasp/project_proposal.md) is the accepted OWASP proposal which also describes the three project deliverables: Standards, Architecture and Metrics.
 
 ## Communication Channels
 
