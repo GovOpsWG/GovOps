@@ -1,64 +1,56 @@
-# GovOps
+# OWASP GovOps Github Home
 
-**Measure risk, transparency, and accountability.**
+Welcome! All the GovOps standards, artifacts, and content to generate the [website](https://govops.info) are here. This is also a good place to register  issues which will get the attention of the GovOps WG editors. 
 
-The GovOps Working Group advances continuous, policy-driven governance for authorization, risk, and
-trust across open source, cloud, and agentic systems.
 
-Documentation: **[govops.info](https://govops.info)**
+## Purpose of GovOps
 
-## What GovOps is
+Governance Operations (GovOps) is a OWASP WG whose goal is to defines a new scalable operational architecture for governing authorization risk across modern software systems, infrastructure, and endpoints. It's designed to address the challenges of modern, highly dynamic, and automated environments, particularly those involving agentic software. [Here](./docs/owasp/project_proposal.md) is the accepted OWASP proposal which also describes the three project deliverables: Standards, Architecture and Metrics.
 
-GovOps is an open, vendor-neutral architecture for **authorization governance** at enterprise scale.
-It elevates the *capability* — a concrete action on a resource, such as `transfer:funds` or
-`deploy:production` — as the primary unit of governance.
+## Communication Channels
 
-Governance artifacts are managed centrally. Authorization decisions stay local, next to the resource
-being protected. A stable `capability_id` joins the two, travelling from the catalog to the kernel.
+* [OWASP GovOps Slack](https://owasp.slack.com/archives/C0BQMFJSCGM) - detailed conversations going on amongst the editors about the three deliverables
+* [Linkedin GovOps Group](https://www.linkedin.com/groups/17478011/) - Larger community and a good place to post articles or have discussions with a wider audience of GovOps interested parties.
+* All-hands meetings are open to everyone to discuss progress for the week:
+  * 14:00 UTC - Friday "Early" Meeting [Google Meet](https://meet.google.com/tqq-zqep-fkj)
+  * 20:00 UTC - Friday Late Meeting [Google Meet](https://meet.google.com/wwh-yhox-tmf)
 
-The continuous GovOps loop:
+## GovOps Website 
 
-```text
-Govern → Authorize → Execute → Observe → Detect → Respond → Govern
-```
+Documents for [https://govops.info](https://govops.info) are picked up automatically from the `/docs` folder — you do not register them anywhere. See [How the menu is built](#how-the-menu-is-built).
 
-GovOps is PDP-neutral. It does not standardize a new policy decision point, policy language,
-enforcement protocol, or identity system, and it does not require you to replace the authorization
-infrastructure you already run.
+### Conventions
 
-## Deliverables
+- Documents are plain GitHub-flavored Markdown with no front matter, so they read correctly both on
+  GitHub and on govops.info.
+- Relative links between documents work in both places. The site rewrites them to routes at build
+  time.
+- Fenced `text` blocks hold hand-drawn diagrams. The site renders them unwrapped and
+  unhighlighted — keep them under roughly 100 columns.
 
-| Deliverable | Status | Documents |
-|---|---|---|
-| **Authorization Capability Catalog (ACC)** | Draft | [Design](./docs/acc/authorization-capability-catalog-design.md) · [Use cases](./docs/acc/authorization-capability-catalog-use-cases.md) |
-| **Governance metrics** | Draft for sub-group comment | [Metric set](./docs/metrics/README.md) · [Template](./docs/metrics/metric-definition-template.md) |
-| **Architecture** | Draft | [Architecture](./docs/architecture/README.md) |
+### How the menu is built
 
-## Start here
+The sidebar is generated from the files on disk at build time. Nothing is registered by hand.
 
-- New to GovOps — [Architecture at a glance](./docs/architecture/README.md#architecture-at-a-glance)
-- Building a catalog — [ACC design](./docs/acc/authorization-capability-catalog-design.md)
-- Measuring governance — [GovOps metrics](./docs/metrics/README.md)
-- Working group scope — [OWASP project proposal](./docs/owasp/project_proposal.md)
+| What you do | What appears |
+|---|---|
+| Add `docs/<section>/<name>.md` | An entry in that section's menu, titled from its first `#` heading |
+| Add a new `docs/<section>/` directory | A new section, titled from its `README.md`, or from the directory name if it has none |
+| Link a document from this file | It sorts to that position instead of alphabetically |
+| Add `docs/<name>.md` at the top level | A reachable page, but **not** a menu entry — this is how `MOVED.md` stays out of the way |
 
-The full documentation map is in [`docs/README.md`](./docs/README.md).
+The rules in full:
 
-## Get involved
+1. **Sections are directories.** Every subdirectory of `docs/` becomes one.
+2. **Section titles come from `README.md`.** A section without one is titled from its directory
+   name (`event-handling` becomes "Event handling") and its heading links to its first document
+   rather than to a page that does not exist.
+3. **Order comes from this file.** Sections and documents appear in the order they are linked
+   above. Anything not linked sorts to the end of its section, alphabetically by title.
+4. **Nothing is hidden by omission.** A document you forget to link here still appears in the menu
+   and is still searchable — it just sorts last.
 
-- Join the [GovOps LinkedIn Group](https://gluu.co/govops-group)
-- Open an issue or pull request — see [CONTRIBUTING.md](./Community_Specification/contributing.md)
-- Read the [outreach notes](./docs/outreach/README.md)
+So the only reason to edit this file is to change *reading order* or to describe a document. To add
+one, just add the file.
 
-## Repository layout
-
-```text
-docs/          working group documents (the source of truth for govops.info)
-site/          the govops.info web application
-```
-
-Documentation moved from the repository root into `docs/` — see
-[`docs/MOVED.md`](./docs/MOVED.md) for the old-to-new path map.
-
-## License
-
-[CC0 1.0 Universal](./LICENSE). Contributions are dedicated to the public domain.
+See [CONTRIBUTING.md](./Community_Specification/contributing.md) to propose a change.
