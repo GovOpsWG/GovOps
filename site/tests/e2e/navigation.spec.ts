@@ -48,7 +48,7 @@ test.describe("desktop chrome", () => {
 
     await expectClientNavigation(
       page,
-      () => nav.getByRole("link", { name: "Documentation", exact: true }).click(),
+      () => nav.getByRole("link", { name: "Overview", exact: true }).click(),
       /\/docs$/,
       /GovOps documentation/,
     );
