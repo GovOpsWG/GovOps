@@ -83,10 +83,7 @@ The architecture separates a **Governance Plane** (centralized artifacts) from a
 
 A `Challenge` means available evidence is insufficient for a final decision — the caller must obtain more evidence and resubmit before the protected capability can execute. Runtime evidence flows back up the same `capability_id` join into the Governance Plane (**Observe → Detect → Respond → Govern**).
 
-Related ACC documents:
-
-* [Authorization Capability Catalog: Design](../acc/authorization-capability-catalog-design.md)
-* [Authorization Capability Catalog: Use Cases](../acc/authorization-capability-catalog-use-cases.md)
+The catalog design and use cases are listed in the [ACC documents](../acc/README.md).
 
 Google's July 2026 whitepaper [Beyond Zero: Enterprise security for the AI era](https://spawn-queue.acm.org/doi/10.1145/3819083) calls for open architectures that enhance transparency into access. GovOps aligns with Beyond Zero's principle that security must move to distributed, local resource/action-based authorization decisions.
 
@@ -200,6 +197,6 @@ The architecture also extends governance beyond the authorization decision itsel
 
 The result is the GovOps loop — **Govern → Authorize → Execute → Observe → Detect → Respond → Govern** — with `capability_id` as the join key. Define capabilities and map them once to a canonical control layer; authorize locally; observe execution; detect and respond; then reuse that governance work across compliance frameworks.
 
-For the ACC artifact model and worked examples, see the [ACC design](../acc/authorization-capability-catalog-design.md) and [ACC use cases](../acc/authorization-capability-catalog-use-cases.md).
+For the ACC artifact model and worked examples, see the [ACC documents](../acc/README.md).
 
 To follow GovOps discussions, join the [GovOps LinkedIn Group](https://gluu.co/govops-group).
