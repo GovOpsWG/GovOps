@@ -1,6 +1,6 @@
 # Continuous Compliance
 
-Compliance frameworks describe **controls**. Operational systems expose **capabilities**. The Authorization Capability Catalog connects those two worlds. Abstract-control mappings, Trestle/OSCAL projection, and the Gemara export path are detailed in the [ACC design](../../acc/authorization-capability-catalog-design.md) (§8–9) and walked through in [UC-02: Compliance Mapping and Audit](../../acc/authorization-capability-catalog-use-cases.md#uc-02-compliance-mapping-and-audit).
+Compliance frameworks describe **controls**. Operational systems expose **capabilities**. The Authorization Capability Catalog connects those two worlds. Abstract-control mappings, Trestle/OSCAL projection, and the Gemara export path are detailed in the ACC design (§8–9) and walked through in the compliance mapping use case (UC-02). Both are listed in the [ACC documents](../../acc/README.md).
 
 Traditional compliance programs frequently operate separately from runtime authorization. Controls are documented in one system, policies are implemented somewhere else, and evidence is collected manually during an audit. GovOps closes this gap by treating the ACC as the common reference point between what the enterprise can do and what it is obligated to govern.
 

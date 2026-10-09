@@ -1,6 +1,6 @@
 # Capability Catalog
 
-The Authorization Capability Catalog ("ACC") is a machine-readable inventory of what applications, APIs, infrastructure, workloads, and AI agents can actually do — the authorization surface the enterprise wants to govern. The catalog model, Authorization Capability Profile, and tooling conventions are specified in the [ACC design](../../acc/authorization-capability-catalog-design.md); persona workflows are in the [ACC use cases](../../acc/authorization-capability-catalog-use-cases.md).
+The Authorization Capability Catalog ("ACC") is a machine-readable inventory of what applications, APIs, infrastructure, workloads, and AI agents can actually do — the authorization surface the enterprise wants to govern. The catalog model, Authorization Capability Profile, tooling conventions, and persona workflows are specified in the [ACC documents](../../acc/README.md).
 
 A capability is an action on a resource. Examples might include:
 

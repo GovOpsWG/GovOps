@@ -3,6 +3,8 @@ import { useId, useState } from "react";
 type Plane = {
   readonly id: string;
   readonly label: string;
+  /** Shorter text for the drawn plate, where the full label does not fit. */
+  readonly plateLabel?: string;
   readonly summary: string;
   readonly color: string;
 };
@@ -13,29 +15,30 @@ const PLANES: readonly Plane[] = [
     id: "governance",
     label: "Governance",
     summary:
-      "The shared artifacts used to control authorization: the capability catalog, policy, schema, federation, and compliance mappings.",
+      "What GovOps owns: the capability catalog, continuous evidence, continuous compliance, and governance metrics, all keyed on capability_id.",
     color: "#22c3d6",
+  },
+  {
+    id: "access-management",
+    label: "Access Management",
+    plateLabel: "Access",
+    summary:
+      "Policy authoring, authorization, schema, federation, shared signals, IGA, and PAM. GovOps asks these systems to record every decision against a capability_id.",
+    color: "#f97316",
+  },
+  {
+    id: "observability",
+    label: "Observability",
+    summary:
+      "SIEM, ITDR, analytics, threat detection, session recording, and kernel telemetry. GovOps asks these systems to link what ran back to the decision that allowed it.",
+    color: "#22c55e",
   },
   {
     id: "identity",
     label: "Identity",
     summary:
-      "Identifiers and trusted evidence about the humans, workloads, organizations, devices, and agents taking part in a decision.",
+      "Human, software, and organization identities. GovOps asks these systems for verifiable identifiers and attributes that enrich evidence about who or what acted.",
     color: "#3b82f6",
-  },
-  {
-    id: "visibility",
-    label: "Visibility",
-    summary:
-      "Evidence about what actually happened: decision logs, application telemetry, and kernel observability joined by capability_id.",
-    color: "#22c55e",
-  },
-  {
-    id: "event",
-    label: "Event",
-    summary:
-      "What the enterprise does when a condition needs action: revoke, quarantine, re-authorize, notify the owner, open an incident.",
-    color: "#f97316",
   },
 ];
 
@@ -55,7 +58,7 @@ export function ControlPlanes() {
   return (
     <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       <div>
-        <div role="tablist" aria-label="Control planes" className="flex flex-wrap gap-2">
+        <div role="tablist" aria-label="GovOps layers" className="flex flex-wrap gap-2">
           {PLANES.map((plane, index) => (
             <button
               key={plane.id}
@@ -80,7 +83,7 @@ export function ControlPlanes() {
           viewBox="0 0 340 400"
           className="mt-8 w-full max-w-md"
           role="img"
-          aria-label={`Four stacked control planes with ${PLANES[active]?.label} selected`}
+          aria-label={`Four stacked layers with ${PLANES[active]?.label} selected`}
         >
           <defs>
             {PLANES.map((plane) => (
@@ -125,7 +128,7 @@ export function ControlPlanes() {
             aria-labelledby={`${gradientId}-tab-${plane.id}`}
             hidden={active !== index}
           >
-            <h3 className="text-xl font-bold text-[var(--ink)]">{plane.label} plane</h3>
+            <h3 className="text-xl font-bold text-[var(--ink)]">{plane.label} layer</h3>
             <p className="mt-3 text-[var(--ink-muted)]">{plane.summary}</p>
           </div>
         ))}
@@ -205,7 +208,7 @@ function Plate({
         fill={active ? "#ffffff" : plane.color}
         fillOpacity={active ? 1 : 0.9}
       >
-        {plane.label}
+        {plane.plateLabel ?? plane.label}
       </text>
     </g>
   );

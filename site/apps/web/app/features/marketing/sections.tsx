@@ -164,9 +164,9 @@ export function NewEra() {
 export function ControlPlanesSection() {
   return (
     <Section
-      eyebrow="GovOps control planes"
+      eyebrow="GovOps layers"
       title="Four layers, one join key"
-      lead="Effective authorization governance depends on governance, identity, visibility, and event handling. Each answers a different question, and capability_id is what connects the answers."
+      lead="Effective authorization governance depends on governance, access management, observability, and identity. GovOps owns governance and asks the other three to be governable. capability_id is what connects them."
     >
       <ControlPlanes />
     </Section>
@@ -288,7 +288,7 @@ const DELIVERABLES = [
   {
     title: "Architecture",
     status: "Draft",
-    body: "The GovOps loop, the Governance and Runtime planes, the nine GovOps services, and the runtime authorization context that joins a decision to what executed.",
+    body: "The GovOps loop, the Governance and Runtime planes, the four layers, the GovOps services, and the runtime authorization context that joins a decision to what executed.",
     to: "/docs/architecture",
   },
 ] as const;
