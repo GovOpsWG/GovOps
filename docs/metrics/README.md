@@ -2,7 +2,7 @@
 
 **Status:** Draft for sub-group comment
 
-**Deliverable:** Metric definition document (Phase 2 of the GovOps project proposal)
+**Deliverable:** Metric definition documents
 
 This directory holds the GovOps metric definitions. Everything in this front matter is stated once and never repeated inside an individual metric entry.
 
@@ -22,7 +22,7 @@ All worked examples use the same fictional company, Meridian Finance, a mid-size
 
 | Entry | Kind | Status |
 |---|---|---|
-| [Denial ratio trend](./denial-ratio-trend.md) | Operational metric | Draft, in this directory |
+| [...](.) | ... | Proposed |
 
 An entry appears in this table only once its complete definition, worked example included, is in this directory.
 
