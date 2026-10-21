@@ -71,4 +71,4 @@ Copy this file to draft a new entry. Every field is required. If a field is genu
 ## Open questions
 ```
 
-The worked entry that sets the bar is [denial-ratio-trend.md](./denial-ratio-trend.md).
+
