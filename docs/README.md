@@ -48,12 +48,18 @@ plane diagram and the loop, then read the service pages in order.
 | [ACC design](./acc/authorization-capability-catalog-design.md) | The catalog model, the Authorization Capability Profile, Gemara layering, and the OSCAL export path |
 | [ACC use cases](./acc/authorization-capability-catalog-use-cases.md) | Persona workflows: authoring, compliance mapping, linting, drift detection |
 
+## TRACE profile
+
+| Document | What it covers |
+|---|---|
+| [TRACE profile](./trace/README.md) | The GovOps evidence profile of TRACE |
+| [GovOps TRACE profile](./trace/govops-trace-profile.md) | Schema changes on top of the base TRACE v0.2 Trust Record |
+
 ## Metrics
 
 | Document | What it covers |
 |---|---|
 | [Metrics](./metrics/README.md) | What counts as a GovOps metric, the design rules, charter coverage, and the metric set |
-| [Denial ratio trend](./metrics/denial-ratio-trend.md) | The first published metric entry |
 | [Metric definition template](./metrics/metric-definition-template.md) | The shape every entry follows |
 
 ## Working group
