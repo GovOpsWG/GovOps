@@ -140,7 +140,7 @@ Runtime evidence flows in the opposite direction along the stack in Architecture
 
 ### Governability requirements
 
-GovOps does not run access management, observability, or identity systems. It asks each layer to be governable. The requirements below say what each layer must provide. The exact evidence claims will come from a profile of TRACE, which is in progress.
+GovOps does not run access management, observability, or identity systems. It asks each layer to be governable. The requirements below say what each layer must provide. The exact evidence claims come from the [GovOps TRACE profile](../trace/govops-trace-profile.md), which is in progress.
 
 Access management:
 

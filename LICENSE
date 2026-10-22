@@ -2,8 +2,7 @@
 
 ## Specification License
 
-Specifications in the repository are subject to the **Community Specification License 1.0** available at [https://github.com/CommunitySpecification/1.0](https://github.com/CommunitySpecification/1.0). See the `Community_Specification` folder in this 
-repository for project governance documents. 
+Specifications in the repository are subject to the **Community Specification License 1.0** available at [https://github.com/CommunitySpecification/1.0](https://github.com/CommunitySpecification/1.0). See [GOVERNANCE.md](./GOVERNANCE.md), [CONTRIBUTING.md](./CONTRIBUTING.md), [SCOPE.md](./SCOPE.md), [NOTICES.md](./NOTICES.md) and the full [license text](./COMMUNITY_SPECIFICATION_LICENSE.md) for project governance documents.
 
 ## Source Code License
 
