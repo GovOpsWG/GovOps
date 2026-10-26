@@ -1,4 +1,4 @@
-# GovOps Metrics — Draft for Review
+# GovOps Metrics 
 
 > Work in progress. This draft explores a revised metrics overview and document structure. It does not replace the [current Metrics README](README.md) or establish an approved metric lifecycle. Supporting documents are starter drafts for further discussion.
 
