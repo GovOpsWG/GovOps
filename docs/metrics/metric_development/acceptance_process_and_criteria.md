@@ -1,4 +1,4 @@
-# Acceptance Process and Criteria — Draft
+# Acceptance Process and Criteria 
 
 ## 1. Development process
 
