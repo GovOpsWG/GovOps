@@ -1,7 +1,5 @@
 # Acceptance Process and Criteria — Draft
 
-> Draft proposal for developing, evaluating and accepting metrics. The existing [contribution guidance](../../../CONTRIBUTING.md) and [governance policy](../../../GOVERNANCE.md) still apply.
-
 ## 1. Development process
 
 The proposed lifecycle is **Pre-proposed → Proposed → Approved**.
