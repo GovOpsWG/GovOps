@@ -1,4 +1,4 @@
-# Proposed Metrics — Draft
+# Proposed Metrics 
 
 > Work in progress. This folder is part of a proposed document structure; it does not assign an official status to existing metric discussions.
 
