@@ -1,4 +1,4 @@
-# Approved Metrics — Draft
+# Approved Metrics 
 
 > Work in progress. This folder is reserved for definitions with a recorded working-group approval decision under an agreed process.
 
