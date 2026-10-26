@@ -136,8 +136,8 @@ commit.
 
 The metric set has an admissions rule: a GovOps metric requires at least two observation windows and
 reports the change between them. Read
-[what counts as a GovOps metric](./docs/metrics/README.md#4-what-counts-as-a-govops-metric) first,
-then use the [template](./docs/metrics/metric-definition-template.md). Open it as an issue before
+[metric development guidance](./docs/metrics/README.md#metric-development) first,
+then use the [template](./docs/metrics/metric_development/definition_template.md). Open it as an issue before
 writing the full entry.
 
 **5.6 Working on the site**
