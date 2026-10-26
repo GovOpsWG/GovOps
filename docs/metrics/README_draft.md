@@ -35,22 +35,11 @@ This approach keeps a concerning result visible and prevents missing evidence fr
 
 ### Illustrative example
 
-```text
-┌──────────────────────┐  ┌──────────────────────┐
-│    Observability     │  │      Governance      │
-│        🟩🟩🟩         │  │                      │
-│        🟩🟩🟩         │  │        🟧🟧🟧         │
-│        🟩🟩🟩         │  │        🟧🟧🟧         │
-│        🟩🟩🟩         │  │        🟧🟧🟧         │
-└──────────────────────┘  └──────────────────────┘
-┌──────────────────────┐  ┌──────────────────────┐
-│        Access        │  │       Identity       │
-│                      │  │        🟩🟩🟩         │
-│                      │  │        🟩🟩🟩         │
-│        🟥🟥🟥         │  │        🟩🟩🟩         │
-│        🟥🟥🟥         │  │        🟩🟩🟩         │
-└──────────────────────┘  └──────────────────────┘
-```
+| Observability | Governance |
+| :---: | :---: |
+| 🟩🟩🟩<br>🟩🟩🟩<br>🟩🟩🟩<br>🟩🟩🟩 | &nbsp;<br>🟧🟧🟧<br>🟧🟧🟧<br>🟧🟧🟧 |
+| **Access** | **Identity** |
+| &nbsp;<br>&nbsp;<br>🟥🟥🟥<br>🟥🟥🟥 | 🟩🟩🟩<br>🟩🟩🟩<br>🟩🟩🟩<br>🟩🟩🟩 |
 
 *Illustrative only. Colours and bar counts do not represent measured results or agreed thresholds. Unassessed layers would be shown in grey.*
 
