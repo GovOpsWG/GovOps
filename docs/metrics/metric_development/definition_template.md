@@ -1,4 +1,4 @@
-# Metric Definition Template — Draft
+# Metric Definition Template 
 
 **Name:** [Metric name and abbreviation]
 
