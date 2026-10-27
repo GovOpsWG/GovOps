@@ -43,6 +43,6 @@ The definition identifies how inputs are linked, what evidence checks are needed
 - **Thresholds:** Any target or colour boundary, its applicable context, rationale and who agrees it. Where thresholds are not established or not applicable, that is stated.
 - **Evidence sufficiency:** When a result can be assessed and when it remains unassessed. Missing evidence does not imply a positive result.
 
-An observed change alone does not establish that GovOps caused a business benefit. Any heat-map use identifies the relevant layer; aggregation across metrics follows the [proposed heat-map assessment method](../README_draft.md#proposed-assessment-method).
+An observed change alone does not establish that GovOps caused a business benefit. Any heat-map use identifies the relevant layer; aggregation across metrics follows the [proposed heat-map assessment method](../README.md#proposed-assessment-method).
 
-See the [draft acceptance process and criteria](acceptance_process_and_criteria.md) or return to the [draft metrics overview](../README_draft.md).
+See the [draft acceptance process and criteria](acceptance_process_and_criteria.md) or return to the [metrics overview](../README.md).

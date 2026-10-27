@@ -142,7 +142,7 @@ Runtime evidence flows in the opposite direction along the stack in Architecture
 
 GovOps does not run access management, observability, or identity systems. It asks each layer to be governable. The requirements below say what each layer must provide. The exact evidence claims come from the [GovOps TRACE profile](../standards/gtp/govops-trace-profile.md).
 
-Access management:
+Access:
 
 * Record every authorization decision with the `capability_id`, the decision (Allow, Deny, or Challenge), and the versions of the policy and evidence used.
 * Keep policy, schema, and federation artifacts centrally versioned, so a decision can be traced to the artifact versions behind it.
@@ -169,7 +169,7 @@ Governance:
 * [Continuous Compliance](./governance/continuous-compliance.md)
 * [Governance Metrics](./governance/governance-metrics.md)
 
-Access Management:
+Access:
 
 * [Centralized Policy Management](./access-management/policy-management.md)
 * [Schema Management](./access-management/schema-management.md)

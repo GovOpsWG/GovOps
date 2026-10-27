@@ -58,8 +58,8 @@ plane diagram and the loop, then read the service pages in order.
 
 | Document | What it covers |
 |---|---|
-| [Metrics](./metrics/README.md) | What counts as a GovOps metric, the design rules, charter coverage, and the metric set |
-| [Metric definition template](./metrics/metric-definition-template.md) | The shape every entry follows |
+| [Metrics](./metrics/README.md) | What counts as a GovOps metric, the Governance Heat Map, metric lifecycle stages, the design rules, and the metrics under discussion |
+| [Metric definition template](./metrics/metric_development/definition_template.md) | The shape every entry follows |
 
 ## Working group
 

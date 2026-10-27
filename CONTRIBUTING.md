@@ -135,11 +135,14 @@ commit.
 
 **5.5 Proposing a metric**
 
-The metric set has an admissions rule: a GovOps metric requires at least two observation windows and
-reports the change between them. Read
-[what counts as a GovOps metric](./docs/metrics/README.md#4-what-counts-as-a-govops-metric) first,
-then use the [template](./docs/metrics/metric-definition-template.md). Open it as an issue before
-writing the full entry.
+Start with a [GitHub Discussion](https://github.com/GovOpsWG/GovOps/discussions) exploring the
+governance question, benefit and a possible calculation. The metric set has an admissions rule: a
+GovOps metric requires at least two observation windows and reports the change between them. Once
+there is a named proposer and a plausible calculation, write it up with the
+[definition template](./docs/metrics/metric_development/definition_template.md) and open a pull
+request under [`docs/metrics/proposed_metrics/`](./docs/metrics/proposed_metrics). The
+[acceptance criteria](./docs/metrics/metric_development/acceptance_process_and_criteria.md) cover
+how it is evaluated from there.
 
 **5.6 Working on the site**
 

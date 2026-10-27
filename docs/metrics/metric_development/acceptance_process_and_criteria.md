@@ -56,4 +56,4 @@ After approval, the owner reviews continued usefulness and evidence quality at a
 
 Before adoption, this proposal needs alignment with the current contribution guidance, including its issue-first workflow and observation-window requirements.
 
-Return to the [draft metrics overview](../README_draft.md).
+Return to the [metrics overview](../README.md).
