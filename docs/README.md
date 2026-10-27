@@ -40,20 +40,19 @@ Documents are picked up automatically — you do not register them anywhere. Thi
 Start with [Architecture at a glance](./architecture/README.md#architecture-at-a-glance) for the
 plane diagram and the loop, then read the service pages in order.
 
-## Authorization Capability Catalog
+## Standards
 
 | Document | What it covers |
 |---|---|
-| [ACC overview](./acc/README.md) | What the catalog is and which document to read first |
-| [ACC design](./acc/authorization-capability-catalog-design.md) | The catalog model, the Authorization Capability Profile, Gemara layering, and the OSCAL export path |
-| [ACC use cases](./acc/authorization-capability-catalog-use-cases.md) | Persona workflows: authoring, compliance mapping, linting, drift detection |
-
-## TRACE profile
-
-| Document | What it covers |
-|---|---|
-| [TRACE profile](./trace/README.md) | The GovOps evidence profile of TRACE |
-| [GovOps TRACE profile](./trace/govops-trace-profile.md) | Schema changes on top of the base TRACE v0.2 Trust Record |
+| [Standards overview](./standards/README.md) | What the Standards umbrella covers and how the sub-areas relate |
+| [Overview](./standards/overview/README.md) | How ACC, GTP, and AuthZen fit together |
+| [ACC overview](./standards/acc/README.md) | What the catalog is and which document to read first |
+| [ACC design](./standards/acc/authorization-capability-catalog-design.md) | The catalog model, the Authorization Capability Profile, Gemara layering, and the OSCAL export path |
+| [ACC use cases](./standards/acc/authorization-capability-catalog-use-cases.md) | Persona workflows: authoring, compliance mapping, linting, drift detection |
+| [ACC YAML format](./standards/acc/acc-yaml-proposed-format.md) | Proposed machine-readable `ACC.yaml` format |
+| [TRACE profile](./standards/gtp/README.md) | The GovOps evidence profile of TRACE |
+| [GovOps TRACE profile](./standards/gtp/govops-trace-profile.md) | Schema changes on top of the base TRACE v0.2 Trust Record |
+| [AuthZen](./standards/authzen/README.md) | Placeholder — relationship to AuthZen's request shape |
 
 ## Metrics
 

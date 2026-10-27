@@ -121,8 +121,9 @@ commit.
 - **No front matter.** Documents are read on GitHub as often as on
   [govops.info](https://govops.info). Keep them valid GitHub-flavored Markdown with a single `#`
   title as the first line.
-- **Relative links between documents.** `../acc/authorization-capability-catalog-design.md`, not an
-  absolute URL. The site rewrites these to routes at build time, and they stay clickable on GitHub.
+- **Relative links between documents.** `../standards/acc/authorization-capability-catalog-design.md`,
+  not an absolute URL. The site rewrites these to routes at build time, and they stay clickable on
+  GitHub.
 - **Diagrams are fenced `text` blocks.** They are hand-drawn ASCII. The site renders them
   unwrapped and unhighlighted, so keep lines under roughly 100 columns or narrow viewports will
   scroll.
@@ -134,11 +135,14 @@ commit.
 
 **5.5 Proposing a metric**
 
-The metric set has an admissions rule: a GovOps metric requires at least two observation windows and
-reports the change between them. Read
-[metric development guidance](./docs/metrics/README.md#metric-development) first,
-then use the [template](./docs/metrics/metric_development/definition_template.md). Open it as an issue before
-writing the full entry.
+Start with a [GitHub Discussion](https://github.com/GovOpsWG/GovOps/discussions) exploring the
+governance question, benefit and a possible calculation. The metric set has an admissions rule: a
+GovOps metric requires at least two observation windows and reports the change between them. Once
+there is a named proposer and a plausible calculation, write it up with the
+[definition template](./docs/metrics/metric_development/definition_template.md) and open a pull
+request under [`docs/metrics/proposed_metrics/`](./docs/metrics/proposed_metrics). The
+[acceptance criteria](./docs/metrics/metric_development/acceptance_process_and_criteria.md) cover
+how it is evaluated from there.
 
 **5.6 Working on the site**
 

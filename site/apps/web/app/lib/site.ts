@@ -23,7 +23,7 @@ export const PRIMARY_NAV = [
   { label: "Scope", to: "/docs/scope" },
   { label: "Foundations", to: "/docs/foundations" },
   { label: "Architecture", to: "/docs/architecture" },
-  { label: "ACC", to: "/docs/acc" },
+  { label: "Standards", to: "/docs/standards" },
   { label: "Metrics", to: "/docs/metrics" },
 ] as const;
 

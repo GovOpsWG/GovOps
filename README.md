@@ -4,7 +4,7 @@ Welcome! All the GovOps standards, artifacts, and content to generate the [websi
 
 ## Purpose of GovOps
 
-Governance Operations (GovOps) is an [OWASP](https://owasp.org) Working Group developing a continuous operational approach to enterprise technology governance, aligned with Google’s Beyond Zero principles. It helps the humans responsible for the business assess risk, establish accountability, and make informed decisions about controls and investment. The [GovOps TRACE evidence profile](./docs/trace/govops-trace-profile.md) connects runtime activity to business context, supporting accountability, compliance, threat detection, observability, and metrics for governance.
+Governance Operations (GovOps) is an [OWASP](https://owasp.org) Working Group developing a continuous operational approach to enterprise technology governance, aligned with Google’s Beyond Zero principles. It helps the humans responsible for the business assess risk, establish accountability, and make informed decisions about controls and investment. The [GovOps TRACE evidence profile](./docs/standards/gtp/govops-trace-profile.md) connects runtime activity to business context, supporting accountability, compliance, threat detection, observability, and metrics for governance.
 
 ## History of GovOps
 

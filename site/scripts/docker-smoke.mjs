@@ -9,7 +9,11 @@ const CHECKS = [
   { path: "/", expect: 200, contains: "Measure risk, transparency," },
   { path: "/docs", expect: 200, contains: "GovOps documentation" },
   { path: "/docs/architecture", expect: 200, contains: "GOVERNANCE PLANE" },
-  { path: "/docs/acc/authorization-capability-catalog-design", expect: 200, contains: "Abstract" },
+  {
+    path: "/docs/standards/acc/authorization-capability-catalog-design",
+    expect: 200,
+    contains: "Abstract",
+  },
   { path: "/releases", expect: 200, contains: "Releases" },
   { path: "/api/search?q=capability", expect: 200, contains: '"route"' },
   { path: "/sitemap.xml", expect: 200, contains: "<urlset" },
