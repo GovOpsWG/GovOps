@@ -1,22 +1,20 @@
-# GovOps Metrics
+# GovOps Metrics 
 
-**Status:** Draft for sub-group comment
+> Work in progress. This draft explores a revised metrics overview and document structure. It does not replace the [current Metrics README](README.md) or establish an approved metric lifecycle. Supporting documents are starter drafts for further discussion.
 
-> Work in progress. The metric lifecycle, supporting guidance and heat-map assessment method remain proposals for working-group review.
+GovOps metrics help decision-makers understand the current state of the four GovOps Layers: Identity, Access, Governance and Observability. 
+Grounded in evidence, they help identify where controls, operational improvements or investment are needed. They also make the value of GovOps visible, including improvements in business operations and savings from compliance automation.
 
-GovOps metrics help decision-makers understand risk and business impact, support accountability and compliance, and evaluate the benefits of governance. Grounded in evidence, they help identify where controls, operational improvements or investment are needed. They also make the value of governance more visible, including improvements in business operations and savings from compliance automation.
+Metrics are derived from runtime Evidence structured according to the [GovOps TRACE Profile (GTP)](../trace/govops-trace-profile.md). Because
+Evidence joins runtime data with Capabilities defined in the the [Authorization Capability Catalog (ACC)](../acc/README.md), metrics can inform Governors about risk, business impact, and other business categories. 
 
-Building on the standards introduced in the overview, metrics connect runtime evidence structured according to the [GovOps TRACE Profile (GTP)](../trace/govops-trace-profile.md) with capability and business context from the [Authorization Capability Catalog (ACC)](../acc/README.md). This allows measurements to be interpreted by capability, ownership, business area and risk.
+This section descibes for each metric what is measured, why it matters and which evidence supports the result. The definition also identifies where additional information are needed, such as spending data or cost estimates.
 
-Each metric explains what is measured, why it matters and which evidence supports the result. Where additional information is needed, such as spending data or cost estimates, the metric definition identifies those inputs.
-
-This page brings together metrics at different stages of development and links to their definitions, discussions and development guidance.
+This page brings together metrics at different stages of development and links their definitions, discussions and development guidance.
 
 ## Governance Heat Map
 
-The Governance Heat Map gives decision-makers a compact overview of where governance is meeting expectations and where attention, further evaluation or investment is needed. It presents a colour-coded assessment across the four GovOps layers: **Identity, Access, Observability and Governance**.
-
-Each layer’s colour is supported by underlying metrics and evidence. These explain the assessment and help identify appropriate action. Metric-specific thresholds and their applicable context should be documented in each metric definition, following the [definition template](metric_development/definition_template.md).
+The Governance Heat Map gives Governors a compact, colour-coded assessment of which GovOps layers--**Identity, Access, Observability and Governance**--are meeting expectations, and where further attention, evaluation or investment is needed. Each layer’s colour is supported by underlying metrics and evidence. These explain the assessment and help identify appropriate action. Metric-specific thresholds and their applicable context are documented in each metric definition, following the [definition template](metric_development/definition_template.md).
 
 ### Proposed assessment method
 
@@ -47,11 +45,11 @@ This approach keeps a concerning result visible and prevents missing evidence fr
 
 ## Approved Metrics
 
-No approved definitions are currently listed. Approved metrics have a recorded working-group approval decision and a definition in [approved_metrics](approved_metrics/README.md).
+No approved definitions are listed in this draft. Approved metrics have a recorded working-group approval decision and a definition in [approved_metrics](approved_metrics/README.md).
 
 ## Proposed Metrics
 
-No definitions have been placed in this stage. Proposed metrics have a documented definition under review in [proposed_metrics](proposed_metrics/README.md).
+No definitions have been placed in this stage in this draft. Proposed metrics have a documented definition under review in [proposed_metrics](proposed_metrics/README.md).
 
 ## Pre-proposed Metrics
 
