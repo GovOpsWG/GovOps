@@ -4,7 +4,7 @@
 
 GovOps metrics help decision-makers understand risk and business impact, support accountability and compliance, and evaluate the benefits of governance. Grounded in evidence, they help identify where controls, operational improvements or investment are needed. They also make the value of governance more visible, including improvements in business operations and savings from compliance automation.
 
-Building on the standards introduced in the overview, metrics connect runtime evidence structured according to the [GovOps TRACE Profile (GTP)](../trace/govops-trace-profile.md) with capability and business context from the [Authorization Capability Catalog (ACC)](../acc/README.md). This allows measurements to be interpreted by capability, ownership, business area and risk.
+Building on the standards introduced in the overview, metrics connect runtime evidence structured according to the [GovOps TRACE Profile (GTP)](../standards/gtp/govops-trace-profile.md) with capability and business context from the [Authorization Capability Catalog (ACC)](../standards/acc/README.md). This allows measurements to be interpreted by capability, ownership, business area and risk.
 
 Each metric explains what is measured, why it matters and which evidence supports the result. Where additional information is needed, such as spending data or cost estimates, the metric definition identifies those inputs.
 
@@ -94,7 +94,7 @@ Two documents guide this process:
 
 ## Related Documentation
 
-- [Authorization Capability Catalog (ACC)](../acc/README.md): capability definitions and context.
-- [GovOps TRACE Profile (GTP)](../trace/govops-trace-profile.md): runtime evidence and its interpretation.
+- [Authorization Capability Catalog (ACC)](../standards/acc/README.md): capability definitions and context.
+- [GovOps TRACE Profile (GTP)](../standards/gtp/govops-trace-profile.md): runtime evidence and its interpretation.
 - [Architecture](../architecture/README.md): the services and information flows supporting governance.
 - [Governance policy](../../GOVERNANCE.md): working-group roles and approval process.

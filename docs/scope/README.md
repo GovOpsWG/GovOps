@@ -16,7 +16,7 @@ other systems and standards.
 
 - **The capability-level data model.** A machine-readable way to inventory and classify
   authorization capabilities as action-resource pairs, and the stable `capability_id` that
-  identifies each one. See [`acc-yaml-proposed-format.md`](../acc/acc-yaml-proposed-format.md).
+  identifies each one. See [`acc-yaml-proposed-format.md`](../standards/acc/acc-yaml-proposed-format.md).
 - **The correlation mechanism.** How `capability_id` (and related identifiers such as
   `decision_id`, `policy_store_id`, and `policy_store_version`) travels from the governance
   catalog through a runtime decision and into observability and compliance evidence, without

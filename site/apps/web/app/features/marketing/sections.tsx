@@ -223,7 +223,7 @@ const SERVICES = [
     icon: Layers,
     title: "Capability catalog",
     body: "A machine-readable inventory of what applications, APIs, workloads, and agents can actually do — with owner, risk tier, and business impact attached.",
-    to: "/docs/acc",
+    to: "/docs/standards/acc",
   },
   {
     icon: ScrollText,
@@ -277,7 +277,7 @@ const DELIVERABLES = [
     title: "Authorization Capability Catalog",
     status: "Draft for discussion",
     body: "The catalog model, the Authorization Capability Profile over Gemara, and the export path to OSCAL and Trestle — with four worked persona use cases.",
-    to: "/docs/acc",
+    to: "/docs/standards/acc",
   },
   {
     title: "Governance metrics",

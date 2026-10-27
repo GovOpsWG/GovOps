@@ -121,8 +121,9 @@ commit.
 - **No front matter.** Documents are read on GitHub as often as on
   [govops.info](https://govops.info). Keep them valid GitHub-flavored Markdown with a single `#`
   title as the first line.
-- **Relative links between documents.** `../acc/authorization-capability-catalog-design.md`, not an
-  absolute URL. The site rewrites these to routes at build time, and they stay clickable on GitHub.
+- **Relative links between documents.** `../standards/acc/authorization-capability-catalog-design.md`,
+  not an absolute URL. The site rewrites these to routes at build time, and they stay clickable on
+  GitHub.
 - **Diagrams are fenced `text` blocks.** They are hand-drawn ASCII. The site renders them
   unwrapped and unhighlighted, so keep lines under roughly 100 columns or narrow viewports will
   scroll.

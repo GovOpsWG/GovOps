@@ -83,7 +83,7 @@ The architecture separates a **Governance Plane** (centralized artifacts) from a
 
 A `Challenge` means available evidence is insufficient for a final decision — the caller must obtain more evidence and resubmit before the protected capability can execute. Runtime evidence flows back up the same `capability_id` join into the Governance Plane (**Observe → Detect → Respond → Govern**).
 
-The catalog design and use cases are listed in the [ACC documents](../acc/README.md).
+The catalog design and use cases are listed in the [ACC documents](../standards/acc/README.md).
 
 Google's July 2026 whitepaper [Beyond Zero: Enterprise security for the AI era](https://spawn-queue.acm.org/doi/10.1145/3819083) calls for open architectures that enhance transparency into access. GovOps aligns with Beyond Zero's principle that security must move to distributed, local resource/action-based authorization decisions.
 
@@ -140,7 +140,7 @@ Runtime evidence flows in the opposite direction along the stack in Architecture
 
 ### Governability requirements
 
-GovOps does not run access management, observability, or identity systems. It asks each layer to be governable. The requirements below say what each layer must provide. The exact evidence claims come from the [GovOps TRACE profile](../trace/govops-trace-profile.md), which is in progress.
+GovOps does not run access management, observability, or identity systems. It asks each layer to be governable. The requirements below say what each layer must provide. The exact evidence claims come from the [GovOps TRACE profile](../standards/gtp/govops-trace-profile.md).
 
 Access management:
 
@@ -197,6 +197,6 @@ The architecture also extends governance beyond the authorization decision itsel
 
 The result is the GovOps loop — **Govern → Authorize → Execute → Observe → Detect → Respond → Govern** — with `capability_id` as the join key. Define capabilities and map them once to a canonical control layer; authorize locally; observe execution; detect and respond; then reuse that governance work across compliance frameworks.
 
-For the ACC artifact model and worked examples, see the [ACC documents](../acc/README.md).
+For the ACC artifact model and worked examples, see the [ACC documents](../standards/acc/README.md).
 
 To follow GovOps discussions, join the [GovOps LinkedIn Group](https://gluu.co/govops-group).

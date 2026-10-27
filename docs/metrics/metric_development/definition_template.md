@@ -23,7 +23,7 @@
 
 ## 3. Evidence
 
-Each input is traceable to a record or another identified source. Producer-record fields, collector-derived values and external inputs or estimates are distinguished, consistent with the [GovOps TRACE Profile](../../trace/govops-trace-profile.md).
+Each input is traceable to a record or another identified source. Producer-record fields, collector-derived values and external inputs or estimates are distinguished, consistent with the [GovOps TRACE Profile](../../standards/gtp/govops-trace-profile.md).
 
 | Input or field | Source and derivation | Use in the calculation |
 | --- | --- | --- |
@@ -34,7 +34,7 @@ The definition identifies how inputs are linked, what evidence checks are needed
 ## 4. Capability and business context
 
 - **Scope:** The capabilities, systems, population or business operations covered.
-- **Capability mapping:** Where applicable, how evidence is linked to the [ACC](../../acc/README.md), including the mapping version. A broader metric explains its level of analysis.
+- **Capability mapping:** Where applicable, how evidence is linked to the [ACC](../../standards/acc/README.md), including the mapping version. A broader metric explains its level of analysis.
 - **Breakdowns:** The comparisons needed for interpretation, such as capability, business unit, risk tier or actor type. Unknown or unmapped cases remain visible.
 
 ## 5. Interpretation and thresholds

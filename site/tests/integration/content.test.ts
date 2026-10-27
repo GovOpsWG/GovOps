@@ -12,7 +12,7 @@ describe("documentation corpus", () => {
     expect(pages.length).toBeGreaterThanOrEqual(12);
     expect(routes.has("/docs")).toBe(true);
     expect(routes.has("/docs/architecture")).toBe(true);
-    expect(routes.has("/docs/acc/authorization-capability-catalog-design")).toBe(true);
+    expect(routes.has("/docs/standards/acc/authorization-capability-catalog-design")).toBe(true);
   });
 
   it("gives every page a title and a route", () => {

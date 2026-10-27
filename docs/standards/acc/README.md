@@ -28,10 +28,10 @@ Read the design first. The use cases assume its vocabulary.
 ## How it fits
 
 The ACC sits in the Governance Plane described in the
-[architecture](../architecture/governance/capability-catalog.md). It builds on
+[architecture](../../architecture/governance/capability-catalog.md). It builds on
 [Gemara](https://gemara.openssf.org) for capability semantics and projects through
 [OSCAL Compass compliance-trestle](https://github.com/oscal-compass/compliance-trestle) for
 compliance interchange. It is engine-neutral: any AuthZEN-conformant, PARC-shaped PDP works.
 
-The [metrics](../metrics/README.md) deliverable uses `capability_id` as its unit of analysis, and
+The [metrics](../../metrics/README.md) deliverable uses `capability_id` as its unit of analysis, and
 several charter questions are answered by catalog queries rather than by runtime measurement.
