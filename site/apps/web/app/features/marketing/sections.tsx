@@ -166,7 +166,7 @@ export function ControlPlanesSection() {
     <Section
       eyebrow="GovOps layers"
       title="Four layers, one join key"
-      lead="Effective authorization governance depends on governance, access management, observability, and identity. GovOps owns governance and asks the other three to be governable. capability_id is what connects them."
+      lead="Effective authorization governance depends on governance, access, observability, and identity. GovOps owns governance and asks the other three to be governable. capability_id is what connects them."
     >
       <ControlPlanes />
     </Section>
