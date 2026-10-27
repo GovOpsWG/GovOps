@@ -4,4 +4,4 @@
 
 No metric definitions have been added here yet. Each future entry should link to its approval decision and identify the approved version.
 
-See the [draft metrics overview](../README_draft.md) and [draft development process](../metric_development/acceptance_process_and_criteria.md).
+See the [metrics overview](../README.md) and [draft development process](../metric_development/acceptance_process_and_criteria.md).

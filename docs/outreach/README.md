@@ -18,9 +18,10 @@ details, including how to sign off a commit.
 
 Good first contributions:
 
-- **Propose a metric** using the [template](../metrics/README.md#10-how-to-propose-a-metric). The
-  metric set has a documented parking lot of candidates held for v2, each with the reason recorded.
-- **Answer an open question.** The [ACC design](../acc/authorization-capability-catalog-design.md)
+- **Propose a metric** using the [definition template](../metrics/metric_development/definition_template.md).
+  Ideas start as a [GitHub Discussion](https://github.com/GovOpsWG/GovOps/discussions) and move through
+  the [Pre-proposed, Proposed and Approved stages](../metrics/README.md#metric-development).
+- **Answer an open question.** The [ACC design](../standards/acc/authorization-capability-catalog-design.md)
   and the [metrics front matter](../metrics/README.md) both close with open questions.
 - **Report a gap.** If the architecture does not cover a system you have to govern, open an issue
   describing it.

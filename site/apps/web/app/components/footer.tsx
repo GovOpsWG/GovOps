@@ -9,7 +9,7 @@ const COLUMNS = [
     links: [
       { label: "Overview", to: "/docs" },
       { label: "Architecture", to: "/docs/architecture" },
-      { label: "Capability catalog", to: "/docs/acc" },
+      { label: "Standards", to: "/docs/standards" },
       { label: "Metrics", to: "/docs/metrics" },
     ],
   },

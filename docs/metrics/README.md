@@ -1,20 +1,20 @@
-# GovOps Metrics 
+# GovOps Metrics
 
-> Work in progress. This draft explores a revised metrics overview and document structure. It does not replace the [current Metrics README](README.md) or establish an approved metric lifecycle. Supporting documents are starter drafts for further discussion.
+**Status:** Draft for sub-group comment
 
 GovOps metrics help decision-makers understand the current state of the four GovOps Layers: Identity, Access, Governance and Observability. 
 Grounded in evidence, they help identify where controls, operational improvements or investment are needed. They also make the value of GovOps visible, including improvements in business operations and savings from compliance automation.
 
-Metrics are derived from runtime Evidence structured according to the [GovOps TRACE Profile (GTP)](../trace/govops-trace-profile.md). Because
-Evidence joins runtime data with Capabilities defined in the the [Authorization Capability Catalog (ACC)](../acc/README.md), metrics can inform Governors about risk, business impact, and other business categories. 
+Metrics are derived from runtime Evidence structured according to the [GovOps TRACE Profile (GTP)](../standards/gtp/govops-trace-profile.md). Because
+Evidence joins runtime data with Capabilities defined in the [Authorization Capability Catalog (ACC)](../standards/acc/README.md), metrics can inform Governors about risk, business impact, and other business categories.
 
-This section descibes for each metric what is measured, why it matters and which evidence supports the result. The definition also identifies where additional information are needed, such as spending data or cost estimates.
+This section describes for each metric what is measured, why it matters and which evidence supports the result. The definition also identifies where additional information are needed, such as spending data or cost estimates.
 
 This page brings together metrics at different stages of development and links their definitions, discussions and development guidance.
 
 ## Governance Heat Map
 
-The Governance Heat Map gives Governors a compact, colour-coded assessment of which GovOps layers--**Identity, Access, Observability and Governance**--are meeting expectations, and where further attention, evaluation or investment is needed. Each layer’s colour is supported by underlying metrics and evidence. These explain the assessment and help identify appropriate action. Metric-specific thresholds and their applicable context are documented in each metric definition, following the [definition template](metric_development/definition_template.md).
+The Governance Heat Map gives Governors a compact, colour-coded assessment of which GovOps layers: **Identity, Access, Observability and Governance** are meeting expectations, and where further attention, evaluation or investment is needed. Each layer’s colour is supported by underlying metrics and evidence. These explain the assessment and help identify appropriate action. Metric-specific thresholds and their applicable context are documented in each metric definition, following the [definition template](metric_development/definition_template.md).
 
 ### Proposed assessment method
 
@@ -94,7 +94,7 @@ Two documents guide this process:
 
 ## Related Documentation
 
-- [Authorization Capability Catalog (ACC)](../acc/README.md): capability definitions and context.
-- [GovOps TRACE Profile (GTP)](../trace/govops-trace-profile.md): runtime evidence and its interpretation.
+- [Authorization Capability Catalog (ACC)](../standards/acc/README.md): capability definitions and context.
+- [GovOps TRACE Profile (GTP)](../standards/gtp/govops-trace-profile.md): runtime evidence and its interpretation.
 - [Architecture](../architecture/README.md): the services and information flows supporting governance.
 - [Governance policy](../../GOVERNANCE.md): working-group roles and approval process.

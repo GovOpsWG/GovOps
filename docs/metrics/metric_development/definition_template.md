@@ -23,7 +23,7 @@
 
 ## 3. Evidence
 
-Each input is traceable to a record or another identified source. Producer-record fields, collector-derived values and external inputs or estimates are distinguished, consistent with the [GovOps TRACE Profile](../../trace/govops-trace-profile.md).
+Each input is traceable to a record or another identified source. Producer-record fields, collector-derived values and external inputs or estimates are distinguished, consistent with the [GovOps TRACE Profile](../../standards/gtp/govops-trace-profile.md).
 
 | Input or field | Source and derivation | Use in the calculation |
 | --- | --- | --- |
@@ -34,7 +34,7 @@ The definition identifies how inputs are linked, what evidence checks are needed
 ## 4. Capability and business context
 
 - **Scope:** The capabilities, systems, population or business operations covered.
-- **Capability mapping:** Where applicable, how evidence is linked to the [ACC](../../acc/README.md), including the mapping version. A broader metric explains its level of analysis.
+- **Capability mapping:** Where applicable, how evidence is linked to the [ACC](../../standards/acc/README.md), including the mapping version. A broader metric explains its level of analysis.
 - **Breakdowns:** The comparisons needed for interpretation, such as capability, business unit, risk tier or actor type. Unknown or unmapped cases remain visible.
 
 ## 5. Interpretation and thresholds
@@ -43,6 +43,6 @@ The definition identifies how inputs are linked, what evidence checks are needed
 - **Thresholds:** Any target or colour boundary, its applicable context, rationale and who agrees it. Where thresholds are not established or not applicable, that is stated.
 - **Evidence sufficiency:** When a result can be assessed and when it remains unassessed. Missing evidence does not imply a positive result.
 
-An observed change alone does not establish that GovOps caused a business benefit. Any heat-map use identifies the relevant layer; aggregation across metrics follows the [proposed heat-map assessment method](../README_draft.md#proposed-assessment-method).
+An observed change alone does not establish that GovOps caused a business benefit. Any heat-map use identifies the relevant layer; aggregation across metrics follows the [proposed heat-map assessment method](../README.md#proposed-assessment-method).
 
-See the [draft acceptance process and criteria](acceptance_process_and_criteria.md) or return to the [draft metrics overview](../README_draft.md).
+See the [draft acceptance process and criteria](acceptance_process_and_criteria.md) or return to the [metrics overview](../README.md).

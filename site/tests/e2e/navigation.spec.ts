@@ -78,12 +78,12 @@ test.describe("desktop chrome", () => {
 });
 
 test("previous and next page through the documents client-side", async ({ page }) => {
-  await page.goto("/docs/acc/authorization-capability-catalog-design");
+  await page.goto("/docs/standards/acc/authorization-capability-catalog-design");
 
   await expectClientNavigation(
     page,
     () => page.getByRole("navigation", { name: "Documents" }).getByText("Next").click(),
-    /\/docs\/acc\/authorization-capability-catalog-use-cases$/,
+    /\/docs\/standards\/acc\/authorization-capability-catalog-use-cases$/,
     /Use Cases/,
   );
 });
