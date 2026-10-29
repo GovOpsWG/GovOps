@@ -5,6 +5,8 @@ approaches are insufficient, the core thesis behind the framework, the principle
 follow from it, what each stakeholder function gets out of it, illustrative use cases, and how
 GovOps relates to adjacent standards and products.
 
+- [`scope/README.md`](./scope/README.md) — what GovOps defines and what it deliberately leaves to
+  other systems and standards.
 - [`architectural-principles.md`](./architectural-principles.md) — the four GovOps principles and
   the design rules that apply them.
 - [`problem/README.md`](./problem/README.md) — industry fragmentation, the compliance gap, and

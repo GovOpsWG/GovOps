@@ -64,7 +64,7 @@ right at this stage is the foundation for every downstream workflow.
 
 - The `govops/` repository directory exists and is version-controlled.
 - The GovOps toolchain (`govops lint`) is installed and on the `PATH`.
-- The engineer has identified the set of (action, resource) pairs Acme exposes across
+- The engineer has identified the set of (action, resource_type) pairs Acme exposes across
 payments, lending, and fraud services.
 - No `GovOps-ACC.yaml` or `lexicon.yaml` exists yet in the repository.
 
@@ -77,7 +77,7 @@ payments, lending, and fraud services.
 The engineer creates `govops/lexicon.yaml`. Every action verb and resource type name
 that will appear in capability ids MUST be defined here before being referenced in
 `GovOps-ACC.yaml`. This is the single source of truth for canonical terms; `govops lint`
-will reject any capability whose `action` or `resource` does not resolve to a lexicon
+will reject any capability whose `action` or `resource_type` does not resolve to a lexicon
 term id.
 
 ```yaml
@@ -136,11 +136,11 @@ terms:
 **Step 2 — Author the capability catalog using the Authorization Capability Profile.**
 
 The engineer creates `govops/GovOps-ACC.yaml` using the Authorization Capability Profile
-(design §6.2): typed `action` and `resource` fields, optional `risk-tier`,
+(design §6.2): typed `action` and `resource_type` fields, optional `risk-tier`,
 `data-sensitivity`, `business-impact`, `geography`, and `org-unit`. The catalog validates as both `#AuthorizationCapabilityCatalog` and
 base `#CapabilityCatalog` — no Gemara core schema change. Each entry describes what the
 system exposes, not who is entitled to use it. Capability `id` is the SHA-256 digest of
-`<group-slug>|<action-slug>|<resource-slug>`.
+`<group-slug>|<action-slug>|<resource_type-slug>`.
 
 ```yaml
 # govops/GovOps-ACC.yaml
@@ -173,7 +173,7 @@ capabilities:
     title: Read invoice
     group: g.payments
     action: read
-    resource: invoice
+    resource_type: invoice
     data-sensitivity: restricted
     risk-tier: medium
     description: The system exposes the ability to retrieve an existing invoice by id.
@@ -182,7 +182,7 @@ capabilities:
     title: Transfer funds
     group: g.payments
     action: transfer
-    resource: bank-account
+    resource_type: bank-account
     data-sensitivity: confidential
     risk-tier: critical
     business-impact: revenue-critical
@@ -196,7 +196,7 @@ capabilities:
     title: Approve loan
     group: g.lending
     action: approve
-    resource: loan
+    resource_type: loan
     data-sensitivity: restricted
     risk-tier: critical
     description: >
@@ -207,7 +207,7 @@ capabilities:
     title: Flag transaction
     group: g.fraud
     action: flag
-    resource: transaction
+    resource_type: transaction
     data-sensitivity: internal
     risk-tier: high
     description: >
@@ -252,7 +252,7 @@ lexicon (`settle` on `payment-order`) — id `00c467f0c7ba1fb43ec62a7b4c7d49ad0c
     title: Settle payment order
     group: g.payments
     action: settle
-    resource: payment-order
+    resource_type: payment-order
     risk-tier: high
 ```
 
@@ -271,7 +271,7 @@ Checking: govops/GovOps-ACC.yaml
   ✗ Lexicon resolution FAILED: action 'settle' not found in lex.govops.actions-resources
       capability: 00c467f0c7ba1fb43ec62a7b4c7d49ad0cca67fb93eba91114acc2fd1217647e
       suggestion: Did you mean 'transfer'? Or add action.settle to lexicon.yaml.
-  ✗ Lexicon resolution FAILED: resource 'payment-order' not found in lex.govops.actions-resources
+  ✗ Lexicon resolution FAILED: resource_type 'payment-order' not found in lex.govops.actions-resources
       capability: 00c467f0c7ba1fb43ec62a7b4c7d49ad0cca67fb93eba91114acc2fd1217647e
       suggestion: Add resource.payment-order to lexicon.yaml.
 
@@ -304,7 +304,7 @@ The engineer confirms that `risk-tier`, `data-sensitivity`, `business-impact`, `
 
 - **P1 (Capability ID Format):** All four capability ids (`18420fcf746d2f060e1f24f96bcb820ceca600cad09e1d8a7c5a405db190d1a7`,
 `0c451a4b7305a117ad7e4c874799c5982100823ef1b71db3490fffc35a63fef3`, `3c6e0df2c70f2ecdea45d9e413db49b8c5e94921eb34eb7eb2a6de3ea46919cd`,
-`ec0e5e80cae8a6933dd1e0ad377b1c92f5c9fa8062d32e547ca52a0ea9ceffa2`) match `^[0-9a-f]{64}$` and equal SHA-256 of their `<group-slug>|<action-slug>|<resource-slug>` preimage.
+`ec0e5e80cae8a6933dd1e0ad377b1c92f5c9fa8062d32e547ca52a0ea9ceffa2`) match `^[0-9a-f]{64}$` and equal SHA-256 of their `<group-slug>|<action-slug>|<resource_type-slug>` preimage.
 - **P3 (Lint Output Consistency):** The `govops lint` passing output references only
 the four capability ids present in the catalog excerpt above; the failing output
 references only `00c467f0c7ba1fb43ec62a7b4c7d49ad0cca67fb93eba91114acc2fd1217647e`, which appears in the broken entry
@@ -486,8 +486,8 @@ govops lint v0.9.0
 Checking: govops/GovOps-ACC.yaml
 
   ✓ Profile: #AuthorizationCapabilityCatalog
-  ✓ Capability id preimage matches action/resource/group for 4 entries
-  ✓ Lexicon resolved for all action and resource slugs
+  ✓ Capability id preimage matches action/resource_type/group for 4 entries
+  ✓ Lexicon resolved for all action and resource type slugs
   ✓ Group membership: all capabilities reference defined groups
   ✓ risk-tier / data-sensitivity: all values within profile enums
   ✓ Optional classifiers (business-impact, geography, org-unit): well-formed
@@ -508,7 +508,7 @@ Authorization Capability Profile).
     title: Transfer funds (broken id)
     group: g.payments
     action: transfer
-    resource: bank-account
+    resource_type: bank-account
     risk-tier: critical
     description: Id does not match SHA-256 of payments|transfer|bank-account.
 
@@ -516,14 +516,14 @@ Authorization Capability Profile).
     title: Approve loan
     group: g.lending
     action: approve
-    resource: loan
+    resource_type: loan
     risk-tier: urgent          # not in profile enum
     data-sensitivity: restricted
 
   - id: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     title: Incomplete capability
     group: g.fraud
-    # action and resource omitted — required by #AuthorizationCapability
+    # action and resource_type omitted — required by #AuthorizationCapability
     risk-tier: high
 ```
 
@@ -541,7 +541,7 @@ Checking: govops/GovOps-ACC.yaml
   ✗ Invalid risk-tier: "urgent" on 3c6e0df2c70f2ecdea45d9e413db49b8c5e94921eb34eb7eb2a6de3ea46919cd
       allowed: critical | high | medium | low
   ✗ Profile violation: capability aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-      missing required fields: action, resource
+      missing required fields: action, resource_type
       cue: #AuthorizationCapability
 
 3 errors. 0 warnings.
@@ -582,7 +582,7 @@ EXIT 0
 
 ### Correctness Properties Demonstrated
 
-- **P1 (Capability ID Format):** Lint rejects an id that is not the SHA-256 of `<group-slug>|<action-slug>|<resource-slug>` and reports the expected digest.
+- **P1 (Capability ID Format):** Lint rejects an id that is not the SHA-256 of `<group-slug>|<action-slug>|<resource_type-slug>` and reports the expected digest.
 - **P3 (Lint Output Consistency):** Errors reference only the broken entries introduced in Step 2; the clean re-run references the four UC-01 capability ids.
 - **P4:** All required subsections present.
 
@@ -709,7 +709,7 @@ the catalog authoring process. The engineer adds `71a199b73006b3fb9574be4374722a
     title: Escalate transaction
     group: g.fraud
     action: escalate
-    resource: transaction
+    resource_type: transaction
     data-sensitivity: internal
     risk-tier: high
     description: >

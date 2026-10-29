@@ -41,7 +41,7 @@ Resilience Act.
 downstream integrations that depend on that role or policy have to be updated too.
 
 **What GovOps provides.** A stable `capability_id`-keyed interface. Because the identifier depends
-only on the action and resource (not on mutable metadata, role assignment, or policy text),
+only on the action and resource type (not on mutable metadata, role assignment, or policy text),
 integrations built against a `capability_id` do not need to change when governance metadata is
 revised.
 

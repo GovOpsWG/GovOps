@@ -8,14 +8,14 @@
 
 ## 1. Abstract
 
-This document proposes a design for representing **authorization capabilities** — discrete **(action, resource)** pairs describing *what a system exposes* — as catalog entries in the [Gemara](https://gemara.openssf.org) GRC engineering model, and for organizing a **GovOps repository** of Gemara artifacts around them.
+This document proposes a design for representing **authorization capabilities** — discrete **(action, resource_type)** pairs describing *what a system exposes* — as catalog entries in the [Gemara](https://gemara.openssf.org) GRC engineering model, and for organizing a **GovOps repository** of Gemara artifacts around them.
 
 Four ideas combine to form the design:
 
 1. **Capabilities are properties of the system, not entitlements.** A capability records that the system exposes an operation (e.g., `transfer` on `bank-account`). Who may perform that operation is runtime policy, outside the catalog.
-2. **An Authorization Capability Profile** adds domain structure to Gemara's stable `#Capability` via a CUE module that imports Gemara and unifies additional fields (`action`, `resource`, and optional governance classifiers). No Gemara core schema change is required; catalogs validate as both `#AuthorizationCapabilityCatalog` and `#CapabilityCatalog`.
+2. **An Authorization Capability Profile** adds domain structure to Gemara's stable `#Capability` via a CUE module that imports Gemara and unifies additional fields (`action`, `resource_type`, and optional governance classifiers). No Gemara core schema change is required; catalogs validate as both `#AuthorizationCapabilityCatalog` and `#CapabilityCatalog`.
 3. **A GovOps repository centered on** `GovOps-ACC`**.** One profiled `#CapabilityCatalog` inventories the authorization surface; a `#Lexicon` defines canonical terms; `#MappingDocument` files link capabilities to an OSCAL-aligned control layer first (not directly to NIST, ISO, or SOC 2 numbers). Policy binaries are authored and published separately.
-4. **Catalog quality, then catalog–policy alignment.** `govops lint` is the primary catalog validator (profile, ids, lexicon); `govops drift` then compares catalog **(action, resource)** entries to **published PARC-shaped policy releases** so the surface stays enumerable and aligned with enforcement.
+4. **Catalog quality, then catalog–policy alignment.** `govops lint` is the primary catalog validator (profile, ids, lexicon); `govops drift` then compares catalog **(action, resource_type)** entries to **published PARC-shaped policy releases** so the surface stays enumerable and aligned with enforcement.
 
 Gemara already provides the substrate: `#CapabilityCatalog` (ADR-0019), `#ControlCatalog`, mapping primitives with `Capability` as an `EntryType`, `#Lexicon`, and evaluation/enforcement/audit logs. GovOps contributes the **Authorization Capability Profile** module and repository conventions.
 
@@ -29,7 +29,7 @@ Gemara already provides the substrate: `#CapabilityCatalog` (ADR-0019), `#Contro
 
 ### 2.1 What enterprises need to govern
 
-GovOps requires a shared, declarative inventory of **(action, resource) capabilities** — that is:
+GovOps requires a shared, declarative inventory of **(action, resource_type) capabilities** — that is:
 
 1. **Finitely enumerable** so it can be reviewed, measured, and analyzed.
 2. **Prioritizable by risk–reward.** Governors must focus on the most *likely* failures that have the biggest *business impact*. The catalog therefore carries both a likelihood-oriented classifier (`risk-tier`) and an impact-oriented classifier (`business-impact`); without the latter, risk–reward cannot be computed and remediation queues devolve into undifferentiated checklists.
@@ -49,7 +49,7 @@ Gemara already supplies:
 - A `#Lexicon` artifact for controlled vocabulary, useful for action verbs and resource type names.
 - A `#Catalog` base that supports `extends` and `imports` for vendor-specific or industry overlays.
 
-In short, Gemara already has the right *shape*. What is missing is a **Capability Profile** that adds well-typed **(action, resource)** fields for the authorization domain — without changing Gemara's core schema and without conflating the catalog with the PARC request envelope or with entitlement grants.
+In short, Gemara already has the right *shape*. What is missing is a **Capability Profile** that adds well-typed **(action, resource_type)** fields for the authorization domain — without changing Gemara's core schema and without conflating the catalog with the PARC request envelope or with entitlement grants.
 
 ---
 
@@ -61,14 +61,14 @@ In short, Gemara already has the right *shape*. What is missing is a **Capabilit
 | Term                         | Meaning                                                                                                                                                                                                                                                                                                               |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Capability**               | *What a system can do* — a feature, component, or exposed operation. In Gemara, capabilities are neutral properties of the system: they flow into threats, controls, and assessments. They are **not** users, grants, or runtime policy decisions.                                                                    |
-| **Authorization capability** | A capability that describes an authorization surface entry as an **(action, resource)** pair: the system exposes that operation. Example: "the system exposes `transfer` on `bank-account`." Contrast with an **entitlement** ("Alice may transfer funds"), which is runtime policy and out of scope for the catalog. |
+| **Authorization capability** | A capability that describes an authorization surface entry as an **(action, resource_type)** pair: the system exposes that operation. Example: "the system exposes `transfer` on `bank-account`." Contrast with an **entitlement** ("Alice may transfer funds"), which is runtime policy and out of scope for the catalog. |
 | **Capability Profile**       | A CUE module that imports Gemara and refines `#Capability` (and `#CapabilityCatalog`) via unification. Profiles add domain-specific fields; catalogs remain valid against base `#CapabilityCatalog`.                                                                                                                  |
 | **Principal**                | The actor supplied in a **PARC authorization request** when the PDP is asked whether an operation is permitted. Policy may use principal attributes; the principal does not define the capability.                                                                                                                    |
 | **Action**                   | The verb half of an authorization capability (e.g., `read`, `create`, `delete`, `transfer`, `assume`).                                                                                                                                                                                                                |
-| **Resource**                 | The noun half of an authorization capability: the resource **type** the action applies to (e.g., `invoice`, `bank-account`, `loan`). The catalog records the *type*; runtime requests identify specific instances.                                                                                                    |
+| **Resource type**            | The noun half of an authorization capability — the resource type the action applies to (e.g., `invoice`, `bank-account`, `loan`), carried in the `resource_type` field. The catalog records the *type*; runtime requests identify specific instances.                                                                                                    |
 | **Context**                  | Other facts provided to a **PARC request**.                                                                                                                                                                                                                                                                           |
 | **PARC**                     | Principal, Action, Resource, Context — the **authorization request** shape at the PDP boundary; **not** synonymous with "capability."                                                                                                                                                                                 |
-| **Capability id**            | Opaque lowercase hexadecimal SHA-256 digest of `` <group-slug>\|<action-slug>\|<resource-slug> `` (see §6.2). Does not embed group, action, or resource strings in the catalog id field.                                                                                                                              |
+| **Capability id**            | Opaque lowercase hexadecimal SHA-256 digest of `` <group-slug>\|<action-slug>\|<resource_type-slug> `` (see §6.2). Does not embed group, action, or resource strings in the catalog id field.                                                                                                                              |
 | **OSCAL-aligned control**    | An abstract control objective in a `#ControlCatalog` (`GovOps-ACO`) suitable for import into a Trestle workspace. Primary mapping target for capabilities; framework-specific control numbers are derived downstream.                                                                                                 |
 
 
@@ -84,7 +84,7 @@ In short, Gemara already has the right *shape*. What is missing is a **Capabilit
 
 1. **Reuse, do not replace.** Build on Gemara's existing `#CapabilityCatalog`, `#ControlCatalog`, and mapping primitives. No fork of Gemara.
 2. **Profile via unification.** Domain fields live in an external CUE profile module that imports Gemara; YAML validates as both the profile catalog type and base `#CapabilityCatalog`.
-3. **Engine-neutral capabilities and PARC-shaped requests.** Capability rows are **(action, resource)** surface entries. Interoperability with PDPs uses **PARC** as the **request** envelope at evaluation time. The design MUST NOT privilege any specific policy engine, policy store strategy, or authorization API.
+3. **Engine-neutral capabilities and PARC-shaped requests.** Capability rows are **(action, resource_type)** surface entries. Interoperability with PDPs uses **PARC** as the **request** envelope at evaluation time. The design MUST NOT privilege any specific policy engine, policy store strategy, or authorization API.
 4. **Compliance-interoperable.** Each capability maps to OSCAL-aligned control objectives in Gemara first; framework-specific controls are **downstream renderings** produced by Trestle/OSCAL — not hard-coded into the capability model.
 5. **Reviewable and prioritizable.** The catalog is the canonical input to access reviews, compliance queries, and drift detection. Entries SHOULD carry `risk-tier` (likelihood) and `business-impact` (consequence) so governors can order work by risk–reward.
 
@@ -177,11 +177,11 @@ package authorization
 import "github.com/gemaraproj/gemara@v1:gemara"
 
 // AuthorizationCapability describes an authorization surface entry:
-// what the system exposes as (action, resource) — not who is entitled to use it.
+// what the system exposes as (action, resource_type) — not who is entitled to use it.
 #AuthorizationCapability: {
 	gemara.#Capability
 	action:              string
-	resource:            string
+	resource_type:       string
 	"risk-tier"?:        "critical" | "high" | "medium" | "low"
 	"data-sensitivity"?: "public" | "internal" | "confidential" | "restricted"
 	"business-impact"?:  string
@@ -198,7 +198,7 @@ import "github.com/gemaraproj/gemara@v1:gemara"
 
 | Field | Required | Role |
 |---|---|---|
-| `action`, `resource` | yes (profile) | **Capability identity** for the authorization surface — the (verb, resource-type) pair the system exposes. |
+| `action`, `resource_type` | yes (profile) | **Capability identity** for the authorization surface — the (verb, resource_type) pair the system exposes. |
 | `risk-tier` | no (SHOULD) | Likelihood-oriented classifier (`critical` \| `high` \| `medium` \| `low`). Answers: how probable is misuse or failure of this surface? |
 | `business-impact` | no (SHOULD) | Impact-oriented classifier (organization-defined string, e.g. `revenue-critical`, `customer-trust`, `regulatory-exposure`). Answers: how bad is it if this surface fails? **Required to compute risk–reward** with `risk-tier`. |
 | `data-sensitivity` | no | Data classification exposed by the action (`public` \| `internal` \| `confidential` \| `restricted`). |
@@ -222,11 +222,11 @@ cue vet GovOps-ACC.yaml -d '#CapabilityCatalog'
 
 In addition to the profile fields, GovOps tooling requires:
 
-- `id` MUST be the lowercase hexadecimal SHA-256 digest of the UTF-8 string `<group-slug>|<action-slug>|<resource-slug>` (e.g., `0c451a4b7305a117ad7e4c874799c5982100823ef1b71db3490fffc35a63fef3`). Slugs are lowercase identifiers.
+- `id` MUST be the lowercase hexadecimal SHA-256 digest of the UTF-8 string `<group-slug>|<action-slug>|<resource_type-slug>` (e.g., `0c451a4b7305a117ad7e4c874799c5982100823ef1b71db3490fffc35a63fef3`). Slugs are lowercase identifiers.
 - **Group slug** is derived from the entry's `#Group` `id` by removing an optional `g.` prefix (`g.payments` → `payments`).
-- `action` and `resource` on the entry MUST match the slugs used in the id preimage.
+- `action` and `resource_type` on the entry MUST match the slugs used in the id preimage.
 
-The **normative** fields that define what is being governed are `action` **and** `resource` only. Classifiers (`risk-tier`, `business-impact`, `data-sensitivity`, `geography`, `org-unit`) scope the entry for governance; they do not redefine the capability. Entitlements, PARC Context rules, and engine-specific symbols belong in published policy (and optionally in mapped controls), not in the profile schema.
+The **normative** fields that define what is being governed are `action` **and** `resource_type` only. Classifiers (`risk-tier`, `business-impact`, `data-sensitivity`, `geography`, `org-unit`) scope the entry for governance; they do not redefine the capability. Entitlements, PARC Context rules, and engine-specific symbols belong in published policy (and optionally in mapped controls), not in the profile schema.
 
 #### Risk–reward prioritization (`risk-tier` × `business-impact`)
 
@@ -243,7 +243,7 @@ Organizations SHOULD set both fields on every runtime capability, and MUST treat
 
 ### 6.3 Catalog organization with `#Group`
 
-`#Group` (post ADR-0020) is the single grouping primitive — a way to **group** related (action, resource) pairs in the catalog:
+`#Group` (post ADR-0020) is the single grouping primitive — a way to **group** related (action, resource_type) pairs in the catalog:
 
 - `groups`: one entry per logical group (e.g., `payments`, `iam`, `governance`, `release-engineering`).
 - Capability `id` values are opaque SHA-256 digests; the entry's `group` field references the Gemara group `id` (e.g., `g.payments`), and **group slug** for hashing is derived from that reference.
@@ -253,7 +253,7 @@ Profile fields `risk-tier`, `business-impact`, `data-sensitivity`, `geography`, 
 
 ### 6.4 Anchoring vocabulary with `#Lexicon`
 
-Each `action` and `resource` SHOULD resolve to a term in the repository's `#Lexicon` so that synonyms collapse to a single canonical id:
+Each `action` and `resource_type` SHOULD resolve to a term in the repository's `#Lexicon` so that synonyms collapse to a single canonical id:
 
 ```yaml
 title: GovOps Action and Resource Lexicon
@@ -273,18 +273,18 @@ terms:
     definition: A demand-deposit account at a financial institution.
 ```
 
-The `metadata.lexicon` field on the `#CapabilityCatalog` already points at this lexicon document. Tooling can lint the catalog by checking that all action/resource strings resolve to lexicon term ids.
+The `metadata.lexicon` field on the `#CapabilityCatalog` already points at this lexicon document. Tooling can lint the catalog by checking that all action/resource_type strings resolve to lexicon term ids.
 
 ### 6.5 Relationship to Gemara's existing `#Resource`
 
-Gemara already defines `#Resource` (in `entities.cue`) as a runtime entity that is the *target of an evaluation* — the thing an `#EvaluationLog`, `#EnforcementLog`, or `#AuditLog` is *about*. That is **not** the same as the **resource type** half of an **(action, resource)** capability row in the catalog.
+Gemara already defines `#Resource` (in `entities.cue`) as a runtime entity that is the *target of an evaluation* — the thing an `#EvaluationLog`, `#EnforcementLog`, or `#AuditLog` is *about*. That is **not** the same as the `resource_type` field in an **(action, resource_type)** capability row in the catalog.
 
 The two stay separate:
 
-- `#AuthorizationCapability.resource` is the **resource slug** half of the capability (e.g., `bank-account`), aligned with the lexicon term used in the capability id preimage.
+- `#AuthorizationCapability.resource_type` is the **resource_type slug** half of the capability (e.g., `bank-account`), aligned with the lexicon term used in the capability id preimage.
 - `#Resource` (entities) is a **runtime instance** being evaluated (e.g., the production payments service running v1.4.2).
 
-A measurement record carries both: the `target` of an evaluation log is a `#Resource`; what was *evaluated about it* is the conformance of its policies to a set of `#AuthorizationCapability` entries (each keyed by **action + resource**).
+A measurement record carries both: the `target` of an evaluation log is a `#Resource`; what was *evaluated about it* is the conformance of its policies to a set of `#AuthorizationCapability` entries (each keyed by **action + resource_type**).
 
 ### 6.6 Threats and risks over capabilities
 
@@ -359,7 +359,7 @@ capabilities:
     description: The system exposes the ability to retrieve an existing invoice by id.
     group: g.payments
     action: read
-    resource: invoice
+    resource_type: invoice
     data-sensitivity: restricted
     risk-tier: medium
 
@@ -370,7 +370,7 @@ capabilities:
       Mapped controls require strong authentication evidence in PARC Context.
     group: g.payments
     action: transfer
-    resource: bank-account
+    resource_type: bank-account
     data-sensitivity: confidential
     risk-tier: critical
     business-impact: revenue-critical
@@ -384,7 +384,7 @@ capabilities:
       Mapped controls require separation of duties (two distinct approvers).
     group: g.lending
     action: approve
-    resource: loan
+    resource_type: loan
     data-sensitivity: restricted
     risk-tier: critical
     business-impact: regulatory-exposure
@@ -396,7 +396,7 @@ capabilities:
       Typically invoked by the Acme Fraud System (software agent) and by analysts.
     group: g.fraud
     action: flag
-    resource: transaction
+    resource_type: transaction
     data-sensitivity: internal
     risk-tier: high
     business-impact: customer-trust
@@ -476,7 +476,7 @@ cue vet govops/GovOps-ACC.yaml -d '#AuthorizationCapabilityCatalog'
 govops lint govops/GovOps-ACC.yaml --lexicon govops/lexicon.yaml
 ```
 
-Lint rejects capability id / preimage mismatches, out-of-enum `risk-tier` or `data-sensitivity` values, missing required `action` / `resource` fields, unresolved lexicon terms, and ill-formed optional classifiers (`business-impact`, `geography`, `org-unit`).
+Lint rejects capability id / preimage mismatches, out-of-enum `risk-tier` or `data-sensitivity` values, missing required `action` / `resource_type` fields, unresolved lexicon terms, and ill-formed optional classifiers (`business-impact`, `geography`, `org-unit`).
 
 ### 8.5 Drift check (illustrative)
 
@@ -557,8 +557,8 @@ For OSS maintainers, OSPS Baseline mappings follow the same pattern: capabilitie
 
 Phase 1 reference tooling (profile module + conventions; no Gemara core schema changes), in the priority order reflected by the companion use cases:
 
-1. **`govops lint`** (UC-03) — Day-to-day catalog validator. Validate against `#AuthorizationCapabilityCatalog`; capability `id` matches SHA-256 of `<group-slug>|<action-slug>|<resource-slug>`; lexicon resolution; group membership; `risk-tier` / `data-sensitivity` enum checks; optional `business-impact`, `geography`, and `org-unit` well-formedness. EXIT non-zero on any error.
-2. **`govops drift`** (UC-04) — Compare catalog **(action, resource)** entries to **published PARC-shaped policy releases** (Cedar and other AuthZEN-compatible engines; artifacts passed in at run time by path, URI, or digest); report Type A (catalog without policy), Type B (policy without catalog), Type C (mapped control / description expectation vs. policy). Compose findings across multiple policy releases.
+1. **`govops lint`** (UC-03) — Day-to-day catalog validator. Validate against `#AuthorizationCapabilityCatalog`; capability `id` matches SHA-256 of `<group-slug>|<action-slug>|<resource_type-slug>`; lexicon resolution; group membership; `risk-tier` / `data-sensitivity` enum checks; optional `business-impact`, `geography`, and `org-unit` well-formedness. EXIT non-zero on any error.
+2. **`govops drift`** (UC-04) — Compare catalog **(action, resource_type)** entries to **published PARC-shaped policy releases** (Cedar and other AuthZEN-compatible engines; artifacts passed in at run time by path, URI, or digest); report Type A (catalog without policy), Type B (policy without catalog), Type C (mapped control / description expectation vs. policy). Compose findings across multiple policy releases.
 3. **`govops oscal-export`** (supports UC-02) — Emit OSCAL-aligned catalog/mapping fragments for import into a Trestle workspace; framework projection is completed with `trestle` commands (import, merge, profile resolve, mapping collection).
 
 Engine-specific drift plug-ins treat policy formats as opaque and MUST target engines that evaluate **PARC-shaped** requests. A future phase MAY add `govops prove` for symbolic analysis of control-derived context expectations (§7.1).
@@ -611,7 +611,7 @@ Lint is the gate on catalog quality; drift is the gate on catalog–policy align
 
 ## 13. Open questions
 
-1. **Granularity of** `resource`**.** Type vs. pattern in **PARC Context** — should a future profile refinement model graph-native hierarchies?
+1. **Granularity of** `resource_type`**.** Type vs. pattern in **PARC Context** — should a future profile refinement model graph-native hierarchies?
 2. **Type-C expectation source.** Machine-readable predicates on mapped controls vs. free-text in `description` vs. a separate annotations artifact.
 3. **Versioning of capabilities.** `replaced-by` pattern for splits and renames.
 4. **Composed catalogs.** When an enterprise mixes authorization and Kubernetes (or other) profiles in one YAML, what composition rules apply?
@@ -624,7 +624,7 @@ Lint is the gate on catalog quality; drift is the gate on catalog–policy align
 
 ## 14. Summary
 
-Gemara already provides `#CapabilityCatalog`, `#MappingDocument`, `#Lexicon`, and optional layered controls. GovOps adds an **Authorization Capability Profile** — an external CUE module — that types each capability as the **(action, resource)** surface the system exposes, plus optional `risk-tier`, `data-sensitivity`, `business-impact`, `geography`, and `org-unit`.
+Gemara already provides `#CapabilityCatalog`, `#MappingDocument`, `#Lexicon`, and optional layered controls. GovOps adds an **Authorization Capability Profile** — an external CUE module — that types each capability as the **(action, resource_type)** surface the system exposes, plus optional `risk-tier`, `data-sensitivity`, `business-impact`, `geography`, and `org-unit`.
 
 The *thing governed* is that finite inventory. *Prioritization* uses **`risk-tier` × `business-impact`** so governors spend attention on the most likely failures with the biggest consequence. *Assurance* starts with **`govops lint`** on the catalog (UC-03), then catalog–policy alignment via **`govops drift`** (UC-04) and **abstract control mappings** (UC-02), with framework views produced through Trestle/OSCAL. Entitlements and PARC Context rules stay in published policy, not in the profile.
 

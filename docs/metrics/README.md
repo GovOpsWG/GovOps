@@ -55,29 +55,45 @@ No definitions have been placed in this stage in this draft. Proposed metrics ha
 
 Ideas begin in [GitHub Discussions](https://github.com/GovOpsWG/GovOps/discussions), where participants explore the benefit, definition, available evidence and open questions. Under this proposed workflow, a discussion title containing “Proposed Metric” does not by itself establish promotion to the Proposed stage.
 
-### Percentage Asymmetric Credentials (PAC)
+Pre-proposed metrics are grouped below by the GovOps layer they measure: Identity, Access, Observability, and Governance.
+
+### Identity Metrics
+
+#### Percentage Asymmetric Credentials (PAC)
 
 The share of invocations authenticated asymmetrically among invocations with a known authentication method. It helps assess adoption of authentication methods that support accountability. Unknown methods are reported separately. The result does not establish whether private keys are protected by hardware.
 
 [PAC discussion #34](https://github.com/GovOpsWG/GovOps/discussions/34)
 
-### Autonomy Dividend (AD)
+### Access Metrics
 
-Estimated money saved by automating compliance work, including internal and audit resources. It can inform investment decisions about compliance automation. The baseline, estimation method and treatment of remaining operating costs still need definition.
+#### Mean Time to Update Policy (MTUP)
 
-[AD discussion #37](https://github.com/GovOpsWG/GovOps/discussions/37)
+The time between a governance decision and its enforcement at the point of action. It can reveal how quickly an organization can put revised operating rules into practice. The start and end events need definition, with results separated by relevant application types.
 
-### Governed Spend Coverage (GSC)
+[MTUP discussion #35](https://github.com/GovOpsWG/GovOps/discussions/35)
+
+### Observability Metrics
+
+#### Governed Spend Coverage (GSC)
 
 The share of total AI token spend attributable to managed capability use through runtime TRACE evidence. It can show how much spending can be connected to governed operations. Calculation requires an external total-spend source and an agreed definition of qualifying evidence.
 
 [GSC discussion #36](https://github.com/GovOpsWG/GovOps/discussions/36)
 
-### Mean Time to Update Policy (MTUP)
+#### TRACE Chain Completeness (TCC)
 
-The time between a governance decision and its enforcement at the point of action. It can reveal how quickly an organization can put revised operating rules into practice. The start and end events need definition, with results separated by relevant application types.
+The share of observed operations with correlated TRACE evidence for every required stage — authorization, invocation, and observed effect. It can show how much of the runtime is actually covered by verifiable evidence, rather than assumed from policy alone. Which stages are "required" for a given capability, and how partial chains should be counted, still need definition.
 
-[MTUP discussion #35](https://github.com/GovOpsWG/GovOps/discussions/35)
+No GitHub discussion yet. [Propose one](https://github.com/GovOpsWG/GovOps/discussions).
+
+### Governance Metrics
+
+#### Autonomy Dividend (AD)
+
+Estimated money saved by automating compliance work, including internal and audit resources. It can inform investment decisions about compliance automation. The baseline, estimation method and treatment of remaining operating costs still need definition.
+
+[AD discussion #37](https://github.com/GovOpsWG/GovOps/discussions/37)
 
 ## Metric Development
 
@@ -97,4 +113,5 @@ Two documents guide this process:
 - [Authorization Capability Catalog (ACC)](../standards/acc/README.md): capability definitions and context.
 - [GovOps TRACE Profile (GTP)](../standards/gtp/govops-trace-profile.md): runtime evidence and its interpretation.
 - [Architecture](../architecture/README.md): the services and information flows supporting governance.
+- [GovOps Dashboard](../architecture/governance/govops-dashboard.md): the service that calculates, visualizes, and reports these metrics.
 - [Governance policy](../../GOVERNANCE.md): working-group roles and approval process.

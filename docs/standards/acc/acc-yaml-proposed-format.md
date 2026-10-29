@@ -16,11 +16,11 @@ This revision incorporates the first-round review comments from Mike and Vidyaa 
 4. business-unit and business-function are renamed to org-unit and org-function to match the published profile and the metrics README, org-unit is a sequence, and a single primary-org-unit is added so per-unit reporting has a headline home and totals still reconcile. (Vidyaa's naming and double-counting points.)
 5. The review block no longer carries structured conditions. The catalog now declares only that a review boundary exists, the expected outcome (challenge), and who reviews. The conditions themselves (amounts, payment methods, channels) live in policy, where conditional logic belongs. A prose text field documents the band for humans and drift tooling. (Mike's concern that v0.1 was starting to recreate policy syntax.)
 6. Intent is repositioned. The draft now states explicitly that intent itself is runtime authorization input, a layer below governance, and the catalog never carries or evaluates it. What remains is optional reviewer-facing documentation of expected intents, marked provisional pending steering discussion. (Mike's comment that intent is the natural language source of authority for a request, not catalog metadata.)
-7. The encoding position adopts Mike's mixed approach: push action, resource, and group as core profile keys in Gemara (tracking gemara#419), and carry extended metadata in the description. The x- extension convention is unchanged, since it was the one part everyone liked.
+7. The encoding position adopts Mike's mixed approach: push action, resource_type, and group as core profile keys in Gemara (tracking gemara#419), and carry extended metadata in the description. The x- extension convention is unchanged, since it was the one part everyone liked.
 
 ## Purpose
 
-ACC.yaml is a vendor-neutral, machine-readable inventory of the meaningful actions an organization's systems can perform. Each entry describes one capability, which is an (action, resource) pair such as refund on a customer order. A capability records that the system exposes an operation; who may perform it is runtime policy and lives outside the catalog.
+ACC.yaml is a vendor-neutral, machine-readable inventory of the meaningful actions an organization's systems can perform. Each entry describes one capability, which is an (action, resource_type) pair such as refund on a customer order. A capability records that the system exposes an operation; who may perform it is runtime policy and lives outside the catalog.
 
 The catalog exists to answer a question no organization can answer today: what are all the risky actions our systems and our AI agents can perform, who owns them, and how are they governed?
 
@@ -28,7 +28,7 @@ Everything downstream depends on this list. The architecture connects catalog en
 
 ## Design principles
 
-1. **Identity is minimal and stable.** A capability's identity is its group, action, and resource. The capability id is an opaque, stable, globally unique string; how it is produced is up to the implementation (a recommended recipe is in the appendix). The id never changes once assigned, so runtime correlation survives reorganizations, reclassifications, and ownership changes.
+1. **Identity is minimal and stable.** A capability's identity is its group, action, and resource type. The capability id is an opaque, stable, globally unique string; how it is produced is up to the implementation (a recommended recipe is in the appendix). The id never changes once assigned, so runtime correlation survives reorganizations, reclassifications, and ownership changes.
 2. **Governance metadata describes, it does not enforce.** Claims like risk-tier and review document intent for governors, reviewers, and drift tooling. Enforcement always lives in policy. The catalog states what should be true, and `govops drift` checks whether published policy agrees.
 3. **AI agents are requesters, not a separate catalog.** The same capability can be exercised by a human, a service, or an agent. What differs per requester class is the governance expectation, most importantly whether a review boundary applies.
 4. **Extensible by convention.** Organization-specific fields use an `x-` prefix. Tooling preserves them and the spec never interprets them.
@@ -43,7 +43,7 @@ Everything downstream depends on this list. The architecture connects catalog en
 | `title` | Human label | String |
 | `group` | Logical domain the capability belongs to | String (reference to a group id) |
 | `action` | The verb half of the capability | String (lexicon term) |
-| `resource` | The resource type half of the capability | String (lexicon term) |
+| `resource_type` | The resource type half of the capability | String (lexicon term) |
 
 **Required to generate the published metrics** (the decision record supplies capability id, outcome, timestamp, and policy version; the catalog must supply the rest):
 
@@ -95,7 +95,7 @@ capabilities:
     title: Read an invoice
     group: g.billing
     action: read
-    resource: invoice
+    resource_type: invoice
     risk-tier: 40            # medium band
     business-impact: 5000
     geography: [de, us]
@@ -113,7 +113,7 @@ capabilities:
     title: Delete a production Kubernetes namespace
     group: g.release-engineering
     action: delete
-    resource: production-namespace
+    resource_type: production-namespace
     risk-tier: 90            # critical band
     business-impact: 2000000
     org-unit: [platform]
@@ -139,7 +139,7 @@ capabilities:
     title: Issue a refund on a customer order
     group: g.payments
     action: refund
-    resource: customer-order
+    resource_type: customer-order
     risk-tier: 65            # high band
     business-impact: 250000
     geography: [us]
@@ -167,7 +167,7 @@ capabilities:
 
 ## What changed in the thinking, and why
 
-**The id is a contract, not a recipe.** v0.1 mandated SHA-256 of the group, action, and resource slugs. Review made the right objection: reproducibility of the hash buys little, and slug collisions across mergers are a real risk. What every consumer actually needs is that the id is stable, opaque, and globally unique. So that is now the whole normative requirement, and the hash recipe becomes a recommended default for implementations that want deterministic ids (appendix), where an organization prefix in the preimage addresses the M&A case. Note that the design document currently specifies the SHA-256 convention as normative; reconciling the two is an open review item for this PR.
+**The id is a contract, not a recipe.** v0.1 mandated SHA-256 of the group, action, and resource type slugs. Review made the right objection: reproducibility of the hash buys little, and slug collisions across mergers are a real risk. What every consumer actually needs is that the id is stable, opaque, and globally unique. So that is now the whole normative requirement, and the hash recipe becomes a recommended default for implementations that want deterministic ids (appendix), where an organization prefix in the preimage addresses the M&A case. Note that the design document currently specifies the SHA-256 convention as normative; reconciling the two is an open review item for this PR.
 
 **Claims are now defined, and the required set is small.** A catalog standard whose fields have no defined types produces catalogs nobody can compare. At the same time, an early draft should not speculate its way into a large mandatory schema. The resolution: five required keys for validity, risk-tier required when you want the published metrics, and everything else optional with exact types. The risk-tier bands are defined in the spec itself because every metric reports by tier, and if each organization draws its own bands the numbers stop meaning anything across organizations.
 
@@ -175,7 +175,7 @@ capabilities:
 
 **Intent is documentation for reviewers, not a governance object.** Review located intent correctly: it is the natural language source of authority for a request, tactical, an input to authorization, a layer below steering the ship. The catalog therefore never carries or evaluates intent. What v0.2 keeps, marked provisional, is a small documentation hook: when a challenged agent request lands in front of a reviewer, the catalog can say what intents are normal to see there. If the committee concludes even that belongs elsewhere (the lexicon, or reviewer tooling), it lifts out cleanly without touching anything else.
 
-**Encoding: the mixed approach.** Core keys (action, resource, group) get pushed as first-class Gemara profile keys, and extended metadata rides in the description. This tracks the request already in front of the Gemara group (gemara#419) and keeps the catalog valid against stable Gemara either way. The design document's CUE-module profile is the natural home for the required claims defined here.
+**Encoding: the mixed approach.** Core keys (action, resource_type, group) get pushed as first-class Gemara profile keys, and extended metadata rides in the description. This tracks the request already in front of the Gemara group (gemara#419) and keeps the catalog valid against stable Gemara either way. The design document's CUE-module profile is the natural home for the required claims defined here.
 
 ## What this draft does not do
 
@@ -183,7 +183,7 @@ There is no policy language, no evaluation API, and no enforcement semantics her
 
 ## Appendix: recommended id recipe (non-normative)
 
-Implementations wanting deterministic ids can use the lowercase hex SHA-256 of `<org-slug>|<group-slug>|<action-slug>|<resource-slug>`, with slugs lowercased, trimmed, internal whitespace collapsed to single hyphens, and unicode NFC-normalized. The org prefix keeps ids from colliding when catalogs merge. Consumers must never parse or recompute ids; they are opaque.
+Implementations wanting deterministic ids can use the lowercase hex SHA-256 of `<org-slug>|<group-slug>|<action-slug>|<resource_type-slug>`, with slugs lowercased, trimmed, internal whitespace collapsed to single hyphens, and unicode NFC-normalized. The org prefix keeps ids from colliding when catalogs merge. Consumers must never parse or recompute ids; they are opaque.
 
 ## Open questions for review
 

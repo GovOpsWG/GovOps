@@ -15,8 +15,8 @@ other systems and standards.
 ## What GovOps defines
 
 - **The capability-level data model.** A machine-readable way to inventory and classify
-  authorization capabilities as action-resource pairs, and the stable `capability_id` that
-  identifies each one. See [`acc-yaml-proposed-format.md`](../standards/acc/acc-yaml-proposed-format.md).
+  authorization capabilities as action-resource_type pairs, and the stable `capability_id` that
+  identifies each one. See [`acc-yaml-proposed-format.md`](../../standards/acc/acc-yaml-proposed-format.md).
 - **The correlation mechanism.** How `capability_id` (and related identifiers such as
   `decision_id`, `policy_store_id`, and `policy_store_version`) travels from the governance
   catalog through a runtime decision and into observability and compliance evidence, without
@@ -25,10 +25,10 @@ other systems and standards.
   Plane (catalog, policy authoring, schema management, federation management, continuous
   compliance) and the distributed Runtime Plane (local authorization decisions), connected by the
   Govern → Authorize → Execute → Observe → Detect → Respond → Govern loop. See
-  [`architecture`](../architecture/README.md).
+  [`architecture`](../../architecture/README.md).
 - **Metrics for measuring change** in authorization risk, policy enforcement, accountability, and
   observability — reported as movement between observation windows, not as static levels. See
-  [`metrics`](../metrics/README.md).
+  [`metrics`](../../metrics/README.md).
 - **An extension point to compliance evidence**, via Gemara and OSCAL, that lets capability
   governance data be projected into existing framework profiles (for example ISO 27001, SOC 2, the
   EU Cyber Resilience Act) without GovOps inventing its own compliance taxonomy.
@@ -43,9 +43,9 @@ GovOps is explicitly **not**:
 
 - **A policy engine or policy language.** GovOps does not standardize a new policy decision point,
   policy language, authorization graph, or enforcement protocol. Any engine capable of evaluating
-  an action-resource request — OPA, Cedar, Cerbos, XACML, or a custom engine — can participate, as
+  an action-resource_type request — OPA, Cedar, Cerbos, XACML, or a custom engine — can participate, as
   long as its decisions can be tagged with a `capability_id`. See
-  [`pbac-without-governance-layer.md`](../foundations/why-existing-approaches-fall-short/pbac-without-governance-layer.md).
+  [`pbac-without-governance-layer.md`](../why-existing-approaches-fall-short/pbac-without-governance-layer.md).
 - **An identity provider or federation protocol.** GovOps governs which issuers an organization
   trusts (Federation Management), not how tokens are minted or validated at runtime.
 - **A compliance certification process.** GovOps does not certify an organization, product, or
@@ -64,4 +64,4 @@ GovOps is explicitly **not**:
 - **A definition of how identities receive, retain, or certify entitlements.** That remains the
   concern of existing identity and access governance (IGA) tooling; GovOps treats identity as a
   decision-time input rather than the primary unit of governance (see
-  [`identity-centric-governance.md`](../foundations/why-existing-approaches-fall-short/identity-centric-governance.md)).
+  [`identity-centric-governance.md`](../why-existing-approaches-fall-short/identity-centric-governance.md)).

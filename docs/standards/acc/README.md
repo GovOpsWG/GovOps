@@ -5,7 +5,7 @@
 The ACC is a machine-readable inventory of what applications, APIs, infrastructure, workloads, and
 AI agents can actually do — the authorization surface an enterprise wants to govern.
 
-A capability is an **(action, resource)** pair: `transfer:funds`, `approve:loan`,
+A capability is an **(action, resource_type)** pair: `transfer:funds`, `approve:loan`,
 `deploy:production`, `invoke:model`, `github:merge_pr`. Each entry carries a stable
 `capability_id` plus the business context governors need — risk tier, business impact, geography,
 data sensitivity, third-party exposure, and an accountable owner.
