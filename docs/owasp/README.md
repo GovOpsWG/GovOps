@@ -13,7 +13,9 @@ GovOps has been proposed as an OWASP working group.
 The working group will develop an open, **vendor-neutral** framework for making authorization
 governance operational, measurable, and capability-oriented, with three initial deliverables:
 
-1. **`ACC.yaml`** — a machine-readable capability catalog format. See [ACC](../standards/acc/README.md).
+1. **Standards** — the Authorization Capability Catalog (`ACC.yaml`, a machine-readable capability
+   catalog format) and the GovOps TRACE Profile (GTP, the runtime evidence schema). See
+   [Standards](../standards/README.md).
 2. **A metric definition document** — GovOps metrics, their purpose, data requirements, calculation
    guidance, segmentation, and limitations. See [metrics](../metrics/README.md).
 3. **Architecture documents** — how a capability catalog connects to real enterprise systems,

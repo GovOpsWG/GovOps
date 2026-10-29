@@ -9,7 +9,7 @@ scale to the number and churn of actors — human and non-human — that now req
 ## Industry fragmentation
 
 Several efforts are independently converging on the same underlying model — treat an
-action-resource pair as the fundamental unit to reason about — without using shared vocabulary or
+action-resource_type pair as the fundamental unit to reason about — without using shared vocabulary or
 acknowledging the overlap:
 
 - **Google Beyond Zero** elevates the action/resource pair as the successor unit to Zero Trust's
@@ -58,6 +58,6 @@ slowly changing job functions. Two failure modes now dominate in practice:
   minutes, not years.
 
 GovOps does not propose replacing RBAC or any other access-control mechanism. It proposes governing
-the *capability* being granted — the action-resource pair — as a unit that is stable regardless of
+the *capability* being granted — the action-resource_type pair — as a unit that is stable regardless of
 which identity, role, or non-human actor is exercising it. See
 `../govops-thesis/solution-overview.md#capability-as-the-unit-of-governance` for the full argument.

@@ -1,18 +1,20 @@
-# Principles
+# Core Principles
 
 GovOps rests on four principles. They follow from the thesis in
 [`govops-thesis/solution-overview.md`](./govops-thesis/solution-overview.md).
 
-1. **Governance is a continuous operational discipline, not a periodic exercise.**
-   It is not something you do once a quarter. It is always happening. "Git or it didn't happen."
-2. **Capabilities, defined as action-resource pairs, are the unit of governance, not identity or
-   role.** We manage their lifecycle, inventory them, and track metadata about them, like risk and
-   business impact.
-3. **Governance involves three core activities: risk management, accountability, and
-   observability.**
-4. **Governance assumes bad things will happen.** The goal is to reduce how often they happen,
-   detect them quickly when they do, and hold people, software, and organizations accountable. The
-   goal is not to prove in advance that every policy is correct.
+1. **Governance requires three core activities: risk management, accountability, and observability.**
+2. **Governance is a continuous operational discipline, not a periodic exercise.**
+3. **Capabilities, defined as (action, resource_type) pairs, are the unit of governance, not identities or roles.**
+4. **Identity should be anchored in hardware.**
+
+# Supporting Principles
+
+1. **Governance assumes bad things will happen.**
+2. **GovOps is neutral on identity protocols and artifacts.**
+3. **Externalize authorization as much as possible.**
+4. **Governors are the humans responsible for the business.**
+5. **Shared secrets are bad.**
 
 ## Design rules
 
@@ -31,9 +33,9 @@ These rules apply the principles to the GovOps architecture.
 4. **Compliance is a byproduct, not the primary purpose.** GovOps is designed so that compliance
    evidence falls out of normal operation (see
    [`point-in-time-compliance.md`](./why-existing-approaches-fall-short/point-in-time-compliance.md)).
-   It is not itself a compliance certification process (see [`scope`](../scope/README.md)).
+   It is not itself a compliance certification process (see [`scope`](./scope/README.md)).
 5. **Stability over completeness in the core identifier.** The `capability_id` hash deliberately
-   includes only the action and resource, excluding mutable metadata like risk tier or ownership, so
+   includes only the action and resource type, excluding mutable metadata like risk tier or ownership, so
    that the identifier remains stable even as governance metadata evolves.
 6. **Explain before mandating.** Where the model is not yet stable enough to make MUST/SHOULD
    claims, this specification says so explicitly rather than prematurely normativizing an

@@ -101,7 +101,7 @@ Our society is in the midst of a multi-generational digital transformation. Ente
 
 GovOps owns the governance layer. It does not replace the other three. Instead, it asks them to be governable. Each must expose the artifacts and evidence that governance needs, keyed on `capability_id`. [Governability requirements](#governability-requirements) lists what each layer must provide.
 
-The **governance layer** is what GovOps owns. The Capability Catalog identifies the actions and resources the enterprise wants to govern and assigns business context such as risk, impact, and ownership. Continuous Evidence collects runtime evidence and links it to the capabilities in the catalog. Continuous Compliance maps capabilities and their evidence to control objectives and regulatory requirements. Governance Metrics measure risk, accountability, and coverage, using `capability_id` as the unit.
+The **governance layer** is what GovOps owns. The Capability Catalog identifies the actions and resource types the enterprise wants to govern and assigns business context such as risk, impact, and ownership. Continuous Evidence collects runtime evidence and links it to the capabilities in the catalog. Continuous Compliance maps capabilities and their evidence to control objectives and regulatory requirements. The GovOps Dashboard calculates, visualizes, and reports governance metrics, organized by layer as Identity, Access, Observability, and Governance metrics, measuring risk, accountability, and coverage using `capability_id` as the unit.
 
 The **access layer** defines and enforces who may do what. It includes Policy Authoring, authorization, Schema Management, Federation Management, Shared Signals, identity governance and administration (IGA), and privileged access management (PAM). Policy Authoring defines the rules that control capabilities. Schema Management defines the entities, attributes, and context those policies can reference. Federation Management defines which external issuers, credentials, and claims the enterprise is willing to trust. These artifacts are managed centrally, but decisions are made locally, close to the resource.
 
@@ -122,7 +122,7 @@ The key architectural principle is that the enterprise should be able to trace a
 
 This does not mean authorization decisions need to be centralized. In fact, GovOps supports local authorization decisions close to the application, resource, or action being protected. What should be centralized are the governance artifacts necessary to understand and manage those decisions across the enterprise.
 
-GovOps owns four services: the **Capability Catalog**, **Continuous Evidence**, **Continuous Compliance**, and **Governance Metrics**. It also defines what the access, observability, and identity layers must provide to be governable. The service pages cover the GovOps services and the services in other layers that GovOps depends on most: **Policy Management**, **Schema Management**, **Federation Management**, the **Runtime Authorization Context**, and **Kernel Observability**.
+GovOps owns four services: the **Capability Catalog**, **Continuous Evidence**, **Continuous Compliance**, and the **GovOps Dashboard**. It also defines what the access, observability, and identity layers must provide to be governable. The service pages cover the GovOps services and the services in other layers that GovOps depends on most: **Policy Management**, **Schema Management**, **Federation Management**, the **Runtime Authorization Context**, and **Kernel Observability**.
 
 ### Reference Architecture
 
@@ -167,7 +167,7 @@ Governance:
 * [Capability Catalog](./governance/capability-catalog.md)
 * [Continuous Evidence](./governance/continuous-evidence.md) (to be added)
 * [Continuous Compliance](./governance/continuous-compliance.md)
-* [Governance Metrics](./governance/governance-metrics.md)
+* [GovOps Dashboard](./governance/govops-dashboard.md)
 
 Access:
 

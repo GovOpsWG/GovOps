@@ -6,12 +6,12 @@ by proposing a new framework built on the following principles.
 
 ## Capability as the unit of governance
 
-A **capability** is an action-resource pair — for example, `approve:payment-over-threshold` or
+A **capability** is an action-resource_type pair — for example, `approve:payment-over-threshold` or
 `read:customer-pii-record`. Every capability is assigned a `capability_id`, a stable identifier
-computed only from the action and resource. This choice is deliberate:
+computed only from the action and resource type. This choice is deliberate:
 
 - **Stability.** Unlike a role or policy, the identifier does not change when metadata (risk tier,
-  business impact, ownership) is revised — only when the action or resource itself changes.
+  business impact, ownership) is revised — only when the action or resource type itself changes.
 - **Granularity.** Capabilities describe *what is being done*, not *who is doing it*, which lets
   governance reason about risk independent of the size or churn of the population of actors
   exercising that capability.
@@ -41,7 +41,7 @@ refinement instead of a log that is only read after an incident.
 ## Separating governance from enforcement
 
 GovOps is policy-mechanism-neutral: it does not standardize a policy engine, policy language, or
-enforcement protocol (see `scope/README.md`). Any engine — OPA, Cedar, Cerbos, XACML, or a
+enforcement protocol (see `../scope/README.md`). Any engine — OPA, Cedar, Cerbos, XACML, or a
 custom decision point — can participate as long as its decisions can be tagged with a
 `capability_id`.
 

@@ -20,7 +20,6 @@ export function absoluteUrl(path: string): string {
 
 export const PRIMARY_NAV = [
   { label: "Overview", to: "/docs" },
-  { label: "Scope", to: "/docs/scope" },
   { label: "Foundations", to: "/docs/foundations" },
   { label: "Architecture", to: "/docs/architecture" },
   { label: "Standards", to: "/docs/standards" },

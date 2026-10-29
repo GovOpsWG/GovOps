@@ -7,17 +7,12 @@ Documents are picked up automatically — you do not register them anywhere. Thi
 [How the menu is built](../README.md#how-the-menu-is-built) at the end.
 
 
-## Scope
-
-| Document | What it covers |
-|---|---|
-| [Scope](./scope/README.md) | What GovOps defines and what it deliberately leaves to other systems. |
-
 ## Foundations
 
 | Document | What it covers |
 |---|---|
 | [Foundations](./foundations/README.md) | Explanatory material, including the problem statement, the GovOps thesis, and its relation to other frameworks. |
+| [Scope](./foundations/scope/README.md) | What GovOps defines and what it deliberately leaves to other systems. |
 | [Principles](./foundations/architectural-principles.md) | The four GovOps principles and the design rules that apply them. |
 
 ## Architecture
@@ -28,7 +23,7 @@ Documents are picked up automatically — you do not register them anywhere. Thi
 | [Capability Catalog](./architecture/governance/capability-catalog.md) | The inventory of governed capabilities and their lifecycle |
 | [Continuous Evidence](./architecture/governance/continuous-evidence.md) | Runtime evidence linked to `capability_id`. To be added soon. |
 | [Continuous Compliance](./architecture/governance/continuous-compliance.md) | Capabilities to controls through Gemara, and the export path to OSCAL |
-| [Governance Metrics](./architecture/governance/governance-metrics.md) | Measuring governance with `capability_id` as the unit |
+| [GovOps Dashboard](./architecture/governance/govops-dashboard.md) | The service that calculates, visualizes, and reports GovOps metrics, keyed on `capability_id` |
 | [Centralized Policy Management](./architecture/access-management/policy-management.md) | Central administration of policy, with distributed enforcement |
 | [Schema Management](./architecture/access-management/schema-management.md) | The entities, attributes, and claims policies can reference |
 | [Federation Management](./architecture/access-management/federation-management.md) | Which external issuers, credentials, and claims the enterprise trusts |
