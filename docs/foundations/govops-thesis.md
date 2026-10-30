@@ -1,7 +1,8 @@
-# The GovOps Solution
+# The GovOps Thesis
 
-GovOps addresses the gaps described in
-[`../why-existing-approaches-fall-short/README.md`](../why-existing-approaches-fall-short/README.md)
+This section explains the core proposal of the GovOps framework as a solution to the problems
+outlined in [`problem.md`](./problem.md) and the gaps described in
+[`why-existing-approaches-fall-short.md`](./why-existing-approaches-fall-short.md),
 by proposing a new framework built on the following principles.
 
 ## Capability as the unit of governance
@@ -21,12 +22,12 @@ computed only from the action and resource type. This choice is deliberate:
 - **Identity demoted, not eliminated.** Identity remains essential as a decision-time input (who is
   making this request right now) and for accountability, but it is no longer the primary unit that
   governance organizes itself around. See
-  `../why-existing-approaches-fall-short/identity-centric-governance.md`.
+  `./why-existing-approaches-fall-short.md#the-limitations-of-identity-centric-governance`.
 
 ## Runtime observability
 
 GovOps makes authorization decisions observable by design: the `capability_id`, `decision`,
-`decision_id`, `policy_store_id`, and `policy_store_version` travel with every runtime decision, 
+`decision_id`, `policy_store_id`, and `policy_store_version` travel with every runtime decision,
 and — where kernel observability
 tooling is deployed — the same identifier can be joined against independent, process-level proof of
 what actually happened, not just what a policy engine decided.
@@ -34,14 +35,14 @@ what actually happened, not just what a policy engine decided.
 ## Closing the loop
 
 Observability in GovOps is not passive monitoring. It feeds the Detect and Respond steps of the
-GovOps loop (Govern → Authorize → Execute → Observe → Detect → Respond → Govern), 
+GovOps loop (Govern → Authorize → Execute → Observe → Detect → Respond → Govern),
 enabling automated remediation, alerting, and policy
 refinement instead of a log that is only read after an incident.
 
 ## Separating governance from enforcement
 
 GovOps is policy-mechanism-neutral: it does not standardize a policy engine, policy language, or
-enforcement protocol (see `../scope/README.md`). Any engine — OPA, Cedar, Cerbos, XACML, or a
+enforcement protocol (see `./scope.md`). Any engine — OPA, Cedar, Cerbos, XACML, or a
 custom decision point — can participate as long as its decisions can be tagged with a
 `capability_id`.
 
@@ -60,12 +61,17 @@ can share instead of each maintaining an incompatible, siloed view of the same u
 | Finance | (Directional, not yet built) capability-level risk and cost metadata, rather than system- or vendor-level tracking. |
 | Legal | An authorized-vs-actual trail anchored to the same capability, usable to confirm that contractual or regulatory obligations were actually enforced. |
 
-See `../stakeholder-goals/README.md` for the full today-vs-with-GovOps comparison for each
+See `./stakeholder-goals.md` for the full today-vs-with-GovOps comparison for each
 function.
 
 ## Alignment with modern security paradigms
 
 GovOps is designed to be complementary to, not competitive with, adjacent efforts — Zero Trust and
 Google's "Beyond Zero," AuthZen, the Shared Signals Framework, and independently convergent
-implementations like Meta's Muse. See `../positioning/README.md` for the detailed relationship to
+implementations like Meta's Muse. See `./positioning.md` for the detailed relationship to
 each.
+
+## See also
+
+- [`architectural-principles.md`](./architectural-principles.md) — the four
+  GovOps principles that follow from this thesis, and the design rules that apply them.

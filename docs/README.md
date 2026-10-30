@@ -12,7 +12,7 @@ Documents are picked up automatically — you do not register them anywhere. Thi
 | Document | What it covers |
 |---|---|
 | [Foundations](./foundations/README.md) | Explanatory material, including the problem statement, the GovOps thesis, and its relation to other frameworks. |
-| [Scope](./foundations/scope/README.md) | What GovOps defines and what it deliberately leaves to other systems. |
+| [Scope](./foundations/scope.md) | What GovOps defines and what it deliberately leaves to other systems. |
 | [Principles](./foundations/architectural-principles.md) | The four GovOps principles and the design rules that apply them. |
 
 ## Architecture

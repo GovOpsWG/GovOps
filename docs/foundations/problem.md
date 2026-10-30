@@ -28,7 +28,7 @@ The result resembles the parable of the blind men and the elephant: each effort 
 described a piece of the same animal, but no shared vocabulary lets them recognize it. GovOps's
 purpose is not to replace these efforts but to name the shared unit — the capability — so that work
 happening independently across the industry can be recognized as addressing the same problem. See
-`../positioning/README.md` for how GovOps relates to each of these efforts specifically.
+`./positioning.md` for how GovOps relates to each of these efforts specifically.
 
 ## The compliance gap
 
@@ -60,4 +60,4 @@ slowly changing job functions. Two failure modes now dominate in practice:
 GovOps does not propose replacing RBAC or any other access-control mechanism. It proposes governing
 the *capability* being granted — the action-resource_type pair — as a unit that is stable regardless of
 which identity, role, or non-human actor is exercising it. See
-`../govops-thesis/solution-overview.md#capability-as-the-unit-of-governance` for the full argument.
+`./govops-thesis.md#capability-as-the-unit-of-governance` for the full argument.

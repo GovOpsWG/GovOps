@@ -1,7 +1,7 @@
 # Core Principles
 
 GovOps rests on four principles. They follow from the thesis in
-[`govops-thesis/solution-overview.md`](./govops-thesis/solution-overview.md).
+[`govops-thesis.md`](./govops-thesis.md).
 
 1. **Governance requires three core activities: risk management, accountability, and observability.**
 2. **Governance is a continuous operational discipline, not a periodic exercise.**
@@ -32,8 +32,8 @@ These rules apply the principles to the GovOps architecture.
    same identifier.
 4. **Compliance is a byproduct, not the primary purpose.** GovOps is designed so that compliance
    evidence falls out of normal operation (see
-   [`point-in-time-compliance.md`](./why-existing-approaches-fall-short/point-in-time-compliance.md)).
-   It is not itself a compliance certification process (see [`scope`](./scope/README.md)).
+   [`point-in-time-compliance`](./why-existing-approaches-fall-short.md#point-in-time-compliance)).
+   It is not itself a compliance certification process (see [`scope`](./scope.md)).
 5. **Stability over completeness in the core identifier.** The `capability_id` hash deliberately
    includes only the action and resource type, excluding mutable metadata like risk tier or ownership, so
    that the identifier remains stable even as governance metadata evolves.

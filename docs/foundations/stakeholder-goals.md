@@ -2,7 +2,7 @@
 
 GovOps is not a single-purpose compliance tool — it is a shared, capability-anchored data model that
 different business functions can each draw on for their own purposes (see
-[`../govops-thesis/solution-overview.md`](../govops-thesis/solution-overview.md#a-cross-functional-governance-deal-not-just-a-compliance-tool)).
+[`./govops-thesis.md`](./govops-thesis.md#a-cross-functional-governance-deal-not-just-a-compliance-tool)).
 This section describes, for each function, the unmet need today and what GovOps changes.
 
 ## Security
