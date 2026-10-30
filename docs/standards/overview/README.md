@@ -20,6 +20,6 @@ identifier.
 GovOps does not define its own request/response protocol — it relies on AuthZen for that shape and
 focuses its own standards work on the catalog (ACC) and the evidence trail (GTP). The relationship
 between GovOps's capability model and AuthZen's request shape is discussed in
-[Foundations: Relationship to AuthZen](../../foundations/positioning/README.md#relationship-to-authzen);
+[Foundations: Relationship to AuthZen](../../foundations/positioning.md#relationship-to-authzen);
 the [AuthZen placeholder](../authzen/README.md) is where a dedicated standards-track document will
 live once one exists.

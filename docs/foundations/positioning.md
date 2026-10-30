@@ -51,7 +51,7 @@ the request, and can be omitted entirely.
 GovOps's capability model sits comfortably on top of AuthZen-shaped requests; it does not need
 AuthZen to change anything about its request format. GovOps is a governance/catalog layer above
 whatever decision engine consumes AuthZen requests, not a competing request protocol. See
-`../why-existing-approaches-fall-short/pbac-without-governance-layer.md` for the related point
+`./why-existing-approaches-fall-short.md#pbac-without-a-governance-layer` for the related point
 that GovOps does not compete with decision-mechanism standards generally.
 
 ## Relationship to Meta's Muse
