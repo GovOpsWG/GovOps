@@ -19,21 +19,34 @@ Documents are picked up automatically — you do not register them anywhere. Thi
 
 | Document | What it covers |
 |---|---|
-| [Architecture](./architecture/README.md) | The GovOps loop, the Governance and Runtime planes, the four layers, and the GovOps services. The canonical reference. |
-| [Capability Catalog](./architecture/governance/capability-catalog.md) | The inventory of governed capabilities and their lifecycle |
-| [Continuous Evidence](./architecture/governance/continuous-evidence.md) | Runtime evidence linked to `capability_id`. To be added soon. |
-| [Continuous Compliance](./architecture/governance/continuous-compliance.md) | Capabilities to controls through Gemara, and the export path to OSCAL |
-| [GovOps Dashboard](./architecture/governance/govops-dashboard.md) | The service that calculates, visualizes, and reports GovOps metrics, keyed on `capability_id` |
-| [Centralized Policy Management](./architecture/access-management/policy-management.md) | Central administration of policy, with distributed enforcement |
-| [Schema Management](./architecture/access-management/schema-management.md) | The entities, attributes, and claims policies can reference |
-| [Federation Management](./architecture/access-management/federation-management.md) | Which external issuers, credentials, and claims the enterprise trusts |
-| [Runtime Authorization Context](./architecture/access-management/runtime-authorization-context.md) | The context that joins a decision to what executed |
-| [Kernel Observability](./architecture/observability/kernel-observability.md) | Independent evidence of what actually ran |
-| [Identity](./architecture/identity/identity.md) | Human, software, and organization identities. To be added soon. |
-| [Event Handling and Response](./architecture/event-handling.md) | How the enterprise responds to what it detects |
+| [Architecture](./architecture/README.md) | The GovOps loop, the Governance and Runtime planes, and where to go next. The canonical reference. |
+| [Actors and Responsibilities](./architecture/actors-and-responsibilities.md) | Who governs, the four layers' questions, and how Response closes the loop |
+| [Layers](./architecture/layers/README.md) | Introduction to the four layers: Identity, Observability, Access, and Governance |
+| [Identity Layer](./architecture/layers/identity/README.md) | What the identity layer must provide to be governable |
+| [Identity](./architecture/layers/identity/identity.md) | Human, software, and organization identities. To be added soon. |
+| [Observability Layer](./architecture/layers/observability/README.md) | What the observability layer must provide to be governable |
+| [Kernel Observability](./architecture/layers/observability/kernel-observability.md) | Independent evidence of what actually ran |
+| [Access Layer](./architecture/layers/access/README.md) | What the access layer must provide to be governable |
+| [Schema Management](./architecture/layers/access/schema-management.md) | The entities, attributes, and claims policies can reference |
+| [Federation Management](./architecture/layers/access/federation-management.md) | Which external issuers, credentials, and claims the enterprise trusts |
+| [Runtime Authorization Context](./architecture/layers/access/runtime-authorization-context.md) | The context that joins a decision to what executed |
+| [Governance Layer](./architecture/layers/governance/README.md) | What the governance layer owns, and how Response closes the loop |
+| [Event Handling and Response](./architecture/layers/governance/event-handling.md) | How the enterprise responds to what it detects |
+| [Functional Components](./architecture/functional-components/README.md) | The four governance-plane services GovOps owns, and the one it depends on |
+| [Capability Inventory](./architecture/functional-components/capability-inventory/README.md) | The inventory of governed capabilities |
+| [Capability Lifecycle](./architecture/functional-components/capability-inventory/manage-lifecycle.md) | How a capability moves from draft to retirement |
+| [Gemara Mapping](./architecture/functional-components/capability-inventory/gemara-mapping.md) | How a capability references the control mapping that governs it |
+| [Evidence](./architecture/functional-components/evidence/README.md) | Runtime evidence linked to `capability_id`, from producer signature to collector-derived enrichment |
+| [Producers](./architecture/functional-components/evidence/producers.md) | The producer-signed envelope and chain of custody |
+| [Collectors](./architecture/functional-components/evidence/collectors.md) | Capability resolution and collector-derived assessments |
+| [Correlation and Enrichment](./architecture/functional-components/evidence/correlation-and-enrichment.md) | Token, session, and actor-context enrichment, with attribution quality |
+| [Centralized Policy Management](./architecture/functional-components/evidence/policy-management.md) | Central administration of policy, with distributed enforcement |
+| [Key Management](./architecture/functional-components/evidence/key-management.md) | The Producer Key Registry and Producer-Key Authorization Statement |
+| [Compliance](./architecture/functional-components/compliance.md) | Capabilities to controls through Gemara, and the export path to OSCAL |
+| [GovOps Dashboard](./architecture/functional-components/govops-dashboard.md) | The service that calculates, visualizes, and reports GovOps metrics, keyed on `capability_id` |
 
 Start with [Architecture at a glance](./architecture/README.md#architecture-at-a-glance) for the
-plane diagram and the loop, then read the service pages in order.
+plane diagram and the loop, then read the pages in order.
 
 ## Standards
 
