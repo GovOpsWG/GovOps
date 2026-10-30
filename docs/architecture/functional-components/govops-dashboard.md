@@ -3,8 +3,8 @@
 Governance requires measurement, and measurement requires a place to see it.
 
 The GovOps Dashboard is the fourth governance-plane service, alongside the
-[Capability Catalog](./capability-catalog.md), [Continuous Evidence](./continuous-evidence.md), and
-[Continuous Compliance](./continuous-compliance.md). Where those three services build and maintain the
+[Capability Inventory](./capability-inventory/README.md), [Evidence](./evidence/README.md), and
+[Compliance](./compliance.md). Where those three services build and maintain the
 capability inventory and its evidence trail, the Dashboard calculates, visualizes, and reports on what
 that evidence means: it is how Governors view and report GovOps metrics.
 
@@ -16,7 +16,7 @@ that evidence means: it is how Governors view and report GovOps metrics.
 - **Visualizes and reports governance data** — for example, risk by volume, geographic region, business
   unit, or category — so that governance questions can be answered across otherwise unrelated
   applications and infrastructure.
-- **Reports status** of the Capability Catalog, Continuous Evidence, and Continuous Compliance services,
+- **Reports status** of the Capability Inventory, Evidence, and Compliance services,
   giving Governors a single place to see whether the governance plane itself is healthy.
 - **Renders heat maps**, such as the [Governance Heat Map](../../metrics/README.md#governance-heat-map),
   that give a compact, colour-coded assessment of each GovOps layer.
