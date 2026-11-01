@@ -113,5 +113,5 @@ Two documents guide this process:
 - [Authorization Capability Catalog (ACC)](../standards/acc/README.md): capability definitions and context.
 - [GovOps TRACE Profile (GTP)](../standards/gtp/govops-trace-profile.md): runtime evidence and its interpretation.
 - [Architecture](../architecture/README.md): the services and information flows supporting governance.
-- [GovOps Dashboard](../architecture/governance/govops-dashboard.md): the service that calculates, visualizes, and reports these metrics.
+- [GovOps Dashboard](../architecture/functional-components/govops-dashboard.md): the service that calculates, visualizes, and reports these metrics.
 - [Governance policy](../../GOVERNANCE.md): working-group roles and approval process.

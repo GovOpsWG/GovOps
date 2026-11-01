@@ -45,7 +45,7 @@ policy_store_version = 42
 access_token.jti     = a81f...
 ```
 
-That context is the join point in the [Architecture at a Glance](../README.md#architecture-at-a-glance) stack between authorization decision and application execution. The critical field is `capability_id` (business meaning); the remaining identifiers provide provenance (decision, policy version, trusted evidence). Runtime telemetry can then answer not only **what happened**, but **which governed capability was executing when it happened**.
+That context is the join point in the [Architecture at a Glance](../../README.md#architecture-at-a-glance) stack between authorization decision and application execution. The critical field is `capability_id` (business meaning); the remaining identifiers provide provenance (decision, policy version, trusted evidence). Runtime telemetry can then answer not only **what happened**, but **which governed capability was executing when it happened**.
 
 ## Authorization Challenges
 
