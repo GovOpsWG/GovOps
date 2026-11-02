@@ -19,6 +19,27 @@ describe("resolveRelative", () => {
 });
 
 describe("rewriteHref", () => {
+  it.each([
+    [
+      "definition_template.md",
+      "docs/metrics/metric_development/acceptance_process_and_criteria.md",
+      "/docs/metrics/metric_development/definition_template",
+    ],
+    [
+      "metric_development/definition_template.md",
+      "docs/metrics/README.md",
+      "/docs/metrics/metric_development/definition_template",
+    ],
+    ["approved_metrics/README.md", "docs/metrics/README.md", "/docs/metrics/approved_metrics"],
+    [
+      "definition_template.md#3-evidence",
+      "docs/metrics/metric_development/acceptance_process_and_criteria.md",
+      "/docs/metrics/metric_development/definition_template#3-evidence",
+    ],
+  ])("maps an unprefixed document link %s to its route", (href, sourcePath, expected) => {
+    expect(rewriteHref(href, sourcePath)).toBe(expected);
+  });
+
   it("maps a document link to its route", () => {
     expect(
       rewriteHref("../acc/authorization-capability-catalog-design.md", OPTIONS.sourcePath),
@@ -43,6 +64,12 @@ describe("rewriteHref", () => {
     );
   });
 
+  it("points an unprefixed document asset at the served copy", () => {
+    expect(rewriteHref("images/figure_1_1.jpg", OPTIONS.sourcePath)).toBe(
+      "/docs-assets/architecture/images/figure_1_1.jpg",
+    );
+  });
+
   it("sends a link that escapes docs/ to the repository", () => {
     expect(rewriteHref("../../CONTRIBUTING.md", OPTIONS.sourcePath)).toBe(
       "https://github.com/GovOpsWG/GovOps/blob/main/CONTRIBUTING.md",
@@ -53,6 +80,17 @@ describe("rewriteHref", () => {
     expect(rewriteHref("https://gemara.openssf.org", OPTIONS.sourcePath)).toBe(
       "https://gemara.openssf.org",
     );
+  });
+
+  it.each([
+    "https://example.com/README.md",
+    "//example.com/README.md",
+    "mailto:reader@example.com.md",
+    "#README.md",
+    "?download=README.md",
+    "/docs/metrics",
+  ])("leaves non-file references unchanged: %s", (href) => {
+    expect(rewriteHref(href, OPTIONS.sourcePath)).toBe(href);
   });
 });
 
