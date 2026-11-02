@@ -22,16 +22,14 @@ export type DocPage = {
   readonly readingMinutes: number;
 };
 
+/** A sidebar entry. A directory with sub-directories or sibling pages has `children`; a leaf page's is empty. */
 export type NavChild = {
-  readonly route: string;
-  readonly title: string;
-};
-
-export type NavSection = {
   readonly route: string;
   readonly title: string;
   readonly children: readonly NavChild[];
 };
+
+export type NavSection = NavChild;
 
 export type SearchDocument = {
   readonly id: string;

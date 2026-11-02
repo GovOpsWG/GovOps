@@ -38,11 +38,14 @@ test("a document renders with its diagrams, tables and contents intact", async (
 });
 
 test("a cross-document link written for GitHub lands on the right page", async ({ page }) => {
-  await page.goto("/docs/architecture");
+  await page.goto("/docs/architecture/functional-components/compliance");
 
-  await page.getByRole("link", { name: "ACC design" }).first().click();
-  await expect(page).toHaveURL(/\/docs\/acc\/authorization-capability-catalog-design$/);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Design");
+  // Written as `../../standards/acc/README.md`, which only resolves on GitHub until rewritten.
+  await page.getByRole("main").getByRole("link", { name: "ACC documents" }).click();
+  await expect(page).toHaveURL(/\/docs\/standards\/acc$/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "Authorization Capability Catalog",
+  );
 });
 
 test("the releases page states plainly that there is no release yet", async ({ page }) => {
