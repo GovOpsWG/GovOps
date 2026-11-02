@@ -25,7 +25,7 @@ test.describe("keyboard and theme", () => {
     ).toBeVisible();
 
     await page.keyboard.press("Enter");
-    await expect(page).toHaveURL(/\/docs\/acc/);
+    await expect(page).toHaveURL(/\/docs\/standards\/acc/);
   });
 
   test("Escape closes search", async ({ page }) => {

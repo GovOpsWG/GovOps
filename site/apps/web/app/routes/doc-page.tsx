@@ -1,3 +1,4 @@
+import { flattenNavigation } from "@govops/content";
 import { docRoutes, findPage, navigation } from "@govops/content/generated";
 import { ChevronLeft, ChevronRight, Clock, Pencil } from "lucide-react";
 import { Link } from "react-router";
@@ -128,10 +129,7 @@ function AdjacentLink({
 
 /** Previous/next follow the sidebar order, so paging through the docs reads them in sequence. */
 function readingOrder(): string[] {
-  const ordered = ["/docs"];
-  for (const section of navigation) {
-    ordered.push(section.route, ...section.children.map((child) => child.route));
-  }
+  const ordered = ["/docs", ...flattenNavigation(navigation)];
   return ordered.filter((route) => docRoutes.includes(route));
 }
 

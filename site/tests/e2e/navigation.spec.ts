@@ -61,18 +61,51 @@ test.describe("desktop chrome", () => {
     );
   });
 
+  test("sidebar groups start collapsed, except the branch holding the current page", async ({
+    page,
+  }) => {
+    await page.goto("/docs/architecture/layers/identity/identity");
+    const sidebar = page.getByRole("navigation", { name: "Documentation" });
+
+    // The current page's ancestors are open, so the reader can see where they are.
+    await expect(sidebar.getByRole("button", { name: "Collapse Architecture" })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
+    await expect(sidebar.getByRole("link", { name: "Identity", exact: true })).toBeVisible();
+
+    // Everything else is folded away.
+    await expect(sidebar.getByRole("button", { name: "Expand GovOps Metrics" })).toHaveAttribute(
+      "aria-expanded",
+      "false",
+    );
+    await expect(sidebar.getByRole("link", { name: "Approved Metrics" })).toHaveCount(0);
+  });
+
+  test("the chevron folds and unfolds a group without navigating", async ({ page }) => {
+    await page.goto("/docs/architecture");
+    const sidebar = page.getByRole("navigation", { name: "Documentation" });
+
+    await sidebar.getByRole("button", { name: "Expand GovOps Metrics" }).click();
+    await expect(sidebar.getByRole("link", { name: "Approved Metrics" })).toBeVisible();
+    await expect(page).toHaveURL(/\/docs\/architecture$/);
+
+    await sidebar.getByRole("button", { name: "Collapse GovOps Metrics" }).click();
+    await expect(sidebar.getByRole("link", { name: "Approved Metrics" })).toHaveCount(0);
+  });
+
   test("the sidebar navigates client-side between documents", async ({ page }) => {
     await page.goto("/docs/architecture");
+    const sidebar = page.getByRole("navigation", { name: "Documentation" });
+
+    await sidebar.getByRole("button", { name: "Expand GovOps Metrics" }).click();
+    await sidebar.getByRole("button", { name: "Expand Metric development" }).click();
 
     await expectClientNavigation(
       page,
-      () =>
-        page
-          .getByRole("navigation", { name: "Documentation" })
-          .getByRole("link", { name: "Denial Ratio Trend" })
-          .click(),
-      /\/docs\/metrics\/denial-ratio-trend$/,
-      /Denial Ratio Trend/,
+      () => sidebar.getByRole("link", { name: "Metric Definition Template" }).click(),
+      /\/docs\/metrics\/metric_development\/definition_template$/,
+      /Metric Definition Template/,
     );
   });
 });
@@ -102,18 +135,37 @@ test("every document's data route resolves", async ({ request, baseURL }) => {
   }
 });
 
-test("the mobile section pills navigate client-side", async ({ page, isMobile }) => {
-  test.skip(!isMobile, "the pill nav replaces the sidebar below the large breakpoint");
+test("the mobile menu opens a collapsible tree and navigates client-side", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "the mobile menu replaces the sidebar below the large breakpoint");
 
   await page.goto("/docs");
+  const nav = page.getByRole("navigation", { name: "Documentation sections" });
+
+  // Closed by default: no wall of links up front.
+  await expect(nav.getByRole("button", { name: "Browse documentation" })).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  );
+  await expect(nav.getByRole("link", { name: "GovOps Metrics" })).toBeHidden();
+
+  await nav.getByRole("button", { name: "Browse documentation" }).click();
+  await expect(nav.getByRole("link", { name: "GovOps Metrics" })).toBeVisible();
+  await expect(nav.getByRole("link", { name: "Approved Metrics" })).toHaveCount(0);
+
+  await nav.getByRole("button", { name: "Expand GovOps Metrics" }).click();
   await expectClientNavigation(
     page,
-    () =>
-      page
-        .getByRole("navigation", { name: "Documentation sections" })
-        .getByRole("link", { name: "GovOps Metrics" })
-        .click(),
-    /\/docs\/metrics$/,
-    /GovOps Metrics/,
+    () => nav.getByRole("link", { name: "Approved Metrics" }).click(),
+    /\/docs\/metrics\/approved_metrics$/,
+    /Approved Metrics/,
+  );
+
+  // Choosing a page closes the menu.
+  await expect(nav.getByRole("button", { name: "Browse documentation" })).toHaveAttribute(
+    "aria-expanded",
+    "false",
   );
 });

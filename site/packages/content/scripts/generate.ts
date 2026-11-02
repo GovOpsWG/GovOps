@@ -3,8 +3,9 @@
  * files are the single source of truth: nothing is copied into `site/`, and the generated module
  * is git-ignored.
  *
- * Sections and documents are discovered from the directory tree; `docs/README.md` contributes
- * order only. See docs/README.md, "How the menu is built".
+ * Sections and documents are discovered from the directory tree, at any depth; each directory's
+ * own `README.md` contributes the order of its direct children only. See docs/README.md,
+ * "How the menu is built".
  */
 import { existsSync } from "node:fs";
 import { copyFile, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
@@ -14,7 +15,12 @@ import { fileURLToPath } from "node:url";
 import { stripDocumentHeader, stripTableOfContents } from "../src/document.js";
 import { renderMarkdown } from "../src/markdown.js";
 import { buildNavigation, pagesOutsideNavigation, titleFromSlug } from "../src/navigation.js";
-import { docPathToRoute, docPathToSection } from "../src/paths.js";
+import {
+  docPathToDirectory,
+  docPathToRoute,
+  docPathToSection,
+  isDirectoryIndex,
+} from "../src/paths.js";
 import type { DocPage, NavSection, SearchDocument, TocEntry } from "../src/types.js";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
@@ -37,10 +43,14 @@ async function main(): Promise<void> {
   const markdownFiles = (await walk(docsDirectory)).filter((file) => file.endsWith(".md")).sort();
   const pages: DocPage[] = [];
   const searchDocuments: SearchDocument[] = [];
+  const readmesByDirectory = new Map<string, string>();
 
   for (const absolutePath of markdownFiles) {
     const sourcePath = toPosix(relative(repositoryRoot, absolutePath));
     const raw = await readFile(absolutePath, "utf8");
+    if (isDirectoryIndex(sourcePath)) {
+      readmesByDirectory.set(docPathToDirectory(sourcePath), raw);
+    }
     const body = stripDocumentHeader(stripTableOfContents(raw));
     const { html, toc, text } = renderMarkdown(body, { sourcePath, assetBase: ASSET_BASE });
 
@@ -74,10 +84,7 @@ async function main(): Promise<void> {
     });
   }
 
-  const navigation = buildNavigation(
-    pages,
-    await readFile(join(docsDirectory, "README.md"), "utf8"),
-  );
+  const navigation = buildNavigation(pages, readmesByDirectory);
   await copyImages(markdownFiles);
   await writeGenerated(pages, navigation, searchDocuments);
 
