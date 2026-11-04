@@ -34,11 +34,16 @@ describe("documentation corpus", () => {
 
   it("resolves every internal link to a real route", () => {
     const broken: string[] = [];
+    const origin = "https://govops.invalid";
 
     for (const page of pages) {
-      for (const match of page.html.matchAll(/href="(\/docs(?:\/[^"#]*)?)(#[^"]*)?"/g)) {
-        const target = match[1] as string;
-        if (!routes.has(target)) broken.push(`${page.sourcePath} -> ${target}`);
+      for (const match of page.html.matchAll(/href="([^"]+)"/g)) {
+        // Resolve like a browser so unconverted relative Markdown links are checked too.
+        const target = new URL(match[1] as string, `${origin}${page.route}`);
+        if (target.origin !== origin || !/^\/docs(?:\/|$)/.test(target.pathname)) continue;
+        if (!routes.has(target.pathname)) {
+          broken.push(`${page.sourcePath} -> ${target.pathname}`);
+        }
       }
     }
 

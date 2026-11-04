@@ -134,7 +134,8 @@ export function renderMarkdown(markdown: string, options: RenderOptions): Render
 
 /** Anchors are preserved; a link that escapes `docs/` falls back to the repository on GitHub. */
 export function rewriteHref(href: string, sourcePath: string): string {
-  if (!href.startsWith(".") && !href.startsWith("/")) return href;
+  // Bare file names are relative too; only URLs and page-local references bypass rewriting.
+  if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|#|\?)/i.test(href)) return href;
 
   const [target = "", anchor] = splitAnchor(href);
 

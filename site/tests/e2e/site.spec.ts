@@ -58,6 +58,38 @@ test("the releases page states plainly that there is no release yet", async ({ p
   await expect(page.getByRole("link", { name: "Watch the repository" })).toBeVisible();
 });
 
+test("unprefixed Markdown links connect the metrics overview, process and template", async ({
+  page,
+}) => {
+  await page.goto("/docs/metrics");
+
+  await page
+    .locator("article")
+    .getByRole("link", { name: "Acceptance process and criteria", exact: true })
+    .click();
+  await expect(page).toHaveURL(
+    /\/docs\/metrics\/metric_development\/acceptance_process_and_criteria$/,
+  );
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Acceptance Process and Criteria",
+  );
+
+  await page
+    .locator("article")
+    .getByRole("link", { name: "definition template", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/docs\/metrics\/metric_development\/definition_template$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Metric Definition Template");
+
+  await page
+    .locator("article")
+    .getByRole("link", { name: "draft acceptance process and criteria", exact: true })
+    .click();
+  await expect(page).toHaveURL(
+    /\/docs\/metrics\/metric_development\/acceptance_process_and_criteria$/,
+  );
+});
+
 test("search finds a document by a term from its body", async ({ page }) => {
   await page.goto("/search?q=federation");
 
