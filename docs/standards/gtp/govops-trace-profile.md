@@ -167,6 +167,8 @@ As with the decision kind, a record carries **exactly one** of `invocation` or `
 
 `capability_id` is **not** a signed field and must not be added to the record schema. Producers sign `(action, resource_type)` (§8); **the collector MUST resolve `capability_id`** from `(policy_store_id, policy_store_version, action, resource_type)` against a **versioned capability mapping that lives in the policy store** and store the result as `capability_resolution` outside the signed assertion.
 
+`capability_id` is **opaque**: consumers MUST NOT parse it or derive meaning from its format (see the [ACC id rule](../acc/acc-yaml-proposed-format.md#design-principles)). Where a readable label is useful, the collector copies the ACC entry's `title` as `capability_title`. It is display text only and MUST NOT be used as a key. The `capability_hash` on an ACC entry is an optional lookup shortcut; the mapping above remains the authoritative resolution path.
+
 **Capability resolution is an MVP requirement, not a deferred one.** The GovOps purpose — analyzing *what business capabilities* are being authorized and invoked, by whom, and at what rate — collapses without it: a raw `(action, resource_type)` pair like `(Acme::Action::"Pay", Acme::Payment)` is a Cedar implementation detail, not a governable business capability. Every MVP `AUTHORIZATION_DECISION` and `CAPABILITY_INVOKED` record the collector ingests MUST have `capability_resolution` attempted; when the mapping has no entry for the signed facts, the collector records that decision's `capability_ids: []` with a `resolution_status` of `unmapped` (feeding the "deprecated/unmapped capabilities" metric in §14) rather than silently dropping it.
 
 **Resolution is per decision, never per record.** For a singular `decision`/`invocation`, `capability_resolution` holds one result. For a batched `decisions[]`/`invocations[]`, the collector resolves **each entry independently** and keys the result back to the producer's `decision_id`/`invocation_id` — it MUST NOT compute one `capability_id` from the whole array. The result shape is a `results[]` list of `{ decision_id, capability_ids, resolution_status }` plus a shared `mapping_version`, preserving the decision↔capability association that a record-level `capability_ids` would destroy.
@@ -307,7 +309,8 @@ For each `CAPABILITY_INVOKED`, the collector materializes a flat **analytics pro
 
 ```json
 {
-  "capability_id": "invoke:payment-authorization",
+  "capability_id": "e2e36c33...a452739",
+  "capability_title": "Authorize a payment",
   "invoked_at": "2026-06-11T00:41:03.004Z",
   "actor_context": "human_delegated_to_workload",
   "human_subject_ref": "sha256:...",
@@ -494,7 +497,7 @@ Everything the collector computes lives in the Stored Record Envelope's `verific
   },
   "capability_resolution": {
     "results": [
-      { "capability_ids": ["invoke:payment-authorization"], "resolution_status": "resolved" }
+      { "capability_ids": ["e2e36c33...a452739"], "resolution_status": "resolved" }
     ],
     "policy_store_id": "https://example.org/policy-stores/payments",
     "policy_store_version": "1.2.3",
@@ -556,7 +559,8 @@ Everything the collector computes lives in the Stored Record Envelope's `verific
     "criticality": "high"
   },
   "capability_catalog_resolution": {
-    "capability_id": "invoke:payment-authorization",
+    "capability_id": "e2e36c33...a452739",
+    "capability_title": "Authorize a payment",
     "business_owner": "sha256:owner-...",
     "business_function": "payment-authorization",
     "risk_tier": "high",
@@ -614,7 +618,8 @@ From the enrichment in C, the collector materializes the flat per-invocation pro
 
 ```json
 {
-  "capability_id": "invoke:payment-authorization",
+  "capability_id": "e2e36c33...a452739",
+  "capability_title": "Authorize a payment",
   "invoked_at": "2026-06-11T00:41:03.004Z",
   "actor_context": "human_delegated_to_workload",
   "human_subject_ref": "sha256:user-...",
