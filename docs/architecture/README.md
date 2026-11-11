@@ -20,64 +20,71 @@ Govern → Authorize → Execute → Observe → Detect → Respond → Govern
 | **Govern** | Define and classify capabilities; manage policy, schema, federation, and control mappings; improve those artifacts from evidence. |
 | **Authorize** | Evaluate a PARC-shaped request at a local Policy Decision Point (Allow, Deny, or Challenge). |
 | **Execute** | Perform the protected action only after Allow. |
-| **Observe** | Collect authorization context, application telemetry, and kernel observability joined by `capability_id`. |
+| **Observe** | Collect producer-signed TRACE records from the PDP, the enforcement point, and kernel observability, and resolve them to `capability_id`. |
 | **Detect** | Identify conditions that require action (unexpected exercise, drift, revoked credentials, missing telemetry, threshold breach). |
 | **Respond** | Act on the detection (revoke, quarantine, re-authorize, notify owner, open incident) and feed outcomes back into **Govern**. |
 
 The architecture separates a **Governance Plane** (centralized artifacts) from a **Runtime Plane** (local decisions and execution). The diagram below is the canonical view of that stack; later sections refer back to it rather than redrawing it.
 
 ```text
-                       GOVERNANCE PLANE
+                           GOVERNANCE PLANE
 
-                 Authorization Capability Catalog
-                            ACC
-                             │
-                 capability_id + metadata
-                             │
-          ┌──────────────────┼──────────────────┐
-          │                  │                  │
-     Policy Stores      Schema Registry    Federation
-          │                  │              Management
-          └──────────────────┼──────────────────┘
-                             │
-                    governed artifacts
-                             │
-                             ▼
+                  Authorization Capability Catalog (ACC)
+                     capability_id + versioned metadata
+                                  │
+           ┌──────────────────────┼──────────────────────┐
+           │                      │                      │
+     Policy Stores          Schema Registry        Federation
+  policy releases, plus                            Management
+  the capability mapping
+  (action, resource_type)
+     → capability_id
+           │                      │                      │
+           └──────────────────────┼──────────────────────┘
+                                  │
+                         governed artifacts
+                                  │
+                                  ▼
+                            RUNTIME PLANE
 
-                        RUNTIME PLANE
+   Application / API / Workload / AI Agent   (the enforcement point, or PEP)
+           │
+           │ request: action, resource_type
+           ▼
+   Policy Decision Point   returns Allow | Deny | Challenge to the PEP
+           │
+           ▼
+   PEP executes the action, only after Allow
+           │
+           ▼
+   Target resource and kernel observability see the effect
 
-       ┌──────────────────────────────────────────────┐
-       │ Applications / APIs / Workloads / AI Agents │
-       └──────────────────────────────────────────────┘
-                             │
-                             ▼
-                    Policy Decision Point
-                             │
-                             ▼
-                    Authorization Decision
-                   Allow | Deny | Challenge
-                             │
-                             ▼
-                   Authorization Context
-                             │
-          capability_id + policy version + jti
-                             │
-                             ▼
-                   Application Execution
-                             │
-                             ▼
-                  Kernel Observability
-              Cilium / Falco / Sysdig /
-                 Tetragon / OS telemetry
-                             │
-                             ▼
-                    Governance Evidence
-                             │
-                             ▼
-              Gemara / OSCAL / Compliance
+   Each step signs its own TRACE record:
+
+   AUTHORIZATION_DECISION        CAPABILITY_INVOKED         RUNTIME_EFFECT
+   signed by the PDP             signed by the PEP          signed by the target
+                                                            or kernel observability
+           │                             │                          │
+           └─────────────────────────────┼──────────────────────────┘
+                                         │
+                           producer-signed TRACE records
+                  (action, resource_type, policy_store_version,
+                       signed_at, trace_execution_id)
+                                         │
+                                         ▼
+                                     Collector
+            verify signatures and chains, correlate the execution,
+        resolve capability_id from the policy store mapping, enrich
+                                         │
+                                         ▼
+                                Governance Evidence
+                                         │
+              ┌──────────────────────────┼──────────────────────────┐
+              ▼                          ▼                          ▼
+   Compliance (Gemara / OSCAL)        Metrics               Threat detection
 ```
 
-A `Challenge` means available evidence is insufficient for a final decision — the caller must obtain more evidence and resubmit before the protected capability can execute. Runtime evidence flows back up the same `capability_id` join into the Governance Plane (**Observe → Detect → Respond → Govern**).
+A `Challenge` means available evidence is insufficient for a final decision — the caller must obtain more evidence and resubmit before the protected capability can execute. Producers sign what they saw, `(action, resource_type)`, and never `capability_id`. The collector resolves `capability_id` from the mapping published with the policy release ([GTP §9](../standards/gtp/govops-trace-profile.md)), so runtime evidence flows back up the same `capability_id` join into the Governance Plane (**Observe → Detect → Respond → Govern**).
 
 The catalog design and use cases are listed in the [ACC documents](../standards/acc/README.md).
 
