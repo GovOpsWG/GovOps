@@ -42,7 +42,7 @@ Documents are picked up automatically — you do not register them anywhere. Thi
 | [Correlation and Enrichment](./architecture/functional-components/evidence/correlation-and-enrichment.md) | Token, session, and actor-context enrichment, with attribution quality |
 | [Centralized Policy Management](./architecture/functional-components/evidence/policy-management.md) | Central administration of policy, with distributed enforcement |
 | [Key Management](./architecture/functional-components/evidence/key-management.md) | The Producer Key Registry and Producer-Key Authorization Statement |
-| [Compliance](./architecture/functional-components/compliance.md) | Capabilities to controls through Gemara, and the export path to OSCAL |
+| [Compliance](./architecture/functional-components/compliance.md) | Capabilities to controls through Gemara, the export path to OSCAL, and run-time control results from evidence |
 | [GovOps Dashboard](./architecture/functional-components/govops-dashboard.md) | The service that calculates, visualizes, and reports GovOps metrics, keyed on `capability_id` |
 
 Start with [Architecture at a glance](./architecture/README.md#architecture-at-a-glance) for the

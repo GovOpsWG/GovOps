@@ -29,3 +29,73 @@ Gemara defines the semantics. OSCAL defines the interchange format. Trestle mana
 Compliance joins the same stack shown in [Architecture at a Glance](../README.md#architecture-at-a-glance): frameworks project through Trestle/OSCAL onto abstract controls, `#MappingDocument` links those controls to ACC capabilities, and policy → decision → runtime evidence flows down the Runtime Plane and back up via `capability_id`.
 
 An auditor should eventually identify the capabilities associated with a control, which policies govern them, which policy versions were active, and evidence of how those capabilities were exercised — without treating the mapping itself as certification. That turns compliance from a periodic documentation exercise into another pass through the GovOps loop.
+
+## From evidence to control results
+
+The mapping says which controls apply to a capability. It does not say whether those controls held at runtime. That needs a second check.
+
+| Check | When | Question |
+|---|---|---|
+| **Design time** | When the catalog or a policy release changes | Does the published policy meet the mapped control expectations? This is `govops drift` Type C in the ACC design. |
+| **Run time** | Continuously, for each execution | Did the execution produce the evidence each mapped control needs, and did that evidence pass? |
+
+Both are needed. A policy can look right and still be bypassed. Evidence can be complete for a policy that was wrong.
+
+### Control evidence requirements
+
+For each abstract control, a **control evidence requirement** states what proves the control for one execution of a mapped capability: which records must exist, which checks they must pass, which enrichment must run, and the minimum attribution quality.
+
+```yaml
+control_id: govops.ac-03.access-enforcement
+evidence_requirement:
+  version: 1
+  required_records:
+    - event_kind: AUTHORIZATION_DECISION
+      producer_role: pdp
+    - event_kind: CAPABILITY_INVOKED
+      producer_role: enforcement-point
+      parent: { relationship_type: authorized, to: AUTHORIZATION_DECISION }
+  required_checks:
+    - signature_valid          # verification result on each record
+    - no_chain_flags           # no coverage_gap, chain_link_failure, or equivocation flag
+    - request_digest_match     # the invocation ran the request that was decided
+  pass_when: [decision.outcome == ALLOW]
+  min_attribution_quality: correlated
+```
+
+Requirements are written once per control, not per capability. They name producer roles, not products, so any producer in that role can satisfy them. They are versioned, and every result records the version it was checked against.
+
+### Evidence profile per capability
+
+A capability's **evidence profile** is the union of the requirements of every control mapped to it. It is derived from the mapping, never written by hand. It builds on the catalog's `expected_producer_roles` ([GTP §13.6](../../standards/gtp/govops-trace-profile.md#136-target-resource-classification-and-the-capability-catalog)) by adding which event kinds, checks, and enrichment each role's records need. The [collectors](./evidence/collectors.md) read it to decide three things:
+
+1. **Completeness.** Did every required producer role send its record for this execution? Executions are grouped by `(execution_authority, trace_execution_id)`. A producer chain shows that a producer did not hide records it signed. Only the profile says which records should exist.
+2. **Enrichment.** Which enrichment to run. Data the identity provider will purge (token claims, session, authentication method) is captured at ingest for every record. A small baseline (`capability_id`, `actor_context`, org unit) is always derived, since every metric needs it. Everything else is derived when the profile requires it, which is safe because reference data is versioned.
+3. **Integrity level.** Chaining and minimum attribution quality can scale with the capability's `risk-tier`.
+
+Records with no resolved `capability_id` still get capture and baseline enrichment. Unknown capabilities need the most context, not the least.
+
+### Results
+
+Each execution of a capability gets one result per mapped control:
+
+| Result | Meaning |
+|---|---|
+| `satisfied` | All required records present, all checks passed, the pass condition holds. |
+| `not_satisfied` | The evidence is complete and the pass condition does not hold. |
+| `insufficient_evidence` | A required record is missing, a check failed, or attribution is below the minimum. |
+| `not_applicable` | The control does not apply to this execution. |
+
+`insufficient_evidence` is never counted as `satisfied`. Missing evidence is never green.
+
+Results are published as OSCAL **assessment results**. Each observation points to the evidence records it used (`producer_id`, `record_id`), so an assessor can verify them independently. Findings roll up per control and period. Failed or insufficient results open POA&M items owned by the capability's `accountable-owner`. The same results can be written as Gemara evaluation logs.
+
+A metric can show where to look. Only the signed records prove a finding.
+
+### Open questions
+
+1. Where control evidence requirements live: in the abstract control catalog, in the mapping documents, or as a separate artifact.
+2. The expression language for `pass_when`.
+3. Whether low-risk tiers may be sampled rather than evaluated per execution.
+4. How long to wait for late records before `insufficient_evidence` is final.
+5. How the execution id and parent record id travel between producers. Completeness is checked per execution, so it depends on this.
