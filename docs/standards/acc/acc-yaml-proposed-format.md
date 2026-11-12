@@ -69,6 +69,8 @@ The catalog-level `catalogue-version` (in `metadata`) is also required, since ev
 
 A note on `accountable-owner`: the claims discussion proposed a sequence here, but the architecture defines accountability as an identifiable owner, and a list of owners tends to mean no owner. This draft keeps it singular; organizations that need to record interested parties can use an `x-stakeholders` extension until the committee decides.
 
+A note on jurisdiction: `geography` records where a capability runs, not whose law applies when it is exercised, and the two differ for a capability that handles data about people elsewhere. Organizations that need to record the second can use an `x-jurisdictions` extension, a sequence of ISO 3166-1 alpha-2 country codes naming the jurisdictions whose law the organization has determined applies, until the committee decides whether to promote it ([issue #21](https://github.com/GovOpsWG/GovOps/issues/21)). The basis for each code belongs in the control mapping, beside the frameworks, not in the catalog.
+
 ## Proposed syntax
 
 ```yaml
@@ -163,6 +165,24 @@ capabilities:
         text: "Reviewers should expect intents like resolve-complaint or
                order-error-correction alongside a challenged request."
     x-acme-cost-center: "CC-4471"        # extension field, preserved not interpreted
+
+  # ------------------------------------------------------------------
+  # Example 4: a capability whose geography and jurisdictions differ
+  # ------------------------------------------------------------------
+  - id: eea4ae23fc175c6e29a94b1484924e9442570bfeac1d90d4984d7c3726a4bf2f
+    title: Export customer records to an analytics partner
+    group: g.customer-data
+    action: export
+    resource_type: customer-record
+    risk-tier: 70            # high band
+    geography: [us]                  # where the capability runs
+    org-unit: [data-platform]
+    primary-org-unit: data-platform
+    data-sensitivity: [pii]
+    third-party-exposure: [analytics-partner]
+    accountable-owner: role:head-of-data-platform
+    lifecycle-stage: govern
+    x-jurisdictions: [ke, us]        # extension field: whose law the organization has determined applies
 ```
 
 ## What changed in the thinking, and why
@@ -193,3 +213,4 @@ Implementations wanting deterministic ids can use the lowercase hex SHA-256 of `
 4. org-unit reporting semantics: v0.2 adds primary-org-unit; confirm this satisfies the metrics side before it lands in the profile text and the metrics README.
 5. Should the risk-tier band boundaries (25/50/75) be fixed by the spec, as drafted, or profile-configurable with fixed defaults?
 6. Id convention: this draft makes the id opaque and implementation-defined, while the design document keeps the SHA-256 convention normative. The two documents should land on one answer.
+7. Jurisdiction: `x-jurisdictions` ships as an extension. What would show that implementations have converged enough to promote it to an optional documented claim beside `geography`?
