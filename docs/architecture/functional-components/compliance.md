@@ -10,6 +10,18 @@ Traditional compliance programs frequently operate separately from runtime autho
 
 A mapping can assert that a capability such as *Approve Loan* supports an access-control objective, while preserving rationale, applicability, confidence, and mapping strength. That mapping is an explicit **governance assertion** — not proof that the control is already satisfied. Proof comes later from policy versions, authorization decisions, and runtime evidence.
 
+Gemara also links controls to capabilities through threats. A Gemara **policy** imports control catalogs. A control references the threats it mitigates, and a threat references the capabilities it applies to. The [GovOps Compliance Plumbing](https://github.com/GovOpsWG/GovOps/wiki/DRAFT-Article:-GovOps-Compliance-Plumbing) draft walks through this path with an example.
+
+```text
+Policy ──imports──> Control catalog ──control.threats──> Threat
+                                                           │
+                                                  threat.capabilities
+                                                           v
+                                                      Capability
+```
+
+Both paths end at the same ACC capability, so runtime evidence joins either one through `capability_id`.
+
 Gemara's published tooling includes CUE schemas for validating YAML or JSON and the [`go-gemara`](https://github.com/gemaraproj/go-gemara) Go SDK for integrating Gemara structures into automated tools.
 
 ## Export path (Gemara → OSCAL → Trestle)
@@ -65,6 +77,37 @@ evidence_requirement:
 
 Requirements are written once per control, not per capability. They name producer roles, not products, so any producer in that role can satisfy them. They are versioned, and every result records the version it was checked against.
 
+### How an assessment runs
+
+GovOps does not need its own assessment engine. A Gemara policy already holds **assessment plans** in its `adherence` section. Each plan names the requirement it tests and the evaluator that runs it. The control evidence requirement above is the GovOps-specific content such a plan points to.
+
+```yaml
+# Illustrative excerpt of a Gemara policy, not a complete document.
+adherence:
+  assessment-plans:
+    - id: assess-access-enforcement
+      requirement-id: govops.ac-03.access-enforcement
+      frequency: on-demand
+      evaluation-methods:
+        - type: Behavioral
+          executor:
+            id: govops-trace-provider
+            type: Software
+```
+
+[complyctl](https://github.com/complytime/complyctl) runs the assessment. It reads the Gemara policy and calls evaluators through provider plugins. A GovOps TRACE provider, not yet built, would read verified records from the collectors and apply the requirement. The executable checks can be written for an evaluator such as [Ampel](https://github.com/policylabs/ampel), which tests signed attestations against policy checks.
+
+```text
+Gemara policy (assessment plan)
+  -> complyctl
+  -> GovOps TRACE provider (verified records from the collectors)
+  -> evaluator checks (for example Ampel)
+  -> one result per execution and control
+  -> complyctl report (OSCAL assessment results)
+```
+
+This keeps each piece in its own layer. Gemara says what must be assessed. The checks say how evidence is tested. TRACE records are the evidence.
+
 ### Evidence profile per capability
 
 A capability's **evidence profile** is the union of the requirements of every control mapped to it. It is derived from the mapping, never written by hand. It builds on the catalog's `expected_producer_roles` ([GTP §13.6](../../standards/gtp/govops-trace-profile.md#136-target-resource-classification-and-the-capability-catalog)) by adding which event kinds, checks, and enrichment each role's records need. The [collectors](./evidence/collectors.md) read it to decide three things:
@@ -94,8 +137,9 @@ A metric can show where to look. Only the signed records prove a finding.
 
 ### Open questions
 
-1. Where control evidence requirements live: in the abstract control catalog, in the mapping documents, or as a separate artifact.
-2. The expression language for `pass_when`.
+1. How control evidence requirements are split between the Gemara assessment plan and the evaluator's checks.
+2. The expression language for `pass_when`, or whether the evaluator's own check language replaces it.
 3. Whether low-risk tiers may be sampled rather than evaluated per execution.
 4. How long to wait for late records before `insufficient_evidence` is final.
 5. How the execution id and parent record id travel between producers. Completeness is checked per execution, so it depends on this.
+6. How the four results map to Gemara evaluation-log results and OSCAL finding status.
