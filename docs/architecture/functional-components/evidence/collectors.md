@@ -10,6 +10,20 @@ This is a minimum viable requirement, not a deferred nice-to-have: without it, G
 
 Resolution happens **per decision, never per record**: a batched evaluation covering several `(action, resource_type)` pairs is resolved entry by entry and keyed back to each entry's own id, so the decision-to-capability association is never collapsed into one value for the whole batch.
 
+## Resolving against the capability in force at the time
+
+A capability can be reclassified, change owner, or be retired between the moment it is exercised and the moment the collector resolves the record. GTP already requires analytics to use the classification that was **effective at event time** ([GTP §13.7](../../../standards/gtp/govops-trace-profile.md#137-effective-versioned-vs-current-classification)). This section states how the collector applies that rule to the capability itself.
+
+TRACE records already carry what this needs: every record signs `signed_at` (producer time), and the `policy` object signs `policy_store_version`. No new record field is required.
+
+1. **The mapping is pinned by `policy_store_version`.** The record names the policy release it was evaluated under, so the collector uses the capability mapping that shipped with that release.
+2. **The catalog version is selected by time.** Each version of a capability carries `effective_at` and `expires_at` ([#56](https://github.com/GovOpsWG/GovOps/issues/56)). The collector uses the version whose window contains `signed_at`.
+3. **The collector records what it used:** the `mapping_version`, the catalog version, and the time it resolved against.
+
+When `signed_at` falls outside every version window, the result is recorded as unresolved, not matched to the latest version. When the record also carries `late_flag`, the time itself is suspect and the result says so. When the mapping resolves to a capability whose `lifecycle_status` was `retired` at `signed_at`, that is a finding in its own right: published policy still reached a retired capability.
+
+The ACC draft keeps `capability_id` unchanged once assigned, so a new version is a new entry state under the same id. [#56](https://github.com/GovOpsWG/GovOps/issues/56) is discussing the alternative of a new id per version. Either way, the catalog keeps every prior version, and `capability_hash` stays an optional lookup shortcut beside the mapping.
+
 ## What is collector-derived, never producer-signed
 
 A specific set of fields and assessments must stay out of the producer-signed schema and live only in the collector's own assessment store:
